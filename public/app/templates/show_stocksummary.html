@@ -1,0 +1,133 @@
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+<section id="main-content">
+	<section class="wrapper site-min-height">
+		<div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                    <div class="mat-form card">
+                        <div class="card-header card-header-primary listPagePrimaryCardHeader">
+                            <h4 class="card-title">{{title}} {{(product ? " - " + product.name : "")}}</h4>
+							<div class="filterButtons">
+								<span class="filterButtonIcons" >
+									<span class="dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-ellipsis-v"></i>
+									</span>
+									<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<a class="dropdown-item" data-ng-click="printStockSummaryPdf(0)"><i class="fas fa-print"></i>&nbsp;Print</button>
+										<a class="dropdown-item" data-ng-controller="productcontroller" data-ng-click="showStockDetail()">Show Detail</a>
+									</div>
+								</span>	
+								<div class="filterInputInHeaderWrapper filterInputForDesktop">
+									<input type="text" class="filterInputInHeaderElement" placeholder="Search" data-ng-model="searchText">
+								</div>
+							</div>
+						</div>
+                        <div class="card-body">
+                        	<div class="row p-0 m-0">
+								<div class="col-12 col-md-12">
+									<div class="filterInputInHeaderWrapper filterInputForMobile filterInputInHeaderWrapperSearch" >
+										<input type="text" class="filterInputInHeaderElement" placeholder="Search" data-ng-model="searchText">
+									</div>
+								</div>
+							</div>
+							<div class="listPageTableForMobile">
+								<div class="listPageTableForMobileHeader">
+									<div class="listPageTableForMobileRow">
+										<div class="listPageTableForMobileRow1">
+											<div class="mobileTableEachColumn mobileTablePrimaryFullWidth">
+												<div class="mobilePrimaryFirstRow">
+													<p>UOM - Qty</p>
+													<p>UOM - Quote</p>
+												</div>
+												<div class="mobilePrimarySecondRow">
+													<p>Stock - Qty</p>
+													<p>Stock - Quote</p>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="listPageTableForMobileRow" data-ng-repeat="x in stockbucketlist | filter:searchText">
+										<input type="checkbox" id="table_input_{{$index}}" style="display:none" />
+										<label for="table_input_{{$index}}">
+											<div class="listPageTableForMobileRow1">
+												<div class="mobileTableEachColumn mobileTablePrimaryFullWidth">
+													<div class="mobilePrimaryFirstRow">
+														<p>{{x.uom_qty.name}}</p>	
+														<p>{{x.uom_quote.name}}</p>
+													</div>
+													<div class="mobilePrimarySecondRow">
+														<p>{{x.stock_qty}} {{x.uom_qty.short_name}}</p>
+														<p>{{x.stock_quote}} {{x.uom_quote.short_name}}</p>
+													</div>
+												</div>
+											</div>
+										</label>
+										<div class="listPageTableForMobileRow2">
+											<div class="listPageSecondRowEachColumn">
+												<p class="listPageSecondRowLabel">STOCK - PROCESS - QTY</p>
+												<p class="listPageSecondRowValue">{{x.more.stock_in_process_qty}} {{x.uom_qty.short_name}}</p>
+											</div>
+											<div class="listPageSecondRowEachColumn">
+												<p class="listPageSecondRowLabel">STOCK - PROCESS - QUOTE</p>
+												<p class="listPageSecondRowValue">{{x.more.stock_in_process_quote}} {{x.uom_quote.short_name}} </p>
+											</div>
+										</div>
+									</div>
+									<div class="listPageTableForMobileRow" data-ng-if="stock_qty != undefined">
+										<div class="listPageTableForMobileRow1">
+											<div class="mobileTableEachColumn mobileTablePrimaryFullWidth">
+												<div class="mobilePrimaryFirstRow">
+													<p><b>Total</b></p>
+													<p>&nbsp;</p>
+												</div>
+												<div class="mobilePrimarySecondRow">
+													<p><b>{{ getKeysCount(stock_qty) > 1 ? "" : (stock_qty[uom_qty_id] | number: 2) + " " + uom_qty_name}} </b></p>
+													<p><b>{{ getKeysCount(stock_quote) > 1 ? "" : (stock_quote[uom_quote_id] | number: 2 ) + " " + uom_quote_name}}</b></p>
+												</div>
+											</div>
+										</div>
+									</div>																			
+								</div>
+							</div>	
+							<div class="listPageFiltersWrapperDiv">								
+								<div class="listTableDiv">
+									<div class="adv-table editable-table">
+										<div class="space15"></div>
+										<table  class="table table-striped table-hover " id="editable-sample">
+											<thead>
+											<tr>
+												<th>UOM Qty</th>
+												<th>UOM QUOTE</th>
+												<th style="text-align:right">STOCK - QTY</th>
+												<th style="text-align:right">STOCK - QUOTE</th>
+												<th style="text-align:right">IN PROCESS - QTY</th>
+												<th style="text-align:right">IN PROCESS - QUOTE</th>
+											</tr>
+											</thead>
+											<tbody>
+											<tr data-ng-repeat="x in stockbucketlist | filter:searchText" xclass="active">
+												<td>{{x.uom_qty.name}}</td>
+												<td>{{x.uom_quote.name}}</td>
+												<td align="right" data-ng-init="$parent.uom_qty_id = x.uom_qty.id; $parent.uom_qty_name = x.uom_qty.name; $parent.stock_qty[x.uom_qty.id] = $parent.stock_qty[x.uom_qty.id] + x.stock_qty;">{{x.stock_qty}} {{x.uom_qty.name}}</td>
+												<td align="right" data-ng-init="$parent.uom_quote_id = x.uom_quote.id; $parent.uom_quote_name = x.uom_quote.name; $parent.stock_quote[x.uom_quote.id] = $parent.stock_quote[x.uom_quote.id] + x.stock_quote;">{{x.stock_quote}} {{x.uom_quote.name}}</td>
+												<td align="right">{{x.more.stock_in_process_qty}} {{x.uom_qty.name}}</td>
+												<td align="right">{{x.more.stock_in_process_quote}} {{x.uom_quote.name}}</td>
+											</tr>
+											<tr data-ng-if="stock_qty != undefined">
+												<td colspan="2"><b>Total</b></td>
+												<td align="right"><b>{{ getKeysCount(stock_qty) > 1 ? "" : (stock_qty[uom_qty_id] | number: 2) + " " + uom_qty_name}} </b></td> 
+												<td align="right"><b>{{ getKeysCount(stock_quote) > 1 ? "" : (stock_quote[uom_quote_id] | number: 2 ) + " " + uom_quote_name}}</b></td>
+												<td colspan="2">&nbsp;</td>												
+											</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>							
+						</div>
+					</div>
+				</div>
+            </div>
+        </div>
+	</section>
+</section>

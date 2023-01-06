@@ -1,0 +1,108 @@
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+
+<!--main content start-->
+<section id="main-content">
+	<section class="wrapper">
+        <div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                    <div class="mat-form card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title">{{title}}</h4>
+                        </div>
+                        <div class="card-body">
+                            <form class="cmxform form-horizontal tasi-form" id="signupForm" method="post" name="myform">
+                                <div class="row">
+                                    <div class="col-lg-12 eachCardWrapperDiv">
+                                        <div class="card MB0">
+                                            <h5 class="card-header childcardheader">Details</h5>
+                                            <div class="card-body">
+                                               <div class="row">
+                                                   <div class="col-lg-1 col-md-2 col-sm-4 col-xs-6">
+	                                                    <div class="form-group bmd-form-group floating-input-container">
+	                                                        <input type="text" class="floating-input" name="code" id="code" data-ng-model="hsn.code" required="true" placeholder="Enter code" data-ng-class="((myform.code.$dirty || submitted) && myform.code.$invalid) || ((myform.code.$dirty || submitted) && myform.code.$error.required) ? 'error' : 'success'"/>
+	                                                        <label class="input-label" for="code">
+	                                                           Code
+	                                                        </label>
+	                                                        <span class="help-block errorText" ng-show="((myform.code.$dirty || submitted) && myform.code.$invalid) || ((myform.code.$dirty || submitted) && myform.code.$error.required)">Please enter code</span>
+	                                                    </div>
+	                                               </div>
+	                                               <div class="col-lg-1 col-md-2 col-sm-4 col-xs-6">
+	                                                    <div class="form-group bmd-form-group floating-input-container">
+	                                                        <input type="text"  class="floating-input" name="short_code" id="short_code" data-ng-model="hsn.short_code" required="true" placeholder="Enter short_code" data-ng-class="((myform.short_code.$dirty || submitted) && myform.short_code.$invalid) || ((myform.short_code.$dirty || submitted) && myform.short_code.$error.required) ? 'error' : 'success'"/>
+	                                                        <label class="input-label" for="short_code">
+	                                                            Short Code
+	                                                        </label>
+	                                                        <span class="help-block errorText" ng-show="((myform.short_code.$dirty || submitted) && myform.short_code.$invalid) || ((myform.short_code.$dirty || submitted) && myform.short_code.$error.required)">Short code is reqd</span>
+	                                                    </div>
+	                                               </div>	                                               
+                                                   <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12">
+	                                                    <div class="form-group bmd-form-group floating-input-container">
+	                                                        <input type="text" class="floating-input" name="name" id="name" data-ng-model="hsn.name" required="true" placeholder="Enter name" data-ng-class="((myform.name.$dirty || submitted) && myform.name.$invalid) || ((myform.name.$dirty || submitted) && myform.name.$error.required) ? 'error' : 'success'"/>
+	                                                        <label class="input-label" for="name">
+	                                                           Name
+	                                                        </label>
+	                                                        <span class="help-block errorText" ng-show="((myform.name.$dirty || submitted) && myform.name.$invalid) || ((myform.name.$dirty || submitted) && myform.name.$error.required)">Please enter name</span>
+	                                                    </div>
+	                                                </div>
+	                                                <div class="col-lg-8 col-md-5 col-sm-12 col-xs-12">
+	                                                    <div class="form-group bmd-form-group floating-input-container">
+	                                                        <input type="text"  class="floating-input" name="description" id="description" data-ng-model="hsn.description" required="true" placeholder="Enter description" data-ng-class="((myform.description.$dirty || submitted) && myform.description.$invalid) || ((myform.description.$dirty || submitted) && myform.description.$error.required) ? 'error' : 'success'"/>
+	                                                        <label class="input-label" for="description">
+	                                                            Description
+	                                                        </label>
+	                                                        <span class="help-block errorText" ng-show="((myform.description.$dirty || submitted) && myform.description.$invalid) || ((myform.description.$dirty || submitted) && myform.description.$error.required)">Please enter description</span>
+	                                                    </div>
+	                                                </div>                                               
+	                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-ng-if="!editmode || hsn.details.length > 0">
+														<div class="form-group" xxdata-ng-if="((!editmode) || (editmode && hsn.hsnconversionlist.length > 0))">
+															<div style="text-align:right";>
+																<button id="btnAddhsn" class="btn btn-xs btn-primary" data-ng-click="addHSNDetail();">(+)</button>
+																<button id="btnClearLines" class="btn btn-xs btn-info" data-ng-click="hsn.details = [];" data-ng-if="hsn.details.length > 0">Clear</button>
+															</div>
+														</div>
+														<div>
+	                                                      <table class="table table-striped table-hover adv-table editable-table" id="editable-sample">
+															<thead>
+																<tr>
+																	<th class="small">AMOUNT FROM</th>
+																	<th class="small">AMOUNT TO</th>
+																	<th class="small">GST (%)</th>
+																	<th class="small">CESS (%)</th>
+																	<th class="small">Del</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr data-ng-repeat="y in hsn.details">
+																	<td><input class="form-control input-sm" type="numeric" data-ng-model="y.amount_min" id="amount_min{{$index}}" required="true" min="0" data-ng-disabled="true" /></td>
+																	<td><input class="form-control input-sm" type="number" step="0.01" data-ng-model="y.amount_max" id="amount_max{{$index}}" data-ng-blur="hsnMaxBlur()" data-ng-required="$index < hsn.details.length - 1"/>
+																	</td>
+																	<td><input class="form-control input-sm" type="number" step="0.01" data-ng-model="y.percent_gst" id="percent_gst{{$index}}" name="percent_gst{{$index}}" data-ng-required="true" required="true"/><span class="help-block errorText" ng-show="((myform.percent_gst{{$index}}.$dirty || submitted) && myform.percent_gst{{$index}}.$invalid) || ((myform.percent_gst{{$index}}.$dirty || submitted) && myform.description.$error.required)" >Please enter GST %</span>
+																	</td>
+																	<td><input class="form-control input-sm" type="number" step="0.01" data-ng-model="y.percent_cess" id="percent_cess{{$index}}" name="percent_cess{{$index}}" data-ng-required="true" required="true" /><span class="help-block errorText" ng-show="((myform.percent_cess{{$index}}.$dirty || submitted) && myform.percent_cess{{$index}}.$invalid) || ((myform.percent_cess{{$index}}.$dirty || submitted) && myform.description.$error.required)" >Please enter CESS %</span>
+																	</td>
+																	<td><button id="delbtn{{$index}}" class="btn btn-danger btn-xs" data-ng-click="removeHSNDetail($index)" data-ng-show="$index > 0 && $index == hsn.details.length - 1">Del</button></td>
+																</tr>
+															</tbody>
+														  </table>
+														</div>
+													</div>                                              
+	                                            </div>
+                                            </div>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                  <div class="row-centered">
+                                      <button type="button" class="btn primarySubmitButton mobileSubmitButton" data-ng-click='submitted=true;!myform.$invalid && saveHSN();'>Save</button>
+                                  </div>
+                                </div>
+                       		 </form>
+                    	</div>
+                  	</div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+

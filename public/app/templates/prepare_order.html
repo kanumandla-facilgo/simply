@@ -1,0 +1,193 @@
+<!--<div><span><a href="#/users">Users</a></span> <span><a href="#/customers">Customers</a></span> <span><a href="#/categories">Catalog</a></span></div>-->
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+<style>
+.no-gutter > [class*='col-'] {
+    padding-right:0px;
+    padding-left:0px;
+}
+</style>
+<!--main content start-->
+<section id="main-content"  style="font-family:'source_sans_pro_regular'">
+  <section class="wrapper">
+        <div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                   <div class="mat-form card">
+                       <div class="card-header card-header-primary">
+                           <h4 class="card-title">Packing Slip</h4>
+                       </div>
+                       <div class="card-body">
+                           <form class="cmxform" id="signupForm" method="post" name="myform">
+                               <div class="row">
+                                   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 eachCardWrapperDiv">
+                                       <div class="card MB0">
+                                           <h5 class="card-header childcardheader">Primary Information</h5>
+                                           <div class="card-body">
+                                              <div class="row">
+                                                  	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+	                                                    <div class="form-group bmd-form-group floating-input-container">
+	                                                       	<input class="floating-input" type="text" name="txt_packing_slip_number" id="txt_packing_slip_number" data-ng-model="packingslip.slip_number" data-ng-if="packing_slip_number_edit_flag" data-ng-required="packing_slip_number_edit_flag" placeholder="Slip #" ng-class="(((myform.txt_packing_slip_number.$dirty || submitted) && myform.txt_packing_slip_number.$invalid) || ((myform.txt_packing_slip_number.$dirty || submitted) && myform.txt_packing_slip_number.$error.required)) ? 'error' : 'success'"/>
+															<label data-ng-if="!packing_slip_number_edit_flag">{{ (!isPackingSlipNumberRequired() && packingslip.id > 0 ? packingslip.slip_number : "Will be created")}} <i class="fa fa-edit" data-ng-click="enablePackingSlipNumberEdit()" data-ng-if="isPackingSlipNumberEditAllowed() && !packing_slip_number_edit_flag" aria-hidden="true"></i></label>
+	                                                       	<label data-ng-if="packing_slip_number_edit_flag" class="input-label" for="code">
+	                                                          Slip #
+	                                                       	</label>
+	                                                       <span class="help-block errorText" ng-show="(myform.txt_packing_slip_number.$dirty && myform.txt_packing_slip_number.$invalid) || ((myform.txt_packing_slip_number.$dirty || submitted) && myform.txt_packing_slip_number.$error.required)">Please enter slip number</span>
+	                                                    </div>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+														<div class="form-group bmd-form-group floating-input-container">
+															<label class="item-label">
+																Order #
+															</label>
+															<div class="item-content">{{order.order_number}}</div>
+														</div>
+	                                               	</div>
+	                                               	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+														<div class="form-group bmd-form-group floating-input-container">
+															<label class="item-label">
+																Order Date
+															</label>
+															<div class="item-content">{{order.order_date| date : 'yyyy-MM-dd' }}</div>
+														</div>
+	                                               	</div>
+	                                               	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+														<div class="form-group bmd-form-group floating-input-container">
+															<label class="item-label">
+																OTN
+															</label>
+															<div class="item-content"><a href="#/EditOrder/{{order.id}}">{{order.id}}</a></div>
+														</div>
+	                                               	</div>
+	                                               	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+														<div class="form-group bmd-form-group floating-input-container">
+															<label class="item-label">
+																Order Notes
+															</label>
+															<div class="item-content">{{order.notes}}</div>
+														</div>
+	                                               	</div>
+	                                               	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+	                                                    <div class="form-group bmd-form-group floating-input-container">
+	                                                        <input class="floating-input" type="date" name="txt_packing_slip_date" id="txt_packing_slip_date" data-ng-model="packingslip.packing_date" required="true" placeholder="Packing date" ng-class="(((myform.txt_packing_slip_date.$dirty || submitted) && myform.txt_packing_slip_date.$invalid) || ((myform.txt_packing_slip_date.$dirty || submitted) && myform.txt_packing_slip_date.$error.required)) ? 'error' : 'success'"/>
+	                                                       	<label class="input-label" for="code">
+	                                                          Date #
+	                                                       	</label>
+	                                                       	<span class="help-block errorText" ng-show="(((myform.txt_packing_slip_date.$dirty || submitted) && myform.txt_packing_slip_date.$invalid) || ((myform.txt_packing_slip_date.$dirty || submitted) && myform.txt_packing_slip_date.$error.required))">Please enter slip date</span>
+	                                                    </div>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+	                                                    <div class="form-group bmd-form-group floating-input-container">
+	                                                        <input class="floating-input"  type="number" name="txt_gross_weight" id="txt_gross_weight" data-ng-model="packingslip.gross_weight" placeholder="Gross Wt." ng-class="(((myform.txt_gross_weight.$dirty || submitted) && myform.txt_gross_weight.$invalid) || ((myform.txt_gross_weight.$dirty || submitted) && myform.txt_gross_weight.$error.required)) ? 'error' : 'success'"/>
+	                                                       	<label class="input-label" for="code">
+	                                                          Gross Wt
+	                                                       	</label>
+	                                                       	<span class="help-block errorText" ng-show="(((myform.txt_gross_weight.$dirty || submitted) && myform.txt_gross_weight.$invalid) || ((myform.txt_gross_weight.$dirty || submitted) && myform.txt_gross_weight.$error.required))">Please enter gross weight</span>
+	                                                    </div>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+	                                                    <div class="form-group bmd-form-group floating-input-container">
+	                                                        <input class="floating-input"  type="number" name="txt_net_weight" id="txt_net_weight" data-ng-model="packingslip.net_weight" placeholder="Net Wt." ng-class="(((myform.txt_net_weight.$dirty || submitted) && myform.txt_net_weight.$invalid) || ((myform.txt_net_weight.$dirty || submitted) && myform.txt_net_weight.$error.required)) ? 'error' : 'success'"/>
+	                                                       	<label class="input-label" for="code">
+	                                                          Net Wt
+	                                                       	</label>
+	                                                       	<span class="help-block errorText" ng-show="(((myform.txt_net_weight.$dirty || submitted) && myform.txt_net_weight.$invalid) || ((myform.txt_net_weight.$dirty || submitted) && myform.txt_net_weight.$error.required))">Please enter net weight</span>
+	                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 eachCardWrapperDiv">
+                                        <table class="table table-condensed table-bordered deliverNotesTable">
+                                          <thead>
+                                              <tr>
+                                                  <th></th>
+                                                  <th>Name</th>
+                                                  <th>Qty</th>
+                                                  <th>Dispatched</th>
+                                                  <th>Price</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody data-ng-repeat="lineitem in packingslip.order.lineitems">
+                                              <tr >
+                                                <td><button type="button" class="btn-xs btn-info hidden-print" data-ng-if="lineitem.is_complete == 0 && ((lineitem.is_batched_inventory == 0 && lineitem.packingslip_lineitems.length < 1) || (lineitem.is_batched_inventory == 1 && lineitem.packingslip_lineitems.length < (lineitem.entered_quantity - lineitem.packed_qty_qty)) )" data-ng-click="addPrepareLineItem($index)">Add </button></td>
+                                                <td>{{lineitem.name}}</td>
+                                                <td>
+                                                  <span>{{lineitem.entered_quantity}}</span> {{lineitem.entered_uom_name}} 
+                                                </td>
+                                                <td><span>{{lineitem.stock_quantity_packed}}</span> {{lineitem.stock_uom_name}} {{lineitem.stock_uom_name != lineitem.stock_alt_uom_name ? " / " + lineitem.stock_alt_quantity_packed+ " " + lineitem.stock_alt_uom_name : ""}}</td>
+                                                <td>{{lineitem.order_price}} / {{lineitem.uom_name}} </td>
+                                              </tr>
+                                              <tr class="addPackingSlipRow" data-ng-repeat="packingsliplineitem in lineitem.packingslip_lineitems track by $index">
+                                              	<td colspan="5" >
+                                              		<div class="row" >
+                                              		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                              			<div class="form-group bmd-form-group floating-input-container">
+                                              			<button type="button" class="btn-xs btn-danger hidden-print" data-ng-click="removePrepareLineItem(lineitem, $index)" style="">Delete</button>
+                                              			</div>
+                                              		</div>
+                                              		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 floatingContainer" data-ng-if="!(lineitem.is_batched_inventory == 0 || lineitem.is_batched_inventory == false)">
+	                                                    <div class="form-group bmd-form-group floating-input-container">
+	                                                        <input class="floating-input" type="text" id="txt_stock_bucket_{{lineitem.id + '_' + $index}}" name="txt_stock_bucket_{{lineitem.id + '_' + $index}}" autocomplete="off" data-ng-model="packingsliplineitem.stock_bucket_code" class="form-control input-sm" data-ng-required="true" placeholder="Stock code" typeahead-min-length="2" typeahead-wait-ms="200" typeahead-on-select="onSelectedStockBucket($item, $model, $label, $event, lineitem, packingsliplineitem)" typeahead-select-on-blur=true typeahead-editable=false uib-typeahead="suggestion as suggestion.code for suggestion in getBucketListViaPromise($viewValue, 1, lineitem.products_id)" ng-class="(((myform.txt_stock_bucket_{{lineitem.id + '_' + $index}}.$dirty || submitted) && myform.txt_stock_bucket_{{lineitem.id + '_' + $index}}.$invalid) || ((myform.txt_stock_bucket_{{lineitem.id + '_' + $index}}.$dirty || submitted) && myform.txt_stock_bucket_{{lineitem.id + '_' + $index}}.$error.required)) ? 'error' : 'success'" />
+	                                                        <label class="input-label" for="txt_stock_bucket_{{lineitem.id + '_' + $index}}">Stock Code</label>
+	                                                       	<span class="help-block errorText" ng-show="(((myform.txt_stock_bucket_{{lineitem.id + '_' + $index}}.$dirty || submitted) && myform.txt_stock_bucket_{{lineitem.id + '_' + $index}}.$invalid) || ((myform.txt_stock_bucket_{{lineitem.id + '_' + $index}}.$dirty || submitted) && myform.txt_stock_bucket_{{lineitem.id + '_' + $index}}.$error.required))">Please enter stock code</span>
+	                                                    </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-if="(lineitem.is_batched_inventory == 0 || lineitem.is_batched_inventory == false)">
+	                                                    <div class="form-group bmd-form-group floating-input-container">
+	                                                        <input class="floating-input" type="text" id="txt_equation_{{lineitem.id + '_' + $index}}" name="txt_equation_{{lineitem.id + '_' + $index}}" autocomplete="off" data-ng-model="packingsliplineitem.notes" class="form-control input-sm" placeholder="Equation/Notes" data-ng-blur="convertEquationtoQtyAndPcs(packingsliplineitem.notes, packingsliplineitem)" ng-class="(((myform.txt_equation_{{lineitem.id + '_' + $index}}.$dirty || submitted) && myform.txt_equation_{{lineitem.id + '_' + $index}}.$invalid) || ((myform.txt_equation_{{lineitem.id + '_' + $index}}.$dirty || submitted) && myform.txt_equation_{{lineitem.id + '_' + $index}}.$error.required)) ? 'error' : 'success'"/>
+	                                                        <label class="input-label" for="txt_equation_{{lineitem.id + '_' + $index}}">Equation/Notes</label>
+	                                                       	<span class="help-block errorText" ng-show="(((myform.txt_equation_{{lineitem.id + '_' + $index}}.$dirty || submitted) && myform.txt_equation_{{lineitem.id + '_' + $index}}.$invalid) || ((myform.txt_equation_{{lineitem.id + '_' + $index}}.$dirty || submitted) && myform.txt_equation_{{lineitem.id + '_' + $index}}.$error.required))">Please enter equation/notes</span>
+	                                                    </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+	                                                    <div class="form-group bmd-form-group floating-input-container">
+	                                                        <input class="floating-input" type="number" id="txt_qty_qty_{{lineitem.id + '_' + $index}}" name="txt_qty_qty_{{lineitem.id + '_' + $index}}" class="form-control input-sm" data-ng-model="packingsliplineitem.packed_qty_qty" data-ng-required="true"  data-ng-disabled="lineitem.is_batched_inventory == 1 || lineitem.is_batched_inventory == true" placeholder="{{lineitem.stock_uom_name}}" ng-class="(((myform.txt_qty_qty_{{lineitem.id + '_' + $index}}.$dirty || submitted) && myform.txt_qty_qty_{{lineitem.id + '_' + $index}}.$invalid) || ((myform.txt_qty_qty_{{lineitem.id + '_' + $index}}.$dirty || submitted) && myform.txt_qty_qty_{{lineitem.id + '_' + $index}}.$error.required)) ? 'error' : 'success'"/>
+	                                                        <label class="input-label" for="txt_qty_qty_{{lineitem.id + '_' + $index}}">{{lineitem.stock_uom_name}}</label>
+	                                                       	<span class="help-block errorText" ng-show="(((myform.txt_qty_qty_{{lineitem.id + '_' + $index}}.$dirty || submitted) && myform.txt_qty_qty_{{lineitem.id + '_' + $index}}.$invalid) || ((myform.txt_qty_qty_{{lineitem.id + '_' + $index}}.$dirty || submitted) && myform.txt_qty_qty_{{lineitem.id + '_' + $index}}.$error.required))">Please enter {{lineitem.stock_uom_name}}</span>
+	                                                    </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-if="lineitem.stock_unit_of_measures_id != lineitem.stock_alt_unit_of_measures_id">
+	                                                    <div class="form-group bmd-form-group floating-input-container">
+	                                                        <input class="floating-input" type="number" id="txt_qty_quote_{{lineitem.id + '_' + $index}}" name="txt_qty_quote_{{lineitem.id + '_' + $index}}" class="form-control input-sm" data-ng-model="packingsliplineitem.packed_qty_quote" data-ng-required="true" data-ng-disabled="packingsliplineitem.stock_bucket_code != ''"  placeholder="{{lineitem.stock_alt_uom_name}}" ng-class="(((myform.txt_qty_quote_{{lineitem.id + '_' + $index}}.$dirty || submitted) && myform.txt_qty_quote_{{lineitem.id + '_' + $index}}.$invalid) || ((myform.txt_qty_quote_{{lineitem.id + '_' + $index}}.$dirty || submitted) && myform.txt_qty_quote_{{lineitem.id + '_' + $index}}.$error.required))  ? 'error' : 'success'"/>
+	                                                        <label class="input-label" for="txt_qty_quote_{{lineitem.id + '_' + $index}}">{{lineitem.stock_alt_uom_name}}</label>
+	                                                       	<span class="help-block errorText" ng-show="(((myform.txt_qty_quote_{{lineitem.id + '_' + $index}}.$dirty || submitted) && myform.txt_qty_quote_{{lineitem.id + '_' + $index}}.$invalid) || ((myform.txt_qty_quote_{{lineitem.id + '_' + $index}}.$dirty || submitted) && myform.txt_qty_quote_{{lineitem.id + '_' + $index}}.$error.required))">Please enter {{lineitem.stock_alt_uom_name}}</span>
+	                                                    </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" >
+	                                                    <div class="form-group bmd-form-group floating-input-container">
+	                                                       <input class="floating-input" type="number" id="txt_pcs_{{lineitem.id + '_' + $index}}" name="txt_pcs_{{lineitem.id + '_' + $index}}" data-ng-model="packingsliplineitem.piece_count" data-ng-init="packingsliplineitem.piece_count = 1" data-ng-required="true" data-ng-disabled="lineitem.is_batched_inventory == 1 || lineitem.is_batched_inventory == true" placeholder="Pieces" ng-class="(((myform.txt_pcs_{{lineitem.id + '_' + $index}}.$dirty || submitted) && myform.txt_pcs_{{lineitem.id + '_' + $index}}.$invalid) || ((myform.txt_pcs_{{lineitem.id + '_' + $index}}.$dirty || submitted) && myform.txt_pcs_{{lineitem.id + '_' + $index}}.$error.required)) ? 'error' : 'success'" />
+	                                                       <label class="input-label" for="txt_pcs_{{lineitem.id + '_' + $index}}">Pieces</label>
+	                                                       	<span class="help-block errorText" ng-show="(((myform.txt_pcs_{{lineitem.id + '_' + $index}}.$dirty || submitted) && myform.txt_pcs_{{lineitem.id + '_' + $index}}.$invalid) || ((myform.txt_pcs_{{lineitem.id + '_' + $index}}.$dirty || submitted) && myform.txt_pcs_{{lineitem.id + '_' + $index}}.$error.required))">Please enter Pieces</span>
+	                                                    </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-if="!(lineitem.is_batched_inventory == 0 || lineitem.is_batched_inventory == false)">
+														<div class="form-group bmd-form-group floating-input-container">
+															<label class="item-label">
+																Notes
+															</label>
+															<div class="item-content">{{packingsliplineitem.notes}}</div>
+														</div>
+	                                                </div>
+	                                            </div>
+                                              	</td>
+                                              </tr>
+                                          </tbody>
+                                        </table>
+                                      </div>
+
+                                  </div>
+                                </form>
+                                <div class="form-group">
+                                    <div class="row-centered">
+                                    	<button  class="btn primarySubmitButton mobileSubmitButton" type="button" data-ng-disabled="isDisabled"  data-ng-click='submitted=true;!myform.$invalid && createPackingslip(packingslip, true);'>Submit <i class="fa fa-plus"></i></button>&nbsp;&nbsp;
+										<button data-ng-disabled="isDisabled"  class="btn primarySubmitButton mobileSubmitButton" type="button"  data-ng-click='submitted=true;!myform.$invalid && createPackingslip(packingslip, false);'>Submit</button>
+                                    </div>
+                                </div>
+                            </div>                       
+                        </div>
+                  </div>
+              </div>
+            </div>
+        </section>
+    </section>

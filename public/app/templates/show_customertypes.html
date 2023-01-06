@@ -1,0 +1,119 @@
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+<section id="main-content">
+    <section class="wrapper site-min-height">
+        <div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                    <div class="mat-form card">
+                        <div class="card-header card-header-primary listPagePrimaryCardHeader">
+                            <h4 class="card-title">{{title}} {{(product ? " - " + product.name : "")}}</h4>
+                            <div class="filterButtons">
+                                <span class="filterButtonIcons" >
+                                    <span class="dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v"></i>
+                                    </span>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" id="btnAddUser" data-ng-show="isAddCustomerTypeAllowed" data-ng-click="showAddCustomerTypeForm()"><i class="fa fa-plus"></i>&nbsp; Add Rate Category</a>
+                                    </div>
+                                </span> 
+                                <div class="filterInputInHeaderWrapper filterInputForDesktop">
+                                    <input type="text" class="filterInputInHeaderElement" placeholder="Search" data-ng-model="searchText">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row p-0 m-0">
+                                <div class="col-12 col-md-12">
+                                    <div class="filterInputInHeaderWrapper filterInputForMobile filterInputInHeaderWrapperSearch" >
+                                        <input type="text" class="filterInputInHeaderElement" placeholder="Search" data-ng-model="searchText">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="listPageTableForMobile">
+                                <div class="listPageTableForMobileHeader">
+                                    <div class="listPageTableForMobileRow">
+                                        <div class="listPageTableForMobileRow1">
+                                            <div class="mobileTableEachColumn mobileTablePrimary">
+                                                <div class="mobilePrimaryFirstRow">
+                                                    <p>Name</p>
+                                                    <p>Default</p>
+                                                </div>
+                                                <div class="mobilePrimarySecondRow">
+                                                    <p>Description</p>
+                                                    <p></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="listPageTableForMobileRow" data-ng-repeat="x in companytypelist | filter:searchText">
+                                        <div class="listPageTableForMobileRow1">
+                                            <div class="mobileTableEachColumn mobileTablePrimary">
+                                                <div class="mobilePrimaryFirstRow">
+                                                    <p data-ng-show="isEditCustomerTypeAllowed()"><span class="text-decoration-underline-mobile"   data-ng-click="customerTypeRowClick(x.id)">{{x.name}}</span></p>
+                                                    <p data-ng-show="!isEditCustomerTypeAllowed()">{{x.name}}</p>
+                                                    <p>{{(x.is_default == 0 ? "No" : "Yes")}}</p> 
+                                                </div>
+                                                <div class="mobilePrimarySecondRow">
+                                                    <p>{{x.description}}</p>
+                                                    <p></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mobileTableEachColumn mobileTableButtons">
+                                            <div class="mobileTableButtonWrapper">
+                                                <span class="mobileTableButton">
+                                                    <span class="dropdown-toggle" id="navbarDropdown_{{$index}}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fa fa-ellipsis-h"></i>
+                                                    </span>
+                                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown_{{$index}}">
+                                                        <a class="dropdown-item listPageActionGreen" id="btn{{$index}}" data-ng-show="isEditCustomerTypeAllowed()" data-ng-click="showEditCustomerTypeForm(x.id);$event.stopPropagation();"><i class="fas fa-edit"></i> Edit Rate Category</a>
+                                                        <a class="dropdown-item listPageActionIconsRed" id="btnd{{$index}}" data-ng-show="isDeleteCustomerTypeAllowed()" data-ng-click="deleteCustomerType(x);$event.stopPropagation();"><i class="fas fa-trash"></i> Delete Rate Category</a>
+                                                    </div>
+                                                </span>
+                                                <span data-ng-show="isEditCustomerTypeAllowed()" data-ng-click="showEditCustomerTypeForm(x.id);$event.stopPropagation();" class="mobileTableButton">
+                                                    <i class="fas fa-angle-right"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>                                                                              
+                                </div>
+                            </div>
+                            <div class="listPageFiltersWrapperDiv">                             
+                                <div class="listTableDiv">
+                                    <div class="adv-table editable-table">
+                                        <div class="space15"></div>
+                                        <table  class="table table-striped table-hover " id="editable-sample">
+                                            <thead>
+                                            <tr>
+                                               <th class="sortable-header" data-ng-click="setCustomerSortParameters('name');getCustomerTypes();">NAME
+													<span class="sort-icons" ng-class="getIcon('name')"/>
+					 							</th>
+												<th class="sortable-header" data-ng-click="setCustomerSortParameters('description');getCustomerTypes();">DESCRIPTION
+													<span class="sort-icons" ng-class="getIcon('description')"/>
+												</th>
+												<th class="sortable-header" data-ng-click="setCustomerSortParameters('default');getCustomerTypes();">DEFAULT?
+													<span class="sort-icons" ng-class="getIcon('default')"/>
+												</th>
+												<th>ACTIONS</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr class="" data-ng-repeat="x in companytypelist | filter:searchText" class="active" data-ng-click="customerTypeRowClick(x.id);$event.stopPropagation();">
+                                                <td><a data-ng-show="isEditCustomerTypeAllowed()"  data-ng-click="customerTypeRowClick(x.id);$event.stopPropagation();">{{x.name}}</a><span data-ng-show="!isEditCustomerTypeAllowed()">{{x.name}}</span></td>
+												<td>{{x.description}}</td>
+												<td>{{(x.is_default == 0 ? "No" : "Yes")}}</td>
+												<td><span id="btn{{$index}}" class="listPageActionIcons listPageActionGreen" data-ng-show="isEditCustomerTypeAllowed()" data-ng-click="showEditCustomerTypeForm(x.id);$event.stopPropagation();"><i class="fas fa-edit"></i></span>
+                                                <span class="listPageActionIcons listPageActionIconsRed" id="btnd{{$index}}" data-ng-show="isDeleteCustomerTypeAllowed()" data-ng-click="deleteCustomerType(x);$event.stopPropagation();"><i class="fas fa-trash"></i></span></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>

@@ -1,0 +1,33 @@
+Questions:
+0. What accounting system do you use?
+1. How many admins do you have?
+2. Do you have Shipping, Billing addresses for customers separately? IF yes, then you will be required to enter those addresses.
+3. Do you have credit limit approval?
+4. If you are using Tally, would you like to sync bills?
+5. Do you want to allow customers to login?
+6. Do you have multiple units?
+7. Do you want to send SMS notifications?
+8. Do you have stock in batches? In other words, do you sell products in sets of 4, sets of 3 etc?
+
+Start:
+01. Create Rate Categories
+02. Create Payment Terms if default is inadequate
+03. Create Roles
+04. Create Users
+05. Create Salesman, SalesHead et.
+06. Create Transporters
+
+Agent:
+1. Create Salesman
+2. Create Agents
+
+Customers:
+01. Create Customers
+
+Inventory:
+01. Create Price Groups
+02. Create Units if necessary
+03. Create Cateogry and Products
+
+Workflow:
+01. Setup workflow

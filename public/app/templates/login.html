@@ -1,0 +1,31 @@
+
+   <div class="login-body" data-ng-show="!successlogin">
+    <div class="container">
+       <form class="form-signin"  name="myform" method="post">
+          <h2 class="form-signin-heading">sign in now</h2>
+          <div class="login-wrap">
+            <div data-ng-class="(myform.username.$dirty && myform.username.$invalid) || myform.username.$error.required ? 'has-error' : 'has-success'">
+                <input type="text" class="form-control" placeholder="User ID" name="username" id="username" data-ng-model="username" required="true" />
+            </div><br/>
+             <div class="form-group">
+              <div class="input-group mb-3" data-ng-class="(myform.password.$dirty && myform.password.$invalid) || myform.password.$error.required ? 'has-error' : 'has-success'">
+                <input type="{{passwordtype}}" required="true" name="password"id="password" class="form-control" data-ng-model="password" placeholder="Enter Password" >
+                <div class="input-group-append">
+                  <span class="input-group-text" id="basic-addon2"  style="cursor:pointer" ng-click="showPassword()"><span class="{{showHideClass}}" ></span></span>
+                </div>
+              </div>              
+            <div><br/>
+            <button class="btn btn-lg btn-login btn-block" type="submit" data-ng-click='validateAndShowDesigns();' data-ng-disabled="(myform.username.$invalid || myform.password.$invalid)" onclick="myform.phone.removeAttribute('required');" >Sign in</button>
+            </div>
+            <p/>
+            <div data-ng-show="showCustomerValidation()" >
+              <div style="text-align: center"> ------------- <span style="font-weight:bold;font-size:large">OR</span> ------------- </div><br/>
+                <div ng-class="(myform.phone1.$dirty && myform.phone1.$invalid) || myform.phone1.$error.required || myForm.phone1.$error.pattern ? 'has-error' : 'has-success'">
+                  <input type="text" class="form-control" placeholder="For customers, enter your mobile phone Number" data-ng-pattern="/^[7-9][0-9]{9}$/" name="phone" id="phone" data-ng-model="phone" required="true"  >
+                  <button class="btn btn-lg btn-login btn-block" type="submit" onclick="myform.username.removeAttribute('required');myform.password.removeAttribute('required');" data-ng-click='validatAndShowData();' data-ng-disabled="(myform.phone.$invalid || myform.phone.invalid || myform.phone1.$error.required || myForm.phone1.$error.pattern)">PROCEED</button>
+            </div>
+            </div>
+            <div data-ng-if="message !=''" class="text-danger" >{{message}}</div>
+          </div>
+       </form>
+   </div>

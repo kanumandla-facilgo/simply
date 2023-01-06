@@ -1,0 +1,112 @@
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+<section id="main-content">
+	<section class="wrapper site-min-height">
+		<div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                    <div class="mat-form card">
+                        <div class="card-header card-header-primary listPagePrimaryCardHeader">
+                            <h4 class="card-title">{{title}} {{(product ? " - " + product.name : "")}}</h4>
+							<div class="filterButtons">
+								<span class="filterButtonIcons" >
+									<span class="dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-ellipsis-v"></i>
+									</span>
+									<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<a class="dropdown-item" id="btnAddUser" data-ng-show="isAddUnitOfMeasureAllowed()" data-ng-click="showAddUnitOfMeasureForm()"><i class="fa fa-plus"></i>&nbsp; Add UOM</a>
+									</div>
+								</span>	
+								<div class="filterInputInHeaderWrapper filterInputForDesktop">
+									<input type="text" class="filterInputInHeaderElement" placeholder="Search" data-ng-model="searchText">
+								</div>
+							</div>
+						</div>
+                        <div class="card-body">
+                        	<div class="row p-0 m-0">
+								<div class="col-12 col-md-8">
+									<div class="filterInputInHeaderWrapper filterInputForMobile filterInputInHeaderWrapperSearch" >
+										<input type="text" class="filterInputInHeaderElement" placeholder="Search" data-ng-model="searchText">
+									</div>
+								</div>
+							</div>
+							<div class="col-12 listPageTableForMobile">
+								<div class="listPageTableForMobileHeader">
+									<div class="listPageTableForMobileRow">
+										<div class="listPageTableForMobileRow1">
+											<div class="mobileTableEachColumn mobileTablePrimary">
+												<div class="mobilePrimaryFirstRow">
+													<p>Name</p>
+													<p>Description</p>
+												</div>
+												<div class="mobilePrimarySecondRow">
+													<p>Status</p>
+													<p></p>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="listPageTableForMobileRow" data-ng-repeat="x in uomlist | filter:searchText">
+										<div class="listPageTableForMobileRow1">
+											<div class="mobileTableEachColumn mobileTablePrimary">
+												<div class="mobilePrimaryFirstRow">
+													<p><span class="text-decoration-underline-mobile" data-ng-click="uomRowClick(x.id);$event.stopPropagation();">{{x.name}}</span></p>
+													<p>{{x.description}}</p>
+												</div>
+												<div class="mobilePrimarySecondRow">
+													<p>{{(x.display_flag == 1 ? "Active" : "Disabled")}}</p>
+													<p></p>
+												</div>
+											</div>
+											<div class="mobileTableEachColumn mobileTableButtons">
+												<div class="mobileTableButtonWrapper">
+													<span class="mobileTableButton">
+														<span class="dropdown-toggle" id="navbarDropdown_{{$index}}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+															<i class="fa fa-ellipsis-h"></i>
+														</span>
+														<div class="dropdown-menu" aria-labelledby="navbarDropdown_{{$index}}">
+															<a class="dropdown-item listPageActionGreen"  id="btn{{$index}}" data-ng-show="isEditUnitOfMeasureAllowed()" data-ng-click="showEditUnitOfMeasureForm(x.id);$event.stopPropagation();"><i class="fas fa-edit"></i> Edit Unit</a>
+															<a id="btnd{{$index}}" class="dropdown-item listPageActionIconsRed" tooltip="delete" data-ng-show="isDeleteUnitOfMeasureAllowed(x)" data-ng-click="deleteUnitOfMeasure(x);$event.stopPropagation();"><i class="fas fa-trash"></i> Delete Unit</a>
+														</div>
+													</span>
+													<span data-ng-click="uomRowClick(x.id);$event.stopPropagation();" class="mobileTableButton">
+														<i class="fas fa-angle-right"></i>
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>																			
+								</div>
+							</div>
+							<div class="listPageFiltersWrapperDiv">								
+								<div class="listTableDiv">
+									<div class="adv-table editable-table">
+										<div class="space15"></div>
+										<table  class="table table-striped table-hover " id="editable-sample">
+											<thead>
+											<tr>
+												<th>NAME</th>
+												<th>DESCRIPTION</th>
+												<th>STATUS</th>
+												<th></th>
+											</tr>
+											</thead>
+											<tbody>
+											<tr data-ng-repeat="x in uomlist | filter:searchText" xclass="active" data-ng-click="uomRowClick(x.id);$event.stopPropagation();">
+												<td><a data-ng-click="uomRowClick(x.id);$event.stopPropagation();">{{x.name}}</a></td>
+												<td>{{x.description}}</td>
+												<td>{{(x.display_flag == 1 ? "Active" : "Disabled")}}</td>
+												<td><span id="btn{{$index}}" class="listPageActionIcons listPageActionGreen" title="edit" id="btn{{$index}}" data-ng-show="isEditUnitOfMeasureAllowed()" data-ng-click="showEditUnitOfMeasureForm(x.id);$event.stopPropagation();"><i class="fas fa-edit"></i></span>
+												<span id="btn{{$index}}" class="listPageActionIcons listPageActionIconsRed" title="delete" id="btn{{$index}}" data-ng-show="isDeleteUnitOfMeasureAllowed(x)" data-ng-click="deleteUnitOfMeasure(x);$event.stopPropagation();"><i class="fas fa-trash"></i></span></td>
+											</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>							
+						</div>
+					</div>
+				</div>
+            </div>
+        </div>
+	</section>
+</section>

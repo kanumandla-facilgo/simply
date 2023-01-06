@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="keywords" content="wholesale business, online wholesale business, stock management, payment reminders, small businesses, product catalog, catalog sharing, online ordering, collection management, cloud based, role management, business management software">
+	<meta name="description" content="SimplyApp comes up with an innovative solution which makes the wholesale businesses collection, orders, catalogues, inventory, dispatch management much easier than ever before. It provides an inbuilt ecosystem which brings all of the stakeholders in the business to one platform with ease thereby increases profitability in multifold. SimplyApp enables your retail customers to place orders 24x7 anytime anywhere irrespective of any exceptions. Get away from old way of accepting orders through phone or whatsapp, adapt this innovative solution and get orders simply. SimplyApp has built in ecosystem to have your agents/customers to place orders anytime anywhere within few minutes.">
+	<meta name="author" content="">
+	<title>SimplyApp | Business Management Software</title>
+
+	<link rel="stylesheet" type="text/css" href="app/assets/css/bootstrap-4.5.2.min.css" />
+	<link rel="stylesheet" type="text/css" href="app/assets/css/style.jrac.css" />
+	<link rel="stylesheet" type="text/css" href="app/assets/css/jquery-ui.css" />	
+	<link rel="stylesheet" type="text/css" href="app/assets/css/toastr.css" />
+	<link href="app/assets/fonts/font-awesome/css/all.css" rel="stylesheet" />
+	<link href="app/assets/css/fstyle.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="app/assets/css/app.css"/>
+	<link href="app/assets/css/bootstrap-reset.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="app/assets/images/img/Favicon.png" type="image/x-icon">
+	<link href="node_modules/angular-hotkeys/build/hotkeys.min.css" rel="stylesheet" />
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-T1MFKJJY6N"></script>
+	<script>
+		if ((document.location.hostname.indexOf("dev.simplytextile.com") == -1) && ((document.location.hostname.indexOf("simplytextile.com") != -1) || (document.location.hostname.indexOf("simplyapp.in") != -1) || (document.location.hostname.indexOf("simply-reminders.com") != -1))) {
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+
+		  gtag('config', 'G-T1MFKJJY6N');
+		}
+	</script>
+
+</head>
+
+<body id="page-top" class="index">
+
+
+<div id="content" class="snap-content">
+	<div data-ng-view></div>
+</div>
+
+
+<!-- JQuery 1.6.2 is mandatory to make Jquery UI work -->
+<script type="text/javascript" src="app/assets/js/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+<xscript src="cordova.js"></script>
+
+<script src="app/assets/js/jsbarcode.min.js"></script>
+
+<script src="app/assets/js/bootstrap-4.5.2.min.js"></script>
+    
+<script src="app/assets/js/angular1.5.min.js" type="text/javascript"></script>
+
+ <script src="app/assets/js/ui-bootstrap-tpls-3.0.6.min.js"></script>
+
+<script src="app/assets/js/angular-route.js" type="text/javascript"></script>
+
+<script src="app/assets/js/jquery-ui.js" type="text/javascript"></script>
+
+<script src="app/assets/js/jquery.jrac.js" type="text/javascript"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="app/assets/js/angular-modal-service.js"></script>
+
+<!-- hot keys -->
+<script src="node_modules/angular-hotkeys/build/hotkeys.min.js"></script>
+
+<!-- moment library for dates -->
+<script type="text/javascript" src="app/assets/js/moment-locale.js"></script>
+
+<!-- chart -->
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script src="https://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<script src="app/assets/js/d3.ext.js"></script>
+
+<script async="" src="https://cdn.rawgit.com/eligrey/FileSaver.js/5ed507ef8aa53d8ecfea96d96bc7214cd2476fd2/FileSaver.min.js"></script>
+
+<script src="app.js" type="text/javascript"></script>
+
+<script src="app/controllers/usercontroller.js" type="text/javascript"></script>
+<script src="app/services/userService.js" type="text/javascript"></script>
+
+<script src="app/controllers/categorycontroller.js" type="text/javascript"></script>
+<script src="app/services/categoryService.js" type="text/javascript"></script>
+
+<script src="app/controllers/productcontroller.js" type="text/javascript"></script>
+<script src="app/services/productService.js" type="text/javascript"></script>
+
+<script src="app/controllers/mastercontroller.js" type="text/javascript"></script>
+<script src="app/services/masterService.js" type="text/javascript"></script>
+
+<script src="app/controllers/menucontroller.js" type="text/javascript"></script>
+<script src="app/services/utilService.js" type="text/javascript"></script>
+
+<script src="app/controllers/ordercontroller.js" type="text/javascript"></script>
+<script src="app/services/orderService.js" type="text/javascript"></script>
+
+<script src="app/controllers/reportcontroller.js" type="text/javascript"></script>
+<script src="app/services/reportService.js" type="text/javascript"></script>
+<script src="app/services/interceptorService.js" type="text/javascript"></script>
+
+<script src="app/controllers/workflowcontroller.js" type="text/javascript"></script>
+<script src="app/services/workflowservice.js" type="text/javascript"></script>
+
+<script src="app/controllers/dashboardcontroller.js" type="text/javascript"></script>
+
+<script src="app/assets/js/angular-cookies.min.js"></script>
+
+<script src="app/assets/js/lodash.min.js"></script>
+<script src="app/assets/js/toastr.js"></script>
+
+<script>
+/*
+	 function enableImageControls() {
+		$("img[data-imagetypeid]").each(function() {
+			enableControl(this);
+		});
+	 }
+*/
+
+	// pdf and excel
+	function printData()
+	{
+		var divToPrint=document.getElementById("editable-sample");
+		newWin= window.open("");
+		newWin.document.write(divToPrint.outerHTML);
+		newWin.print();
+		newWin.close();
+	}
+
+	 function enableControl(obj, cropWidth, cropHeight, cropX, cropY, imgWidth, imgHeight, objCropX, objCropY, objCropW, objCropH, objImgW, objImgH, objActualW, objActualH) {
+			$(obj).jrac({
+			  'crop_width': cropWidth,
+			  'crop_height': cropHeight,
+			  'crop_x': cropX,
+			  'crop_y': cropY,
+			  'image_width': imgWidth,
+			  'image_height':imgHeight,
+			  'viewport_onload': function() {
+				viewport_on(this, obj, objCropX, objCropY, objCropW, objCropH, objImgW, objImgH, objActualW, objActualH)
+			  }
+			})
+			// React on all viewport events.
+			.bind('jrac_events', function(event, $viewport) {
+			  //var inputs = $(this).parents('.pane').find('.coords input');
+			  //inputs.css('background-color',($viewport.observator.crop_consistent())?'chartreuse':'salmon');
+			});
+	 }
+ 
+ 
+		function disableImageControls() {
+			$("img[data-imagetypeid]").each(function() {
+				destroyControl(this);
+				//$(this).jrac("destroy");
+			});
+		}
+ 
+		function destroyControl($obj) {
+				$($obj).jrac("destroy");
+		}
+ 
+       function viewport_on(vwport, obj, objCropX, objCropY, objCropW, objCropH, objImgW, objImgH, objActualW, objActualH) {
+            var $viewport = vwport;
+           
+           	var inputs = [objCropX, objCropY, objCropW, objCropH, objImgW, objImgH, objActualW, objActualH];
+           	
+            var events = ['jrac_crop_x','jrac_crop_y','jrac_crop_width','jrac_crop_height','jrac_image_width','jrac_image_height'];
+            for (var i = 0; i < events.length; i++) {
+               var event_name = events[i];
+               // Register an event with an element.
+               var inputobj = inputs[i];
+               $viewport.observator.register(event_name, inputobj);
+               // Attach a handler to that event for the element.
+               inputobj.bind(event_name, function(event, $viewport, value) {
+ 				$(this).val(value);
+              })
+              // Attach a handler for the built-in jQuery change event, handler
+              // which read user input and apply it to relevent viewport object.
+              .change(event_name, function(event) {
+                var event_name = event.data;
+                $viewport.$image.scale_proportion_locked = true; //$viewport.$container.parent('.pane').find('.coords input:checkbox').is(':checked');
+                $viewport.observator.set_property(event_name,$(this).val());
+              });
+            }
+            /*
+            $viewport.$container.append('<div>Image natural size: '
+              +$viewport.$image.originalWidth+' x '
+              +$viewport.$image.originalHeight+'</div>');
+              */
+            
+            inputs[6].val($viewport.$image.originalWidth);
+            inputs[7].val($viewport.$image.originalHeight);
+
+       }
+
+ 		//this function will show preview
+		function readURL(input, img, hid, mode, tempimg, objCropX, objCropY, objCropW, objCropH, objImgW, objImgH, objActualW, objActualH) {
+
+			if (mode == 0) {
+
+				//hack to get index id
+				idx = input.name.replace("flImage", "");
+
+				img = img + idx;
+				hid = hid + idx;
+				tempimg = tempimg + idx;
+			}
+
+    		if (input.files && input.files[0]) {
+
+        		var reader = new FileReader();
+
+        		reader.onload = function (e) {
+        			destroyControl($('#' + img));
+            		//R $('#' + img).height("").width("");
+            		$('#' + img).attr('src', e.target.result);
+            		$('#' + tempimg).attr('src', e.target.result);
+            		$('#' + hid).val(input.files[0].name);
+            		//R $('#' + img).css('border','solid 1px red');
+            		$('#' + img).attr('data-dirty', eval($('#' + img).attr('data-dirty')) + 1 );
+            		//R enableControl($('#' + img), 240, 240, 10, 10, 480, 480, $('#' + objCropX), $('#' + objCropY), $('#' + objCropW), $('#' + objCropH), $('#' + objImgW), $('#' + objImgH), $('#' + objActualW), $('#' + objActualH) );
+        		}
+
+        		reader.readAsDataURL(input.files[0]);
+        		/*
+        		var scope = angular.element($('#' + hid)).scope();
+        		scope.$apply(function () {
+        			if (mode == 0) {
+						scope.uploadFile(scope['x']);
+						//scope['x']['image_url'] = input.files[0].name;
+					}
+        			else if (mode == 1) {
+						scope['design']['children']['image_url'] = input.files[0].name;
+						//scope.uploadFile(scope['design']['children']);
+					}
+					else {
+						//scope['design']['image_url'] = input.files[0].name;
+						scope.uploadFile(scope['design']);
+					}
+					
+        			// working scope.x.image_url = input.files[0].name;
+        		});
+        		*/
+    		}
+		}
+</script>
+
+<!-- The actual modal template, just a bit o bootstrap -->
+<script type="text/ng-template" id="modal.html">
+ <div class="modal fade" tabindex="-1"> <!-- taxindex -1 for closing the modal dialog on escape button --> 
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+				<h4 class="modal-title">{{product.name}}</h4>
+        <button type="button" class="close" ng-click="close('Cancel')" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p data-ng-show="image_list.length == 0"><img data-ng-src="{{product.image_url2}}" style="width:100%"/></p>
+
+		<div id="myCarousel"  data-ng-show="image_list.length > 0">
+
+		   <div uib-carousel active="active" interval="2000" no-wrap="false">
+		      <div uib-slide ng-repeat="img in image_list track by img.id" index="$index">
+		        <img ng-src="{{img.url_large}}" style="width:100%;">
+		        <div class="carousel-caption">
+		          <p><span style="color:black;font-weight: bold">{{img.description}}</span></p>
+		        </div>
+		      </div>
+		    </div>
+		</div>
+		<!-- /.carousel -->
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" ng-click="close('Yes')" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+</script>
+
+<!-- The actual modal template, just a bit o bootstrap -->
+<script type="text/ng-template" id="modal_customer.html">
+ <div class="modal fade" tabindex="-1"> <!-- taxindex -1 for closing the modal dialog on escape button --> 
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+				<h4 class="modal-title">Enter a name of Customer</h4>
+        <button type="button" class="close" ng-click="close('Cancel')" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body">
+			<span class="col-xs-12 col-md-12" data-ng-controller="mastercontroller" data-ng-hide="isUserACustomer()">
+									<input class="form-control" type="text" name="txt_customer_name" id="txt_customer_name" data-ng-model="customer" autocomplete="off" required="true" placeholder="Enter customer name" data-ng-blur="onBlurCustomer(customer, 'customer_order')" typeahead-min-length="2" typeahead-wait-ms="200" typeahead-on-select="onSelectedCustomer($item, $model, $label, $event);" typeahead-select-on-blur=true typeahead-editable=false uib-typeahead="suggestion as suggestion.name for suggestion in getCustomerListViaPromise($viewValue, 1)"/>
+			</span>
+			<div style="height:50px"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" ng-click="close('OK')" class="btn btn-primary" data-dismiss="modal">OK</button>
+        <button type="button" ng-click="close('cancel')" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+</script>
+
+<!-- The actual modal template, just a bit o bootstrap -->
+<script type="text/ng-template" id="modal_customers.html">
+ <div class="modal fade" tabindex="-1"> <!-- taxindex -1 for closing the modal dialog on escape button --> 
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+				<h4 class="modal-title">Enter a name of Customer</h4>
+        <button type="button" class="close" ng-click="close('Cancel')" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body"  data-ng-controller="mastercontroller" data-ng-hide="isUserACustomer()">
+			<span class="col-xs-6 col-md-6">
+									<input class="form-control" type="text" name="txt_customer_name" id="txt_customer_name" data-ng-model="customer_m" autocomplete="off" required="true" placeholder="Enter customer name" typeahead-min-length="2" typeahead-wait-ms="200" typeahead-on-select="onSelectedMultipleCustomer($item, 'customer_catalog');" typeahead-select-on-blur=true typeahead-editable=false uib-typeahead="suggestion as suggestion.name for suggestion in getCustomerListViaPromise($viewValue, 1)"/>
+			</span>
+			<span class="col-xs-6 col-md-6" data-ng-if="isAgentsVisible()">
+									<input class="form-control" type="text" name="txt_agent_name" id="txt_agent_name" data-ng-model="customer_m" autocomplete="off" placeholder="Enter agent name" typeahead-min-length="2" typeahead-wait-ms="200" typeahead-on-select="onSelectedMultipleCustomer($item, 'customer_catalog');" typeahead-select-on-blur=true typeahead-editable=false uib-typeahead="suggestion as suggestion.name for suggestion in getAgentListViaPromise($viewValue, 1)"/>
+			</span>
+			<div style="height:50px"></div>
+			<table class="table table-striped table-hover" id="editable-sample" data-ng-show="showCustomers()">
+				<thead>
+				<tr>
+					<th>NAME</th>
+					<th>Phone</th>
+					<th width="120px">ACTIONS</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr class=""  data-ng-repeat="x in customers" class="active">
+					<td>{{x.name}}</td>
+					<td>{{x.address.phone1}}</td>
+					<td width="90px"><a style="padding:3px;color:red" id="btnd{{$index}}" class="" data-ng-click="deleteCustomer(x)"><i class="fa fa-trash"></i></a></td>
+				</tr>
+				</tbody>
+			</table>
+
+			<div style="text-align:right">
+				<button type="button" ng-click="close('OK')"  class="btn btn-primary" data-ng-show="showCustomers()" data-dismiss="modal">Share</button>
+	        	<button type="button" ng-click="close('cancel')" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+	        </div>
+      </div>
+      <div class="modal-footer">
+      
+      </div>
+    </div>
+  </div>
+</div>
+</script>
+
+<!-- The actual modal template, just a bit o bootstrap -->
+<script type="text/ng-template" id="add_tempo.html">
+ <div class="modal fade" tabindex="-1"> <!-- taxindex -1 for closing the modal dialog on escape button --> 
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+				<h4 class="modal-title">Add Tempo</h4>
+        <button type="button" class="close" ng-click="close('Cancel')" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body" data-ng-controller="ordercontroller">
+			<div class="panel-body">
+                <div class="form">
+                    <form class="cmxform form-horizontal tasi-form" id="signupForm" method="post" name="myform">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" style="font-weight: bold">Company Name</label>
+                            <div ng-class="(myform.code.$dirty && myform.code.$invalid) || myform.code.$error.required ? 'has-error' : 'has-success'">
+                            <div class="col-sm-8">
+                                <input class=" form-control"  type="text" name="code" id="code" data-ng-model="tempo.name" required="true" placeholder="Enter Company Name"/>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" style="font-weight: bold">Driver Name</label>
+                            <div ng-class="(myform.description.$dirty && myform.description.$invalid) || myform.description.$error.required ? 'has-error' : 'has-success'">
+                            <div class="col-sm-8">
+                                <input class=" form-control" type="text" name="description" id="description" data-ng-model="tempo.driver_name" required="true" placeholder="Enter Driver Name"/>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" style="font-weight: bold">Vehicle Number</label>
+                            <div ng-class="(myform.days.$dirty && myform.days.$invalid) || myform.days.$error.required ? 'has-error' : 'has-success'">
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control " name="days" id="days" data-ng-model="tempo.vehicle_number" required="true" placeholder="Enter Vehicle Number"/>
+                            </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <br/>
+			<div style="text-align:right">
+				<button class="btn btn-success" type="button" ng-click="close('OK');saveTempo();" data-dismiss="modal" data-ng-disabled="myform.$invalid">Submit</button>
+	        	<button type="button" ng-click="close('cancel')" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+	        </div>
+      </div>
+      <div class="modal-footer">
+      
+      </div>
+    </div>
+  </div>
+</div>
+</script>
+
+<!-- The actual modal template, just a bit o bootstrap -->
+<script type="text/ng-template" id="upload.html">
+ <div class="modal fade" tabindex="-1"> <!-- taxindex -1 for closing the modal dialog on escape button --> 
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+		<h4 class="modal-title">Upload {{uploadType}}</h4>
+        <button type="button" class="close" ng-click="close('Cancel')" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body" data-ng-controller="mastercontroller">
+			<div class="panel-body">
+                <div class="form">                	
+                    <form class="cmxform form-horizontal tasi-form" id="signupForm" method="post" name="myform">  
+                    	                   					  
+						  <div class="form-group inputDnD">
+					        <label class="sr-only" for="inputFile">File Upload</label>
+					        <input type="file" class="form-control-file text-primary font-weight-bold" id="inputFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" ng-files="getTheFiles($files)"  data-title="Drag and drop a file here or click">
+					      </div>						
+                    </form><br/>
+                    <a id="dndtemplate" ng-click="downloadTemplate(uploadType)"><i class="fas fa-file-excel" style="color:green"/>&nbsp;Download Template</a> <br/><br/>
+                    <div data-ng-if="uploadType == 'Bills'">
+	                    <p>
+	                    	<span><b>Guidelines</b></span>
+	                    	<ul>
+	                    		<li>- Download the sample template before you upload the file to make sure its in same format</li>
+	                    		<li>- In order to update the existing data, export the data, modify and upload here</li>
+	                    		<li>- In order to create new customer, provide customer name and phone number are required</li>
+	                    		<li>- For updating existing bills, customer code  the first column should be provided and is found in Customers Listing Screen against each customer</li> 
+	                    	</ul>
+	                    </p> 
+	                </div>
+                    <div data-ng-if="uploadType != 'Bills'">
+	                    <p>
+	                    	<span><b>Guidelines</b></span>
+	                    	<ul>
+	                    		<li>- Download the template before you upload the file to make sure its in same format</li>
+	                    		<li>- In order to update the existing data, export the data, modify and upload here</li>
+	                    		<li>- The existing data is looked up using code, so when code is empty, make sure the name is unique, otherwise duplicate data could be created</li>
+	                    	</ul>
+	                    </p> 
+	                </div>
+                </div>
+            </div>
+            <br/>
+			<div style="text-align:right">
+				<button class="btn primarySubmitButton mobileSubmitButton" type="button" ng-click="upload(uploadType);close('OK');" data-dismiss="modal" data-ng-disabled="myform.$invalid">Upload</button>
+	        	<button type="button" ng-click="close('cancel')" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+	        </div>
+      </div>
+      <div class="modal-footer">
+      
+      </div>
+    </div>
+  </div>
+</div>
+</script>
+
+</body>
+</html>
+
+

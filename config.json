@@ -1,0 +1,39 @@
+{
+  "_comments"        : "pm2 start textile.config.json --env dev --log-date-format 'YYYY-MM-DD HH:mm:ss:SSS'",
+  "apps"             : [{
+    "name"           : "textile-app",
+    "script"         : "./bin/server.js",
+    "instances"      : "2",
+    "exec_mode"      : "cluster",
+    "watch"          : false,
+    "merge_logs"     : true,
+    "env"            : {
+        "NODE_ENV"   : "dev",
+        "PORT"       : 8081
+    },
+    "env_dev"        : {
+        "NODE_ENV"   : "dev",
+        "PORT"       : 8081
+    },
+    "env_sat"        : {
+        "NODE_ENV"   : "sat",
+        "PORT"       : 8082
+    },
+    "env_uat"        : {
+        "NODE_ENV"   : "uat",
+        "PORT"       : 8083
+    },
+    "env_production1" : {
+        "NODE_ENV"   : "production",
+        "PORT"       : 8081
+    },
+    "env_production" : {
+        "NODE_ENV"   : "production",
+        "PORT"       : 80,
+        "HTTPS_PORT" : 443
+    },
+    "error_file"     : "./logs/err.log",
+    "out_file"       : "./logs/out.log"
+  }]
+}
+

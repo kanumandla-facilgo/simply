@@ -1,0 +1,48 @@
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+
+<!--main content start-->
+<section id="main-content">
+    <section class="wrapper site-min-height">
+        <!-- page start-->
+        <section class="panel" id='pricegroup'>
+            <div class="panel-heading">
+                <label>{{title}}</label>
+            </div>
+            <div class="panel-body">
+                <div class="adv-table editable-table">
+                    <div class="clearfix">
+
+                    </div>
+                    <br>
+                    <!--<select size="1" name="editable-sample_length" aria-controls="editable-sample" class="form-control xsmall"><option value="5" selected="selected">5</option><option value="15">15</option><option value="20">20</option><option value="-1">All</option></select>-->
+
+                    <div style="overflow-x:auto;">
+                    <table class="table table-striped table-hover table-bordered" id="editable-sample">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th style="text-align:right">Item Count</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="x in itemlist | filter:searchText" xclass="active">
+                            <td>{{(x.customer.name ? x.customer.name : "Click Checkout to select a customer")}}</td>
+                            <td style="text-align:right">{{x.lineitems.length}}</td>
+							<td>
+<!--                                <button id="btn{{$index}}" class="btn btn-success btn-xs" data-ng-click="continueShoppingForm(x.customer.id, x.id)">Continue Shopping</button>-->
+								<button id="btn{{$index}}" class="btn btn-primary btn-xs" data-ng-click="checkoutForm(x.customer.id, x.id)">Checkout</button>
+								<button id="btn{{$index}}" class="btn btn-danger btn-xs" data-ng-click="clearCustomerCart(x.customer.id, x.id)">Empty</button>
+							</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- page end-->
+    </section>
+</section>
+<!--main content end-->
+

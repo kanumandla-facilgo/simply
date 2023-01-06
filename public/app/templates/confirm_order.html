@@ -1,0 +1,768 @@
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+
+<!--<div data-ng-include="'app/templates/header_latest.html'"></div>-->
+
+
+<style>
+    @font-face {
+        font-family: source_sans_pro_regular;
+        src: url('../fonts/Source_Sans_Pro/SourceSansPro-Regular.ttf');
+    } 
+    .mypushbutton {
+        padding-right: 15px;
+    }
+
+    .no-gutter>[class*='col-'] {
+        padding-right: 0px;
+        padding-left: 0px; 
+    }
+
+    .btn-print,
+    .btn-print:hover,
+    .btn-print:active,
+    .btn-print:focus,
+    .btn-print.active,
+    .open>.dropdown-toggle.btn-print {
+        background-color: #321589;
+        border-color: #321589;
+        color: #ffffff;
+    }
+
+    .increase-popover-width {
+       max-width: 100%;
+    }
+
+    .red {
+        color:red;
+    }
+
+    .green {
+        color:green;
+    }
+</style>
+
+<script type="text/ng-template" id="bills_popover.html">
+    <table class="table table-striped table-hover increase-popover-width" id="editable-sample">
+        <thead>
+        <tr>
+            <th>Bill #</th>
+            <th>Bill Date</th>
+            <th>Due Date</th>
+            <th style="text-align:right">Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="" data-ng-repeat="x in billlist | orderBy:'due_date'" class="active">
+            <td>{{x.bill_ref_number}}</td>
+            <td>{{x.bill_date | date:'dd-MMM-yyyy'}}</td>
+            <td>{{x.due_date | date:'dd-MMM-yyyy'}}</td>
+            <td ng-class="exceedsToday(x.due_date) ? (isAmountDue(x.balance_amount) ? 'red': 'green') : ''" align="right">{{x.balance_amount | number:2}}</td>
+        </tr>
+        </tbody>
+    </table>
+</script>
+
+<!--main content start-->
+<section id="main-content" style="font-family:'source_sans_pro_regular'">
+    <section class="wrapper">
+        <div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                    <div class="mat-form card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title">{{title}}</h4>
+                            <div class="primaryHeaderButtonsDiv primaryHeaderButtonsForDesktop">
+                                <div class="primaryHeaderButtonsEachDiv" data-ng-show="order.lineitems.length > 0">
+                                    <span class="primaryHeaderButton" data-ng-hide="myform.$invalid" data-ng-disabled="isDisabled" data-ng-click='saveOrder();'  title="Submit">
+                                        <i class="fas fa-check" style="color:green" ></i>
+                                    </span>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv" data-ng-if="!order.id">
+                                    <span class="primaryHeaderButton" title="Continue Shopping" data-ng-click="continueShoppingForm(x.customer.id)" >
+                                        <i class="fas fa-shopping-cart"  ></i>
+                                    </span>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv" data-ng-if="canEditOrder(order)">
+                                    <span class="primaryHeaderButton" title="Edit" data-ng-click="edit_order_click(order)" >
+                                        <i class="fas fa-pencil-alt"  ></i>
+                                    </span>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv" data-ng-if="edit_mode == false && !order.is_dirty">
+                                    <span class="primaryHeaderButton" title="Print" data-ng-click="printOrderPdf(order.id, false)">
+                                        <i class="fas fa-print" ></i>
+                                    </span>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv" data-ng-if="edit_mode">
+                                    <span class="primaryHeaderButton" data-ng-click='cancel_editing_click(order);' title="Cancel Edit">
+                                        <i class="fas fa-undo"  ></i>
+                                    </span>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv" data-ng-show="showHeaderButtonDropdown() > 0">
+                                    <div class="primaryHeaderDropdown">
+                                        <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
+                                        <div id="primaryHeaderButtonDiv" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <div class="dropdown-item" data-ng-if="canPrepareOrder(order)" data-ng-click='redirect_to_prepare(order);'> Prepare</div>
+                                            <div class="dropdown-item" data-ng-if="canCancelOrder(order)" data-ng-disabled="isDisabled" data-ng-click='cancelOrder(order);'>Cancel</div>
+                                            <div class="dropdown-item" data-ng-if="canApproveOrder(order)" data-ng-disabled="isDisabled" data-ng-click='approveOrder(order);'>Approve</div>
+                                            <div class="dropdown-item" data-ng-if="canApproveOrder(order)" data-ng-disabled="isDisabled" data-ng-click='rejectOrder(order);'>Reject</div>
+                                            <div class="dropdown-item" data-ng-if="order.id>0" data-ng-click="downloadImages(order.id)" data-ng-show="showDownloadImages(order)">Download Product Images</div>
+                                            <div class="dropdown-item" data-ng-if="false && order.id && order.lineitems.length > 0" data-ng-click='cloneOrder(order);' >Clone</div>
+                                            <div class="dropdown-item" data-ng-if="false && canEndorseOrder(order)" data-ng-disabled="isDisabled" data-ng-click='endorseOrder(order);'>Enforse</div>
+                                            <div class="dropdown-item" data-ng-if="canMarkOrderCompleted(order)" data-ng-disabled="isDisabled" data-ng-click='markOrderCompleted(order);'>Mark It Complete</div>
+                                            <div class="dropdown-item" data-ng-if="edit_mode" data-ng-click='addNewLineItem(order);'>Add New Line</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="card-body">
+                            <div class="primaryHeaderButtonsDiv primaryHeaderButtonsForMobile">
+                                <div class="primaryHeaderButtonsEachDiv" data-ng-show="showHeaderButtonDropdown() > 0">
+                                    <div class="primaryHeaderDropdown">
+                                        <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-h"></i></button>
+                                        <div id="primaryHeaderButtonDiv" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <div class="dropdown-item" data-ng-if="canPrepareOrder(order)" data-ng-click='redirect_to_prepare(order);'> Prepare</div>
+                                            <div class="dropdown-item" data-ng-if="canCancelOrder(order)" data-ng-disabled="isDisabled" data-ng-click='cancelOrder(order);'>Cancel</div>
+                                            <div class="dropdown-item" data-ng-if="canApproveOrder(order)" data-ng-disabled="isDisabled" data-ng-click='approveOrder(order);'>Approve</div>
+                                            <div class="dropdown-item" data-ng-if="canApproveOrder(order)" data-ng-disabled="isDisabled" data-ng-click='rejectOrder(order);'>Reject</div>
+                                            <div data-ng-if="false" class="dropdown-item" data-ng-if="order.id>0" data-ng-click="downloadImages(order.id)" data-ng-show="showDownloadImages(order)">Download Product Images</div>
+                                            <div class="dropdown-item" data-ng-if="false && order.id && order.lineitems.length > 0" data-ng-click='cloneOrder(order);' >Clone</div>
+                                            <div class="dropdown-item" data-ng-if="false && canEndorseOrder(order)" data-ng-disabled="isDisabled" data-ng-click='endorseOrder(order);'>Enforse</div>
+                                            <div class="dropdown-item" data-ng-if="canMarkOrderCompleted(order)" data-ng-disabled="isDisabled" data-ng-click='markOrderCompleted(order);'>Mark It Complete</div>
+                                            <div class="dropdown-item" data-ng-if="edit_mode" data-ng-click='addNewLineItem(order);'>Add New Line</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv" data-ng-show="order.lineitems.length > 0">
+                                    <span class="primaryHeaderButton" data-ng-hide="myform.$invalid" data-ng-disabled="isDisabled" data-ng-click='saveOrder();'  title="Submit">
+                                        <i class="fas fa-check" style="color:green" ></i>
+                                    </span>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv" data-ng-if="!order.id">
+                                    <span class="primaryHeaderButton" title="Continue Shopping" data-ng-click="continueShoppingForm(x.customer.id)" >
+                                        <i class="fas fa-shopping-cart"  ></i>
+                                    </span>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv" data-ng-if="canEditOrder(order)">
+                                    <span class="primaryHeaderButton" title="Edit" data-ng-click="edit_order_click(order)" >
+                                        <i class="fas fa-pencil-alt"  ></i>
+                                    </span>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv" data-ng-if="edit_mode == false && !order.is_dirty">
+                                    <span class="primaryHeaderButton" title="Print" data-ng-click="printOrderPdf(order.id, false)">
+                                        <i class="fas fa-print" ></i>
+                                    </span>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv" data-ng-if="edit_mode == false && !order.is_dirty">
+                                    <span class="primaryHeaderButton" title="Share" data-ng-click="printOrderPdf(order.id, true)">
+                                        <i class="fas fa-share" ></i>
+                                    </span>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv" data-ng-if="edit_mode">
+                                    <span class="primaryHeaderButton" data-ng-click='cancel_editing_click(order);' title="Cancel Edit">
+                                        <i class="fas fa-undo"  ></i>
+                                    </span>
+                                </div>
+                                
+                            </div>
+                            <form class="cmxform" id="signupForm" method="post" name="myform">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 eachCardWrapperDiv">
+                                                <div class="card">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <h5 class="card-header childcardheader ">Order Information</h5>
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                                        <div class="form-group bmd-form-group floating-input-container">
+                                                                            <label class="item-label">
+                                                                                Customer
+                                                                            </label>
+                                                                            <div class="item-content">{{order.customer.name}}</div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-show="order.id != undefined">
+                                                                        <div class="form-group bmd-form-group floating-input-container">
+                                                                            <label class="item-label">Status</label>
+                                                                            <div class="item-content">{{order.status_name}} <small><span style="color:red">{{ (order.sysorderstatuses_id == 4203 || order.sysorderstatuses_id == 4204 ? " (" + order.workflow_reason_string + ")": "")}} </span></small>
+                                                                                <span data-ng-if="isReasonBecauseOfCreditLimit(order)"  popover-placement="top"   uib-popover="Credit Limit: Rs.{{order.customer.allowed_balance | number}}, Current Balance: Rs.{{order.customer.current_balance | number}}"  class="fas fa-info-circle" popover-trigger="outsideClick"></span>
+                                                                                <span data-ng-if="isReasonBecauseOfCreditDays(order)"  popover-placement="bottom"  popover-class="increase-popover-width"  uib-popover-template="'bills_popover.html'" class="fas fa-angle-down" popover-trigger="outsideClick"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>                                                                    
+                                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"  data-ng-show="order_number_edit_flag">
+                                                                        <div class="form-group bmd-form-group floating-input-container">
+                                                                            <input class="floating-input" id="txt_order_number" name="txt_order_number" type="text" data-ng-model="order.order_number" data-ng-required="order_number_edit_flag" placeholder="Enter code" style="text-transform:uppercase" Xdata-ng-pattern="/^[a-zA-Z0-9]*$/" />
+                                                                            <label class="input-label" for="txt_order_number">
+                                                                                Order #
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-show="!order_number_edit_flag">
+                                                                        <div class="form-group bmd-form-group floating-input-container">
+                                                                            <input class=" floating-input" id="txt_order_no_text" type="text" data-ng-value="(!isOrderNumberRequired() && order.id > 0 ? order.order_number : 'Will be created')" data-ng-disabled="true" />
+                                                                            <label class="input-label" for="txt_order_no_text">
+                                                                                Order #
+                                                                            </label>
+                                                                            <i class="fas fa-pencil" data-ng-click="enableOrderNumberEdit()" data-ng-if="isOrderNumberEditAllowed() && !order_number_edit_flag" aria-hidden="true"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                                        <div class="form-group bmd-form-group floating-input-container" style="padding-bottom: 0px;">
+                                                                            <input class="floating-input" type="date" data-ng-model="order.order_date" required="true" />
+                                                                            <label class="input-label">
+                                                                                Order Date
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_PAYMENT_TERM) == '1'">
+                                                                        <div class="form-group bmd-form-group floating-input-container" style="padding-bottom: 0px;">
+                                                                            <select id="terms" name="terms" class="" placeholder="Terms" ng-model="order.payment_terms_id" ng-required="true" ng-options="paymentterm.id as paymentterm.code  for paymentterm in paymenttermlist" ng-disabled="!disablePaymentTerms" ng-class="(((myform.terms.$dirty || submitted) && myform.terms.$invalid) || ((myform.terms.$dirty || submitted) && myform.terms.$error.required)) ? 'error' : 'success'">
+                                                                            </select>
+                                                                            <label class="input-label">Terms</label>
+                                                                            <span class="help-block errorText" ng-show="(myform.terms.$dirty && myform.terms.$invalid) || ((myform.terms.$dirty || submitted) && myform.terms.$error.required)">Please select payment term</span>
+                                                                            <div class="showOnValueSelectedDiv" data-ng-show="order.customer.payment_term.id!=order.payment_terms_id">
+                                                                                <span class="checkboxInputWrapper">
+                                                                                    <input type="checkbox" name="is_default_payment_term" id="is_default_payment_term" data-ng-model="order.is_default_payment_term" data-ng-true-value="1" data-ng-false-value="0" ng-disabled="!disablePaymentTerms"/>
+                                                                                </span>
+                                                                                <label for="is_default_payment_term" class="checkboxInputLabelWrapper">Default Payment Term for Customer?</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!--<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"  data-ng-show="order.customer.payment_term.id!=order.payment_terms_id">
+                                                                        <div class="form-group bmd-form-group floating-input-container" style="padding-bottom: 0px;">
+                                                                            <label class="input-label"><input type="checkbox" name="is_default_payment_term" id="is_default_payment_term" data-ng-model="order.is_default_payment_term" data-ng-true-value="1" data-ng-false-value="0" ng-disabled="!disablePaymentTerms"/>Default Payment Term for Customer?</label>
+                                                                        </div>
+                                                                    </div>-->
+                                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_TRANSPORTER) == '1'">
+                                                                        <div class="form-group bmd-form-group floating-input-container" style="padding-bottom: 0px;">
+                                                                            <select id="transporter" name="transporter" class="" ng-model="order.transporters_id" ng-required="true" ng-options="transporter.id as transporter.name for transporter in transporterlist" ng-disabled="!disableTransport" ng-class="(((myform.transporter.$dirty || submitted) && myform.transporter.$invalid) || ((myform.transporter.$dirty || submitted) && myform.transporter.$error.required)) ? 'error' : 'success'">
+                                                                            </select>
+                                                                            <label class="input-label">Transporter</label>
+                                                                            <span class="help-block errorText" ng-show="(myform.transporter.$dirty && myform.transporter.$invalid) || ((myform.transporter.$dirty || submitted) && myform.transporter.$error.required)">Please select transporter</span>
+                                                                            <div class="showOnValueSelectedDiv" data-ng-show="order.customer.transporter.id!=order.transporters_id">
+                                                                                <span class="checkboxInputWrapper">
+                                                                                    <input type="checkbox" name="is_default_transporter" id="is_default_transporter" data-ng-model="order.is_default_transporter" data-ng-true-value="1" data-ng-false-value="0" ng-disabled="!disableTransport"/>
+                                                                                </span>
+                                                                                <label for="is_default_transporter" class="checkboxInputLabelWrapper">Default Transporter for Customer?</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-show="order.id != undefined">
+                                                                        <div class="form-group bmd-form-group floating-input-container">
+                                                                            <label class="item-label">
+                                                                                Delivery Status
+                                                                            </label>
+                                                                            <div class="item-content">{{order.delivery_status_name}}</div>
+                                                                        </div>
+                                                                    </div>  
+                                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                                            <div class="form-group bmd-form-group floating-input-container" style="padding-bottom: 0px;">
+                                                                                <textarea class=" floating-input" type="text" data-ng-model="order.notes" cols="20" rows="3" maxlength="512" data-ng-if="order.sysorderstatuses_id != 4202" placeholder="Notes" />
+                                                                                <label class="input-label" data-ng-if="order.sysorderstatuses_id !== 4202">Notes</label>
+                                                                                <label class="input-label" data-ng-if="order.sysorderstatuses_id == 4202">{{order.notes}}</label>
+                                                                            </div>
+                                                                     </div>                                                        
+                                                                                                                                     
+                                                                    <!--<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"  data-ng-show="order.customer.transporter.id!=order.transporters_id">
+                                                                        <div class="form-group bmd-form-group floating-input-container" style="padding-bottom: 0px;">
+                                                                            <div class="floating-input-container">
+                                                                                <label class="input-label"><input type="checkbox" name="is_default_transporter" id="is_default_transporter" data-ng-model="order.is_default_transporter" data-ng-true-value="1" data-ng-false-value="0" ng-disabled="!disableTransport"/>Default Transporter for Customer?</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>-->
+                                                                
+                                                                    <!--<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                                        <div class="form-group bmd-form-group floating-input-container" style="padding-bottom: 0px;">
+                                                                            <textarea class=" floating-input" type="text" data-ng-model="order.notes" cols="20" rows="3" maxlength="512" data-ng-if="order.sysorderstatuses_id != 4202" placeholder="Notes" />
+                                                                            <label class="input-label" data-ng-if="order.sysorderstatuses_id !== 4202">Notes</label>
+                                                                            <label class="input-label" data-ng-if="order.sysorderstatuses_id == 4202">{{order.notes}}</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                                        <div class="form-group bmd-form-group floating-input-container" style="padding-bottom: 0px;">
+                                                                            <input class="floating-input" type="text" data-ng-model="order.customer_order_number" placeholder="PO #" />
+                                                                            <label class="input-label">PO #</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-show="isUserAnInternal()">
+                                                                        <div class="form-group bmd-form-group floating-input-container" style="padding-bottom: 0px;">
+                                                                            <textarea class="floating-input" type="text" data-ng-model="order.internal_notes" cols="20" rows="3" maxlength="512" data-ng-disabled="!isUserAnInternal()" data-ng-if="order.sysorderstatuses_id != 4202" placeholder="Internal Notes" />
+                                                                            <label class="input-label" data-ng-if="order.sysorderstatuses_id != 4202">Internal Notes</label>
+                                                                            <label class="input-label" data-ng-if="order.sysorderstatuses_id == 4202">{{order.internal_notes}}</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                                        <div class="form-group bmd-form-group floating-input-container" style="padding-bottom: 0px;">
+                                                                            <textarea class="floating-input" type="text" data-ng-model="order.agent_notes" cols="20" rows="3" maxlength="512" data-ng-disabled="!isUserAnAgent()" data-ng-if="order.sysorderstatuses_id != 4202" placeholder="Agent Notes" />
+                                                                            <label class="input-label">Agent Notes</label>
+                                                                            <label class="input-label" data-ng-if="order.sysorderstatuses_id == 4202">{{order.agent_notes}}</label>
+                                                                        </div>
+                                                                    </div>  -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 eachCardWrapperDiv">
+                                                <div class="card ">
+                                                    <h5 class="card-header childcardheader ">Summary</h5>
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                                <div class="col-md-12 col-xs-12">
+                                                                    <div class="summaryEachDiv">
+                                                                        <p class="summaryEachDivLabel">Sub Total</p>
+                                                                        <input class="summaryEachDivValue" type="number" data-ng-model="order.sub_total" step="0.01" readonly placeholder="Sub Total" / disabled/>
+                                                                    </div>
+                                                                    <div class="summaryEachDiv" data-ng-class="(myform.discount_perc.$dirty && myform.discount_perc.$invalid) || myform.discount_perc.$error.required ? 'has-error' : 'has-success'">
+                                                                        <p class="summaryEachDivLabel">Discount in %</p>
+                                                                        <input tooltip="{{myform.$valid ? '%' : 'Please enter valid %'}}" class="summaryEachDivValue" name="discount_perc" id="discount_perc" type="{{order.id > 0 ? 'text' : 'number'}}" data-ng-model="order.discount_perc" data-ng-change="calculateDiscount()" data-ng-disabled="!isDiscountEditable(order)" placeholder="%" size="3" maxlength="5" data-ng-max="100" data-ng-min="0" data-ng-step="0.01" placeholder="Discount" />
+                                                                    </div>
+                                                                    <div class="summaryEachDiv" data-ng-class="(myform.discount_total.$dirty && myform.discount_total.$invalid) || myform.discount_total.$error.required ? 'has-error' : 'has-success'">
+                                                                        <p class="summaryEachDivLabel">Total Discount</p>
+                                                                        <input class="summaryEachDivValue" name="discount_total" id="discount_total" type="number" data-ng-model="order.discount_total" data-ng-change="calculateDiscountPerc()" data-ng-disabled="!isDiscountEditable(order)" size="7" data-ng-min="0" data-ng-step="0.01" data-ng-max="{{order.sub_total}}" />
+                                                                    </div>
+
+                                                                    <div class="summaryEachDiv" >
+                                                                        <p class="summaryEachDivLabel">S & H <i style="font-size:12px" class="fas fa-inr" aria-hidden="true"></i></p>
+                                                                        <input class="summaryEachDivValue" type="number" data-ng-model="order.ship_total" data-ng-disabled="!order.id || !edit_mode" placeholder="S & H" />
+                                                                    </div>
+
+                                                                    <div class="summaryEachDiv" >
+                                                                        <p class="summaryEachDivLabel">Tax</p>
+                                                                         <input class="summaryEachDivValue" type="number" data-ng-model="order.tax_total" data-ng-disabled="true" data-ng-min="0" data-ng-step="0.01" placeholder="Tax" />
+                                                                    </div>
+                                                                    <div class="summaryEachDiv" >
+                                                                        <p class="summaryEachDivLabel">Total</p>
+                                                                         <input class="summaryEachDivValue" type="text" value="{{order.sub_total + (order.ship_total || 0) + (order.tax_total || 0) - (order.discount_total || 0) | number:2 }}" readonly disabled/>
+                                                                    </div>
+
+                                                                    <!--<div class="col-md-2 col-xs-6 padding-l-zero">
+                                                                        <div class="top-buffer col-md-12"></div>
+                                                                        
+                                                                        <div class="floating-input-container">
+                                                                            <input class="floating-input" type="number" data-ng-model="order.sub_total" step="0.01" readonly placeholder="Sub Total" / disabled>
+                                                                            <label class="input-label">Sub Total</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2 col-xs-6 padding-l-zero">
+                                                                        <div class="top-buffer col-md-12"></div>
+                                                                        <div class="floating-input-container" data-ng-class="(myform.discount_perc.$dirty && myform.discount_perc.$invalid) || myform.discount_perc.$error.required ? 'has-error' : 'has-success'">
+                                                                            <input tooltip="{{myform.$valid ? '%' : 'Please enter valid %'}}" class="floating-input" name="discount_perc" id="discount_perc" type="{{order.id > 0 ? 'text' : 'number'}}" data-ng-model="order.discount_perc" data-ng-change="calculateDiscount()" data-ng-disabled="!isDiscountEditable(order)" placeholder="%" size="3" maxlength="5" data-ng-max="100" data-ng-min="0" data-ng-step="0.01" placeholder="Discount" />
+                                                                            <label class="input-label">Discount in %</label>
+                                                                        </div>
+
+                                                                    </div>-->
+
+                                                                    <!--<div class="col-md-2 col-xs-6 padding-lr-zero">
+                                                                        <div class="top-buffer col-md-12"></div>
+                                                                        <div class="floating-input-container" data-ng-class="(myform.discount_total.$dirty && myform.discount_total.$invalid) || myform.discount_total.$error.required ? 'has-error' : 'has-success'">
+                                                                            <input class="floating-input" name="discount_total" id="discount_total" type="number" data-ng-model="order.discount_total" data-ng-change="calculateDiscountPerc()" data-ng-disabled="!isDiscountEditable(order)" size="7" data-ng-min="0" data-ng-step="0.01" data-ng-max="{{order.sub_total}}" />
+                                                                            <label class="input-label">Total Discount</label>
+                                                                        </div>
+                                                                    </div>-->
+
+                                                                    <!--<div class="col-md-2 col-xs-6 padding-l-zero">
+                                                                        <div class="top-buffer col-md-12"></div>
+                                                                        <div class="floating-input-container">
+                                                                            <input class="floating-input" type="number" data-ng-model="order.ship_total" data-ng-disabled="!order.id || !edit_mode" placeholder="S & H" />
+                                                                            <label class="input-label">S & H <i style="font-size:12px" class="fas fa-inr" aria-hidden="true"></i></label>
+                                                                        </div>
+                                                                    </div>-->
+
+                                                                    <!--<div class="col-md-2 col-xs-6 padding-l-zero">
+                                                                        <div class="top-buffer col-md-12"></div>
+                                                                        <div class="floating-input-container">
+                                                                            <input class="floating-input" type="number" data-ng-model="order.tax_total" data-ng-disabled="true" data-ng-min="0" data-ng-step="0.01" placeholder="Tax" />
+                                                                            <label class="input-label">Tax</label>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-2 col-xs-6 padding-lr-zero">
+                                                                        <div class="top-buffer col-md-12"></div>
+                                                                        <div class="floating-input-container">
+                                                                            <input class="floating-input" type="text" value="{{order.sub_total + (order.ship_total || 0) + (order.tax_total || 0) - (order.discount_total || 0) | number:2 }}" readonly disabled/>
+                                                                            <label class="input-label">Total</label>
+                                                                        </div>
+                                                                    </div>-->
+                                                                </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <div class="eachCardWrapperDiv">
+                                        <div class="card ">
+                                            <h5 class="card-header childcardheader ">Details</h5>
+                                            <div class="card-body">
+                                               <div class="row detailsEachRow" ng-init="accordianCheck = lineitem.name" data-ng-repeat="lineitem in order.lineitems track by $index">                
+                                                    
+                                                    <div class="col-md-3 col-xs-12 padding-lr-zero">
+                                                        <div class="col-md-12 col-xs-12 padding-lr-zero" data-ng-click="accordianCurrent = lineitem.name;checkaccordion($index, order.lineitems.length)">
+                                                            <div class="container">
+                                                                <div class="row">
+                                                                    <div class="col-md-12 col-6 padding-l-zero">
+                                                                        <div class="item-container">
+                                                                            <label class="item-label-for-image" >{{lineitem.name}}</label>
+                                                                            <div class="item-content text-ellipsis">
+                                                                                <div class="productDetailsListImageWrapper" >
+                                                                                    <img data-ng-src="{{lineitem.product_image_url}}" data-ng-click="showProductImage(lineitem.products_id)" class="img-rounded"/>
+                                                                                </div>
+                                                                                <div class="productDetailsListImageDetails">
+                                                                                    <p>{{lineitem.sku}}</p>
+                                                                                    <p class="downloadImageLink downloadLinkText" data-ng-show="lineitem.product_image_url != ''"  data-ng-click="downloadProductImage(lineitem.products_id)"><span class="downloadLinkText">Download Images</span><span class="downloadImageIcon"><i class="fas fa-download"></i></span></p>
+                                                                                    <!--<a class="imageDownload" data-ng-show="lineitem.product_image_url != ''"  data-ng-click="downloadProductImage(lineitem.products_id)" title="Download image"><i class="fas fa-download"></i></a>-->
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-3 d-md-none hidden-lg hidden-md">
+                                                                        <div class="item-container" data-ng-if="!edit_mode">
+                                                                            <label class="item-label">{{lineitem.uom_short_name}}</label>
+                                                                            <div class="item-content">{{lineitem.order_quantity|number:2}}</div>
+                                                                        </div>
+                                                                        <div class="floating-input-container" data-ng-if="edit_mode">
+                                                                            <input class="floating-input" type="number" step="any" data-ng-model="lineitem.entered_quantity" id="lineitem_{{$index}}" name="lineitem_{{$index}}" data-ng-change="updateQuantity(lineitem)" data-ng-required="true"  ng-class="(((myform.lineitem_{{$index}}.$dirty || submitted) && myform.lineitem_{{$index}}.$invalid) || ((myform.lineitem_{{$index}}.$dirty || submitted) && myform.lineitem_{{$index}}.$error.required)) ? 'error' : 'success'"/>
+                                                                            <label class="input-label">{{lineitem.entered_uom_short_name}}</label>
+                                                                            <span class="help-block errorText" ng-show="(myform.lineitem_{{$index}}.$dirty && myform.lineitem_{{$index}}.$invalid) || ((myform.lineitem_{{$index}}.$dirty || submitted) && myform.lineitem_{{$index}}.$error.required)">Please enter qty</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-1 col-2 d-md-none hidden-lg hidden-md padding-l-zero">
+                                                                        <div class="item-container" data-ng-if="!edit_mode">
+                                                                            <label class="item-label">Quote</label>
+                                                                            <div class="item-content" ng-class="{'highlight': (lineitem.unit_price|number:2) != (lineitem.order_price|number:2)}">{{lineitem.order_price|number:2}}</div>
+                                                                        </div>
+                                                                        <div class="floating-input-container" data-ng-if="edit_mode">
+                                                                            <input class="floating-input" type="number" data-ng-step="any" data-ng-model="lineitem.order_price" data-ng-change="updateQuantity(lineitem)" data-ng-min="0.01" data-ng-required="true" />
+                                                                            <label class="input-label">Quote</label>
+                                                                        </div>
+                                                                    </div>  
+                                                                    <div class="arrowDivForMobile col-1 d-md-none padding-lr-zero" ng-class="{'showMinus': accordClass_{{$index}} || md, 'showPlus': !accordClass_{{$index}} || xs || sm }">
+                                                                        <i class="fas fa-caret-down"></i>
+                                                                        <i class="fas fa-caret-up"></i>
+                                                                    </div>   
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>                                                
+                                                    <div class="row col-md-9 col-xs-12" ng-class="{'showDiv': accordClass_{{$index}} || md, 'hideDiv': !accordClass_{{$index}} || xs || sm }">
+                                                        <div class="container">
+                                                            <div class="row">
+                                                                <div class="div-shadow d-md-none hidden-lg hidden-md"></div>
+                                                                    <div class="col-md-2 col-4">
+                                                                        <div class="item-container">
+                                                                            <label class="item-label">Rate</label>
+                                                                            <div class="item-content">{{lineitem.unit_price|number:2}}</div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2 d-none d-md-block">
+                                                                        <div class="item-container" data-ng-if="!edit_mode">
+                                                                            <label class="item-label">{{lineitem.uom_short_name}}</label>
+                                                                            <div class="item-content">{{lineitem.order_quantity|number:2}}</div>
+                                                                        </div>
+                                                                        <div class="floating-input-container" data-ng-if="edit_mode">
+                                                                            <input class="floating-input" type="number" step="any" data-ng-model="lineitem.entered_quantity" id="lineitem_{{$index}}" name="lineitem_{{$index}}" data-ng-change="updateQuantity(lineitem)" data-ng-required="true"  ng-class="(((myform.lineitem_{{$index}}.$dirty || submitted) && myform.lineitem_{{$index}}.$invalid) || ((myform.lineitem_{{$index}}.$dirty || submitted) && myform.lineitem_{{$index}}.$error.required)) ? 'error' : 'success'"/>
+                                                                            <label class="input-label">{{lineitem.entered_uom_short_name}}</label>
+                                                                            <span class="help-block errorText" ng-show="(myform.lineitem_{{$index}}.$dirty && myform.lineitem_{{$index}}.$invalid) || ((myform.lineitem_{{$index}}.$dirty || submitted) && myform.lineitem_{{$index}}.$error.required)">Please enter qty</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2 d-none d-md-block">
+                                                                        <div class="item-container" data-ng-if="!edit_mode">
+                                                                            <label class="item-label">Quote</label>
+                                                                            <div class="item-content" ng-class="{'highlight': (lineitem.unit_price|number:2) != (lineitem.order_price|number:2)}">{{lineitem.order_price|number:2}}</div>
+                                                                        </div>
+                                                                        <div class="floating-input-container" data-ng-if="edit_mode">
+                                                                            <input class="floating-input" type="number" data-ng-step="any" data-ng-model="lineitem.order_price" data-ng-change="updateQuantity(lineitem)" data-ng-min="0.01" data-ng-required="true" />
+                                                                            <label class="input-label">Quote</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <div class="col-md-2 col-4 d-md-block" >
+                                                                        <div class="item-container">
+                                                                            <label class="item-label">Disc</label>
+                                                                            <div class="item-content">{{(lineitem.discount || 0)|number:2}}</div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2 col-4">
+                                                                        <div class="item-container">
+                                                                            <label class="item-label">Tax %</label>
+                                                                            <div class="item-content" data-ng-if="isTaxAutoCalculated()"> {{(lineitem.tax*100/((lineitem.order_quantity * lineitem.order_price) - lineitem.discount))|number:2}}
+                                                                            </div>
+                                                                            <div class="item-content" data-ng-if="((!isTaxAutoCalculated()) && edit_mode)">
+                                                                                <input type="number" step="any" class="form-control input-sm" data-ng-model="lineitem.tax_percent" data-ng-blur="sumLineItemTax(order, lineitem)" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2 d-none d-md-block col-5 detailsLastColumn" >
+                                                                        <div class="item-container">
+                                                                            <label class="item-label">Extn</label>
+                                                                            <div class="item-content">{{lineitem.order_quantity * lineitem.order_price | number:2}}</div>
+                                                                        </div>
+                                                                        <div class="closeRowButton">
+                                                                            <i class="fas fa-remove cursor-pointer" data-ng-if="(!edit_mode && !(order.id >0)) || (edit_mode && (lineitem.packed_qty_qty == 0 && lineitem.packed_qty_quote == 0)) && order.lineitems.length > 1" data-ng-click="removeLineItem($index)"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-9 col-12" >
+                                                                        <div class="item-container" data-ng-show="!edit_mode && lineitem.notes != ''">
+                                                                            <label class="item-label">Notes</label>
+                                                                            <div class="item-content">{{lineitem.notes}}</div>
+                                                                        </div>
+                                                                        <div class="floating-input-container" data-ng-if="edit_mode">
+                                                                            <input type="text" class="floating-input" data-ng-model="lineitem.notes" />
+                                                                            <label class="input-label">Notes</label>
+                                                                        </div>
+                                                                    </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        
+                                                    </div>
+
+                                                    <!--<div class="arrowDivForMobile" ng-class="{'showDiv': accordClass_{{$index}} || md, 'hideDiv': !accordClass_{{$index}} || xs || sm }">
+                                                        <i class="fas fa-plus-circle"></i>
+                                                        <i class="fas fa-minus-circle"></i>
+                                                    </div>-->
+                                                    
+                                                </div>
+                                                <!--<div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-8 col-xs-hide">
+
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="col-md-1">
+                                                                    <p class="totalLabel">Total</p>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <p class="totalValue">Total</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-1">
+                                                                    <p class="totalLabel">Total</p>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <p class="totalValue">Total</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>-->
+                                            
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 eachCardWrapperDiv">
+                                                    <div class="card ">
+                                                        <div class="row">
+                                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                                <h5 class="card-header childcardheader ">More Details</h5>
+                                                                <div class="card-body">
+                                                                    <div class="row">                                                                       
+                                                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                                            <div class="form-group bmd-form-group floating-input-container">
+                                                                                <label class="item-label">
+                                                                                    Creator
+                                                                                </label>
+                                                                                <div class="item-content">{{order.creator}}</div>
+                                                                            </div>
+                                                                        </div>        
+                                                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-show="order.approver != null">
+                                                                            <div class="form-group bmd-form-group floating-input-container">
+                                                                                <label class="item-label">
+                                                                                    Approver
+                                                                                </label>
+                                                                                <div class="item-content">{{order.approver != null ? order.approver : 'auto'}}</div>
+                                                                            </div>
+                                                                        </div>  
+                                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                                            <div class="form-group bmd-form-group floating-input-container" style="padding-bottom: 0px;">
+                                                                                <input class="floating-input" type="text" data-ng-model="order.customer_order_number" placeholder="PO #" />
+                                                                                <label class="input-label">PO #</label>
+                                                                            </div>
+                                                                        </div>                                                                        
+                                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-ng-show="isUserAnInternal()">
+                                                                            <div class="form-group bmd-form-group floating-input-container" style="padding-bottom: 0px;">
+                                                                                <textarea class="floating-input" type="text" data-ng-model="order.internal_notes" cols="20" rows="3" maxlength="512" data-ng-disabled="!isUserAnInternal()" data-ng-if="order.sysorderstatuses_id != 4202" placeholder="Internal Notes" />
+                                                                                <label class="input-label" data-ng-if="order.sysorderstatuses_id != 4202">Internal Notes</label>
+                                                                                <label class="input-label" data-ng-if="order.sysorderstatuses_id == 4202">{{order.internal_notes}}</label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-ng-if="isUserAnAgent()">
+                                                                            <div class="form-group bmd-form-group floating-input-container" style="padding-bottom: 0px;">
+                                                                                <textarea class="floating-input" type="text" data-ng-model="order.agent_notes" cols="20" rows="3" maxlength="512" data-ng-disabled="!isUserAnAgent()" data-ng-if="order.sysorderstatuses_id != 4202" placeholder="Agent Notes" />
+                                                                                <label class="input-label">Agent Notes</label>
+                                                                                <label class="input-label" data-ng-if="order.sysorderstatuses_id == 4202">{{order.agent_notes}}</label>
+                                                                            </div>
+                                                                        </div>  
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 eachCardWrapperDiv">
+                                                    <div class="card" data-ng-if="order.packing_slips.length > 0">
+                                                        <h5 class="card-header childcardheader ">Packing Slip Details</h5>
+                                                        <div class="card-body">
+                                                        <div class="row" data-ng-repeat="packingslip in order.packing_slips">
+                                                            <div class="container-fluid xpadding-lr-zero">
+                                                                <div class="container">
+                                                                    <div class="row">
+                                                                        <div class="col-2 padding-l-zero">
+                                                                            <div class="item-container">
+                                                                                <label class="item-label text-ellipsis">#</label>
+                                                                                <div class="item-content text-ellipsis"><a href="#/packingslips/{{packingslip.id}}">{{packingslip.slip_number}}</a></div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-2 d-none d-block-md hidden-xs hidden-sm padding-l-zero">
+                                                                            <div class="item-container">
+                                                                                <label class="item-label">ID</label>
+                                                                                <div class="item-content">{{packingslip.id}}</div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-4 col-sm-4 padding-l-zero">
+                                                                            <div class="item-container">
+                                                                                <label class="item-label">Date</label>
+                                                                                <div class="item-content">{{packingslip.packing_date | date:'dd-MMM-yyyy'}}</div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-4 padding-l-zero">
+                                                                            <div class="item-container">
+                                                                                <label class="item-label">Status</label>
+                                                                                <div class="item-content">{{packingslip.status_name}}</div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div>                                   
+                                    <!--<div class="col-lg-12 eachCardWrapperDiv">
+                                        <div class="card ">
+                                            <h5 class="card-header childcardheader ">Summary</h5>
+                                            <div class="card-body">
+                                               <div class="row">
+                                                 <div class="top-buffer col-md-12"></div>
+                                                <div class="col-md-8 col-md-offset-4">
+                                                    <div class="col-md-2 col-xs-6 padding-l-zero">
+                                                        <div class="top-buffer col-md-12"></div>
+                                                        <div class="floating-input-container">
+                                                            <input class="floating-input" type="number" data-ng-model="order.sub_total" step="0.01" readonly placeholder="Sub Total" / disabled>
+                                                            <label class="input-label">Sub Total</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 col-xs-6 padding-l-zero">
+                                                        <div class="top-buffer col-md-12"></div>
+                                                        <div class="floating-input-container" data-ng-class="(myform.discount_perc.$dirty && myform.discount_perc.$invalid) || myform.discount_perc.$error.required ? 'has-error' : 'has-success'">
+                                                            <input tooltip="{{myform.$valid ? '%' : 'Please enter valid %'}}" class="floating-input" name="discount_perc" id="discount_perc" type="{{order.id > 0 ? 'text' : 'number'}}" data-ng-model="order.discount_perc" data-ng-change="calculateDiscount()" data-ng-disabled="!isDiscountEditable(order)" placeholder="%" size="3" maxlength="5" data-ng-max="100" data-ng-min="0" data-ng-step="0.01" placeholder="Discount" />
+                                                            <label class="input-label">Discount in %</label>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="col-md-2 col-xs-6 padding-lr-zero">
+                                                        <div class="top-buffer col-md-12"></div>
+                                                        <div class="floating-input-container" data-ng-class="(myform.discount_total.$dirty && myform.discount_total.$invalid) || myform.discount_total.$error.required ? 'has-error' : 'has-success'">
+                                                            <input class="floating-input" name="discount_total" id="discount_total" type="number" data-ng-model="order.discount_total" data-ng-change="calculateDiscountPerc()" data-ng-disabled="!isDiscountEditable(order)" size="7" data-ng-min="0" data-ng-step="0.01" data-ng-max="{{order.sub_total}}" />
+                                                            <label class="input-label">Total Discount</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 col-xs-6 padding-l-zero">
+                                                        <div class="top-buffer col-md-12"></div>
+                                                        <div class="floating-input-container">
+                                                            <input class="floating-input" type="number" data-ng-model="order.ship_total" data-ng-disabled="!order.id || !edit_mode" placeholder="S & H" />
+                                                            <label class="input-label">S & H <i style="font-size:12px" class="fas fa-inr" aria-hidden="true"></i></label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 col-xs-6 padding-l-zero">
+                                                        <div class="top-buffer col-md-12"></div>
+                                                        <div class="floating-input-container">
+                                                            <input class="floating-input" type="number" data-ng-model="order.tax_total" data-ng-disabled="true" data-ng-min="0" data-ng-step="0.01" placeholder="Tax" />
+                                                            <label class="input-label">Tax</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 col-xs-6 padding-lr-zero">
+                                                        <div class="top-buffer col-md-12"></div>
+                                                        <div class="floating-input-container">
+                                                            <input class="floating-input" type="text" value="{{order.sub_total + (order.ship_total || 0) + (order.tax_total || 0) - (order.discount_total || 0) | number:2 }}" readonly disabled/>
+                                                            <label class="input-label">Total</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>-->
+                                </div>
+                                 <!--<div class="col-lg-12 eachCardWrapperDiv" data-ng-if="order.packing_slips.length > 0">
+                                     
+                                    <div class="card ">
+                                        <h5 class="card-header childcardheader ">Summary</h5>
+                                        <div class="card-body">
+                                           <div class="row" data-ng-repeat="packingslip in order.packing_slips">
+                                            <div class="container-fluid xpadding-lr-zero col-md-12">
+                                                <div class="col-md-12 col-xs-12">
+                                                    <div class="col-xs-2 padding-l-zero">
+                                                        <div class="item-container">
+                                                            <label class="item-label text-ellipsis">#</label>
+                                                            <div class="item-content text-ellipsis"><a href="#/packingslips/{{packingslip.id}}">{{packingslip.slip_number}}</a></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 hidden-xs hidden-sm padding-l-zero">
+                                                        <div class="item-container">
+                                                            <label class="item-label">ID</label>
+                                                            <div class="item-content">{{packingslip.id}}</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-4 col-md-2 padding-l-zero">
+                                                        <div class="item-container">
+                                                            <label class="item-label">Date</label>
+                                                            <div class="item-content">{{packingslip.packing_date | date:'dd-MMM-yyyy'}}</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 col-md-4 padding-l-zero">
+                                                        <div class="item-container">
+                                                            <label class="item-label">Status</label>
+                                                            <div class="item-content">{{packingslip.status_name}}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>-->
+                        </div>                               
+                        <div class="col-lg-12 col-md-12 col-xs-12 form-group">
+                          <div class="row-centered">
+                              <button class="btn primarySubmitButton mobileSubmitButton" type="button" data-ng-click='submitted=true;!myform.$invalid && saveOrder();'>Submit</button>
+                          </div>
+                        </div>                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+</section>
+

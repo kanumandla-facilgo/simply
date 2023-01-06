@@ -1,0 +1,72 @@
+[System: UDF]
+UDFSimplyTextileCustomerCode:String:1000
+UDFSimplyTextileTransporterCode:String:1001
+UDFSimplyTextileCustomerTypeCode:String:1002
+UDFSimplyOrderNotificationMobile:String:1003
+UDFSimplyOrderNotificationEmail:String:1004
+UDFSimplyPaymentReminderMobile:String:1005
+UDFSimplyPaymentReminderEmail:String:1006
+
+[#Part: LEd Other Details]
+Add: Line:SimplyTextileCustomerCodeUDFLine
+Add: Line:SimplyTextileTransporterCodeUDFLine
+Add: Line:UDFSimplyTextileCustomerTypeCodeUDFLine
+Add: Line:SimplyOrderNotificationMobileUDFLine
+Add: Line:SimplyOrderNotificationEmailUDFLine
+Add: Line:SimplyPaymentReminderMobileUDFLine
+Add: Line:SimplyPaymentReminderEmailUDFLine
+
+[Line:SimplyTextileCustomerCodeUDFLine]
+Field: Short Prompt,SimplyTextile Customer Code UDF Field
+Local:Field:Short Prompt:Set as:"Simply Customer Code:"
+
+[Line:SimplyTextileTransporterCodeUDFLine]
+Field: Short Prompt,SimplyTextile Transporter Code UDF Field
+Local:Field:Short Prompt:Set as:"Simply Transporter Code:"
+
+[Line:UDFSimplyTextileCustomerTypeCodeUDFLine]
+Field: Short Prompt,SimplyTextile Customer Type Code UDF Field
+Local:Field:Short Prompt:Set as:"Simply CustomerType ID:"
+
+[Line:SimplyOrderNotificationMobileUDFLine]
+Field: Short Prompt,Simply Order Notification Mobile UDF Field
+Local:Field:Short Prompt:Set as:"Simply Order Notification Mobile:"
+
+[Line:SimplyOrderNotificationEmailUDFLine]
+Field: Short Prompt,Simply Order Notification Email UDF Field
+Local:Field:Short Prompt:Set as:"Simply Order Notification Email:"
+
+[Line:SimplyPaymentReminderMobileUDFLine]
+Field: Short Prompt,Simply Payment Reminder Mobile UDF Field
+Local:Field:Short Prompt:Set as:"Simply Payment Reminder Mobile:"
+
+[Line:SimplyPaymentReminderEmailUDFLine]
+Field: Short Prompt,Simply Payment Reminder Email UDF Field
+Local:Field:Short Prompt:Set as:"Simply Payment Reminder Email:"
+
+[Field:SimplyTextile Customer Code UDF Field]
+Use: NameField
+Storage:UDFSimplyTextileCustomerCode
+
+[Field:SimplyTextile Transporter Code UDF Field]
+Use: NameField
+Storage:UDFSimplyTextileTransporterCode
+
+[Field:SimplyTextile Customer Type Code UDF Field]
+Use: NameField
+Storage:UDFSimplyTextileCustomerTypeCode
+[Field:Simply Order Notification Mobile UDF Field]
+Use: NameField
+Storage:UDFSimplyOrderNotificationMobile
+
+[Field:Simply Order Notification Email UDF Field]
+Use: NameField
+Storage:UDFSimplyOrderNotificationEmail
+
+[Field:Simply Payment Reminder Mobile UDF Field]
+Use: NameField
+Storage:UDFSimplyPaymentReminderMobile
+
+[Field:Simply Payment Reminder Email UDF Field]
+Use: NameField
+Storage:UDFSimplyPaymentReminderEmail

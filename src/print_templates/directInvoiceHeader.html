@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html> 
+<style>
+ .mypushbutton {
+    padding-right:15px;
+ }
+.no-gutter > [class*='col-'] {
+    padding-right:0px;
+    padding-left:0px;
+}
+.text {font-family:helevetica;}
+.text2 {font-family:helvetica;font-size:15px;}
+.text5 {font-family:helvetica;font-size:13px;}
+.textsmall {font-size:10px}
+.header {font-size:30px;font-weight:bold}
+.header5 {font-size:16px;font-weight:bold}
+.header14 {font-size:14px;font-weight:bold}
+.header12 {font-size:12px;font-weight:bold}
+.number { text-align:right }
+.bborderonly {border:none;border-bottom:solid 1px black}
+.nobordertd {border:none}
+table, tr, td, th, tbody, thead, tfoot {
+    page-break-inside: avoid !important;
+}
+</style>
+<head> <body> 
+        <table border="0" cellpadding="2" cellspacing="0" style="width:960px">
+            <!-- header -->
+            <tr>
+                <td class="text">
+                    
+                    <h2><center>TAX INVOICE</center></h2>
+                </td>
+            </tr>
+            <tr>
+                <table style="width:100%;"  border="1" cellspacing="0" xcellpadding="5"><tr>
+                <td style="text-align:center"> 
+                <div style="width:100%;">                
+                      <div style="float:left;width:15%;border-right:solid 1px black">
+                        <img src="{{configuration.logo_url}}" style="width:70px;height:55px;padding-top:10px"/>
+                      </div>
+                      <div style="display: inline-block;margin:0 auto;width:65%;">
+                        <span class="header">{{company.name}}</span><br/>
+                        {{company.ship_address.address1 + ','}} {% if company.ship_address.address2 != "" and company.ship_address.address2 != null %} {{ company.ship_address.address2 + ','}} {%endif%} {% if company.ship_address.address3 != "" and company.ship_address.address3 != null %} {{ company.ship_address.address3 + ','}} {%endif%} {{company.ship_address.city}} - {{company.ship_address.zip}}<br/><b>Phone:</b> {{company.address.phone1}} <b>Email: </b>{{company.address.email1}}<br/>
+                      </div>
+                  </div>
+                </td>
+            </tr>
+        </table>
+        </table>
+            <table border="0" cellpadding="2" cellspacing="0" style="width:100%">                
+                <tr>
+                    <td>
+                        <table style="width:100%;"  border="1" cellspacing="0" xcellpadding="5">
+                        <tr>
+                        <td style="valign:top" valign="top" width="60%">
+                            <table style="width:100%; float: left;"  border="0" cellspacing="0" cellpadding="3">
+                                <tr>
+                                    <td class="header5" style="border-top:solid 1px black">Bill To</td>
+                                </tr>
+                                <tr>
+                                    <td class="text2" style="border-top:dotted 1px black">
+                                        <b>{{customer.invoicing_name}}</b><br/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="valign:top;" valign="top" width="40%">
+                            <table style="width:100%; float: left;"  border="0" cellspacing="0" cellpadding="0" xstyle="padding:5px">
+                                <tr>
+                                    <td class="header12 text5" style="border-right:solid 1px black;padding:5px">Invoice No.</td>
+                                    <td class="text2" style="padding:5px">{{ invoice_number }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="header12 text5" style="border-top:solid 1px black;border-right:solid 1px black;padding:5px">Dated</td>
+                                    <td class="text5" style="border-top:solid 1px black;padding:5px">{{ note_date_string}}</td>
+                                </tr>
+                            </table>
+                        </td>
+                        </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</head>
+</html>

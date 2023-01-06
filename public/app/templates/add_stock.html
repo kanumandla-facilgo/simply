@@ -1,0 +1,188 @@
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+
+<!--main content start-->
+<section id="main-content">
+	<section class="wrapper">
+        <div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                    <div class="mat-form card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title">{{title}}</h4>
+                        </div>
+                        <div class="card-body">
+                            <form class="cmxform form-horizontal tasi-form" id="signupForm" method="post" name="myform">
+                                <div class="row">
+                                    <div class="col-lg-12 eachCardWrapperDiv">
+                                        <div class="card ">
+                                            <h5 class="card-header childcardheader">Details</h5>
+                                            <div class="card-body">
+												<div class="container p-0 m-0">
+													<div class="row">
+														
+														<div class="col-12 form-group bmd-form-group floating-input-container pull-right">
+															<button type="button" class="btn btn-xs btn-info" data-ng-click='showstock=(showstock ? false : true)'>{{showstock ? "Hide Stock" : "Show Stock"}}</button>
+														</div>
+														<div class="col-12">
+															<div class="form-group bmd-form-group">
+																<label class="item-label">
+																	Date
+																</label>
+																<div class="item-content"><input class="floating-input" type="date" id="txt_transaction_date" name="txt_transaction_date" data-ng-model="stock_journal.transaction_date" /></div>
+															</div>
+														</div>
+														<div class="col-12">
+															<div class="form-group bmd-form-group">
+																<label class="" style="margin:0;"  for="txt_product_name">Select Product</label>
+																<input class="floating-input" autocomplete="off" type="text" name="txt_product_name" id="txt_product_name" data-ng-model="product" placeholder="SKU / Name" typeahead-min-length="2" typeahead-wait-ms="200" typeahead-on-select="populateStockJournal($item, $model, $label, $event)" typeahead-select-on-blur=true typeahead-editable=false uib-typeahead="suggestion as suggestion.name for suggestion in getProductListViaPromiseNoCustomer($viewValue, 0, 0)"/>
+															</div>
+														</div>
+														<div class="col-12 col-md-3" data-ng-show="productlist.length == 1">
+															<div class="form-group bmd-form-group floating-input-container">
+																<label class="item-label">
+																	Product Name
+																</label>
+																<div class="item-content">{{product.name}} [{{product.sku}}]</div>
+															</div>
+														</div>														
+														<div class="col-12 col-md-4">
+															<div class="form-group bmd-form-group floating-input-container">
+																<input type="number" class="floating-input"  name="txtname" id="txtname" data-ng-model="stock_journal.cost_price" placeholder="Enter cost price"/>
+																<label class="input-label" for="txtname" >
+																	Cost Price
+																</label>
+															</div>
+														</div>
+														<div class="col-12 col-md-2" data-ng-show="product && showstock==true">
+															<div class="form-group bmd-form-group floating-input-container">
+																<label class="item-label">
+																	Current Stock [{{product.stock_uom_qty.name}}]
+																</label>
+																<div class="item-content">{{product.quantity.stock_qty}}</div>
+															</div>
+														</div>
+														<div class="col-12 col-md-2" data-ng-if="product.stock_uom_qty.id != product.stock_uom_quote.id">
+															<div class="form-group bmd-form-group floating-input-container">
+																<label class="item-label">
+																	Current Stock [{{product.stock_uom_quote.name}}]
+																</label>
+																<div class="item-content">{{product.quantity.stock_quote}}</div>
+															</div>
+														</div>
+														<div class="col-12 col-md-2 " data-ng-show="product && showstock==true" data-ng-if="product.stock_uom_qty.id != product.stock_uom_quote.id">
+															<div class="form-group bmd-form-group floating-input-container">
+																<label class="item-label">
+																	Stock - In Process [{{product.stock_uom_quote.name}}]
+																</label>
+																<div class="item-content">{{product.quantity.stock_in_process_quote}}</div>
+															</div>
+														</div>	                                                
+														<div class="col-12 col-md-2" data-ng-if="product.is_batched_inventory == 1 && editmode">
+															<div class="form-group bmd-form-group floating-input-container">
+																<label class="item-label">
+																	Stock Code
+																</label>
+																<div class="item-content">{{stock_journal.stock_bucket_code}}</div>
+															</div>
+														</div>
+														<div class="col-12 col-md-4" data-ng-if="product.is_batched_inventory == 1 && !editmode">
+															<div class="form-group bmd-form-group floating-input-container">
+																<input type="text" class="floating-input"  name="txtname" id="txtname" data-ng-model="stock_journal.stock_bucket_code" data-ng-show="!editmode" placeholder="Enter stock code" required data-ng-class="((myform.txtname.$dirty || submitted) && myform.txtname.$invalid) || ((myform.txtname.$dirty || submitted) && myform.txtname.$error.required) ? 'error' : 'success'"/>
+																<label class="input-label" for="txtname" >
+																	Stock Code
+																</label>
+																<span class="help-block errorText" ng-show="((myform.txtname.$dirty || submitted) && myform.txtname.$invalid) || ((myform.txtname.$dirty || submitted) && myform.txtname.$error.required)">Please enter stock code</span>
+															</div>
+														</div>
+														<div class="col-12 col-md-4" data-ng-if="product.is_batched_inventory == 0">
+															<div class="form-group bmd-form-group floating-input-container">
+																<input type="text" class="floating-input"  name="txtequation" id="txtequation" data-ng-model="stock_journal.equation" data-ng-show="!editmode" placeholder="Enter Equation to auto calculate" data-ng-blur="convertEquationToQty(stock_journal.equation, stock_journal)"/>
+																<label class="input-label" for="last_name">
+																	Equation (calculator)
+																</label>
+															</div>
+														</div>
+														<div class="col-12 col-md-4" data-ng-show="editmode" style="padding-top:10px;" >
+															<div class="form-group bmd-form-group floating-input-container">
+																<input type="number" class="floating-input"  name="txt_stock_qty" id="txt_stock_qty" data-ng-model="stock_journal.stock_qty" placeholder="Enter stock" required data-ng-class="((myform.txt_stock_qty.$dirty || submitted) && myform.txt_stock_qty.$invalid) || ((myform.txt_stock_qty.$dirty || submitted) && myform.txt_stock_qty.$error.required) ? 'error' : 'success'"/>
+																<label class="input-label" for="txt_stock_qty">
+																	Stock [{{product.stock_uom_qty.name}}]
+																</label>
+																<span class="help-block errorText" ng-show="((myform.txt_stock_qty.$dirty || submitted) && myform.txt_stock_qty.$invalid) || ((myform.txt_stock_qty.$dirty || submitted) && myform.txt_stock_qty.$error.required)">Please enter stock</span>
+															</div>
+														</div>
+														<div class="col-12 " data-ng-show="product" data-ng-if="product.is_batched_inventory == 1 && product.stock_batch_pcs > 0">
+															<div class="form-group bmd-form-group floating-input-container">
+																<label>Stock [{{product.stock_uom_batch.name}}]</label>
+																<div class="stockBatchEachRow" data-ng-repeat="x in stock_journal.batch_list">
+																	<div class="row">
+																		<div class="col-6 col-md-2 nopadding">
+																			<label style="margin:12px 0 0;" class="control-label">{{x.index}} / {{stock_journal.batch_list.length}} {{ (editmode && false ? " [Current Qty: " + x.original_qty + "]" : "") }}</label>
+																		</div>
+																		<div class="col-6 col-md-4 nopadding">
+																			<div class="form-group bmd-form-group floating-input-container">
+																				<input type="text" class="floating-input"  name="txt_stock_batch_name{{$index}}" id="txt_stock_batch_name{{$index}}" data-ng-model="x.description" placeholder="Enter color/description" maxlength="64"/>
+																				<label class="input-label" for="txt_stock_batch_name{{$index}}">
+																					Description
+																				</label>
+																			</div>
+																		</div>
+																		<div class="col-6 col-md-4 nopadding">
+																			<div class="form-group bmd-form-group floating-input-container">
+																				<input type="number" class="floating-input"  name="txt_stock_batch_qty{{$index}}" id="txt_stock_batch_qty{{$index}}" data-ng-model="x.qty" placeholder="Qty" required data-ng-change="calculateStockTotal()" data-ng-class="((myform.txt_stock_batch_qty{{$index}}.$dirty || submitted) && myform.txt_stock_batch_qty{{$index}}.$invalid) || (myform.txt_stock_batch_qty{{$index}}.$dirty || submitted) && myform.txt_stock_batch_qty{{$index}}.$error.required ? 'error' : 'success'"/>
+																				<label class="hidden-xs hidden-sm input-label" for="txt_stock_batch_qty{{$index}}">Adjustment: {{x.qty - x.original_qty}}</label>
+																				<span class="help-block errorText" ng-show="((myform.txt_stock_batch_qty{{$index}}.$dirty || submitted) && myform.txt_stock_batch_qty{{$index}}.$invalid) || (myform.txt_stock_batch_qty{{$index}}.$dirty || submitted) && myform.txt_stock_batch_qty{{$index}}.$error.required">Please enter stock qty</span>
+																			</div>
+																		</div>
+																		<div class="col-6 col-md-2">
+																			<div class="form-group bmd-form-group floating-input-container">
+																				<input type="number" class="floating-input"  name="txt_stock_batch_pcs{{$index}}" id="txt_stock_batch_pcs{{$index}}" data-ng-model="x.piece_count" placeholder="Pieces" required data-ng-class="((myform.txt_stock_batch_pcs{{$index}}.$dirty || submitted) && myform.txt_stock_batch_pcs{{$index}}.$invalid) || (myform.txt_stock_batch_pcs{{$index}}.$dirty || submitted) && myform.txt_stock_batch_pcs{{$index}}.$error.required ? 'error' : 'success'"/>
+																				<label class="input-label" for="txt_stock_batch_pcs{{$index}}">
+																					Pieces
+																				</label>
+																				<span class="help-block errorText" ng-show="((myform.txt_stock_batch_pcs{{$index}}.$dirty || submitted) && myform.txt_stock_batch_pcs{{$index}}.$invalid) || (myform.txt_stock_batch_pcs{{$index}}.$dirty || submitted) && myform.txt_stock_batch_pcs{{$index}}.$error.required">Please enter Pieces</span>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="col-12 col-md-6" data-ng-show="product" data-ng-if="product.stock_uom_qty.id != product.stock_uom_quote.id">
+															<div class="form-group bmd-form-group floating-input-container">
+																<input type="number" class="floating-input"  name="txt_stock_quote" id="txt_stock_quote" data-ng-model="stock_journal.stock_quote" placeholder="Enter stock" required data-ng-disabled="product.is_batched_inventory == 1 && product.stock_batch_pcs > 0" data-ng-class="((myform.txt_stock_quote.$dirty || submitted) && myform.txt_stock_quote.$invalid) || ((myform.txt_stock_quote.$dirty || submitted) && myform.txt_stock_quote.$error.required) ? 'error' : 'success'"/>
+																<label class="input-label" for="txt_stock_quote">
+																	Stock [{{product.stock_uom_quote.name}}]
+																</label>
+																<span class="help-block errorText" ng-show="((myform.txt_stock_quote.$dirty || submitted) && myform.txt_stock_quote.$invalid) || ((myform.txt_stock_quote.$dirty || submitted) && myform.txt_stock_quote.$error.required)">Please enter stock</span>
+															</div>
+														</div>
+														<div class="col-12 col-md-6 " data-ng-show="product">
+															<div class="form-group bmd-form-group floating-input-container">
+																<textarea class="floating-input" name="txtdescription" id="txtdescription" data-ng-model="stock_journal.description" placeholder="Enter description" />
+																<label class="input-label" for="txtdescription">
+																Comments
+																</label>
+															</div>
+														</div>
+													
+													</div>
+												</div>
+                                               
+                                          	</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                  <div class="row-centered">
+                                    <button type="button" class="btn primarySubmitButton mobileSubmitButton" data-ng-click='submitted=true;!myform.$invalid && saveNonBatchInventoryStock(true);' data-ng-hide="editmode || (stock_journal && stock_journal.stock_bucket && stock_journal.stock_bucket.status_id != 4600)">Submit <i class="fas fa-plus"></i></button> &nbsp;
+									<button type="button" class="btn primarySubmitButton mobileSubmitButton" data-ng-click='submitted=true;!myform.$invalid && saveNonBatchInventoryStock(false);' data-ng-hide="stock_journal && stock_journal.stock_bucket && stock_journal.stock_bucket.status_id != 4600">Submit</button>
+                                  </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>

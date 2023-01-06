@@ -1,0 +1,147 @@
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+
+<!--main content start-->
+<section id="main-content">
+    <section class="wrapper">
+        <div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                            <div class="mat-form card">
+                                <div class="card-header card-header-primary">
+                                    <h4 class="card-title">{{title}}</h4>
+                                </div>
+                                <div class="card-body">
+                                    <form class="cmxform" id="signupForm" method="post" name="myform">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 eachCardWrapperDiv">
+                                                <div class="card">
+                                                   <h5 class="card-header childcardheader">Primary Information</h5>
+                                                   <div class="card-body">
+                                                       <div class="row">
+                                                            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="transporter_code_edit_flag">
+                                                                <div class="form-group bmd-form-group floating-input-container">
+                                                                  <input class="floating-input"  type="text" name="code" id="code" data-ng-model="transporter.code" required="true" placeholder="Enter code" data-ng-if="transporter_code_edit_flag" data-ng-required="transporter_code_edit_flag" data-ng-class="((myform.code.$dirty || submitted) && myform.code.$invalid) || ((myform.code.$dirty || submitted) && myform.code.$error.required) ? 'error' : ''"/>
+                                                                  <label data-ng-if="!transporter_code_edit_flag">{{ (!isTransporterCodeRequired() && transporter.id > 0 ? transporter.code : "Transporter Code Will be created")}} <i class="fas fa-edit" data-ng-click="enableTransporterCodeEdit()" data-ng-if="isTransporterCodeEditAllowed() && !transporter_code_edit_flag" aria-hidden="true"></i></label>           
+                                                                  <label class="input-label" for="code">Code</label>
+                                                                  <span class="help-block errorText" ng-show="((myform.code.$dirty || submitted) && myform.code.$invalid) || ((myform.code.$dirty || submitted) && myform.code.$error.required)">Please enter code</span>
+                                                                </div>
+                                                             </div>
+                                                             <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="!transporter_code_edit_flag">
+                                                                   <div class="form-group bmd-form-group floating-input-container">
+                                                                        <input class=" floating-input" id="code_text" type="text" data-ng-value="(!isTransporterCodeRequired() && transporter.id > 0 ? transporter.code : 'Will be created')" data-ng-disabled="true" />
+                                                                        <label class="input-label" for="code_text">
+                                                                            Code
+                                                                        </label>
+                                                                        <i class="fas fa-pencil" data-ng-click="enableTransporterCodeEdit()" data-ng-if="isTransporterCodeEditAllowed() && !transporter_code_edit_flag" aria-hidden="true"></i>
+                                                                    </div>                                                                
+                                                             </div>
+                                                             <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                                <div class="form-group bmd-form-group floating-input-container">
+                                                                    <input class="floating-input" type="text" name="name" id="name" data-ng-model="transporter.name" required="true" placeholder="Enter name" style="text-transform: capitalize;" data-ng-class="((myform.name.$dirty || submitted) && myform.name.$invalid) || ((myform.name.$dirty || submitted) && myform.name.$error.required) ? 'error' : ''"/>
+                                                                     <label class="input-label"  for="description">Name</label>
+                                                                     <span class="help-block" ng-show="((myform.name.$dirty || submitted) && myform.name.$invalid) || ((myform.name.$dirty || submitted) && myform.name.$error.required)">Please enter name</span>
+                                                                 </div>
+                                                             </div>
+                                                             <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                                <div class="form-group bmd-form-group floating-input-container">
+                                                                   <input class="floating-input" type="text" name="external_code" id="external_code" data-ng-model="transporter.external_code" placeholder="Enter Govt Code"/>
+                                                                     <label class="input-label"  for="external_code">Govt Code</label>
+                                                                 </div>
+                                                             </div>                                 
+                                                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                                <div class="form-group bmd-form-group floating-input-container">
+                                                                    <input type="text" class="floating-input" name="first_name" id="first_name" data-ng-model="transporter.address.first_name" placeholder="Enter contact first name"  style="text-transform: capitalize;"/>
+                                                                     <label class="input-label"  for="first_name">Contact First Name</label>
+                                                                 </div>
+                                                             </div>
+                                                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                                <div class="form-group bmd-form-group floating-input-container">
+                                                                    <input type="text" class="floating-input" name="last_name" id="last_name" data-ng-model="transporter.address.last_name" placeholder="Enter contact last name"  style="text-transform: capitalize;"/>
+                                                                     <label class="input-label"  for="last_name">Contact Last Name</label>
+                                                                 </div>
+                                                             </div>
+                                                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 agentCheck" data-ng-if="editmode">
+                                                                <label class="input-label">
+                                                                    Status
+                                                                </label>
+                                                                <div class="radio-group">
+                                                                    <input type="radio" id="option-one" name="selector" data-ng-model="transporter.status_id" required="true" value="4600">
+                                                                    <label data-ng-class="transporter.status_id==4600 ? 'radio-select' : ''" for="option-one" style="width:49%;">Active</label>
+                                                                    <input type="radio"  id="option-two" name="selector" data-ng-model="transporter.status_id" required="true" value="4601">
+                                                                    <label data-ng-class="transporter.status_id==4601 ? 'radio-select' : ''" for="option-two" style="width: 50%;
+                                                                    margin-right: -3px;">Inactive</label>                      
+                                                              </div>
+                                                            </div>      
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                           <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 eachCardWrapperDiv">
+                                                <div class="card">
+                                                    <h5 class="card-header childcardheader">Contact Information</h5>
+                                                    <div class="card-body">
+                                                       <div class="row">                                                             
+                                                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                                <div class="form-group bmd-form-group floating-input-container">
+                                                                    <input type="text" class="floating-input" name="address1" id="address1" data-ng-model="transporter.address.address1"  xrequired="true" placeholder="Enter address line 1"  style="text-transform: capitalize;"/>
+                                                                     <label class="input-label"  for="address1">Address1</label>
+                                                                 </div>
+                                                             </div>
+                                                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                                <div class="form-group bmd-form-group floating-input-container">
+                                                                    <input type="text" class="floating-input" name="address2" id="address2" data-ng-model="transporter.address.address2"  xrequired="true" placeholder="Enter address line 2"  style="text-transform: capitalize;"/>
+                                                                     <label class="input-label"  for="address2">Address2</label>
+                                                                 </div>
+                                                             </div>
+                                                             <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                                <div class="form-group bmd-form-group floating-input-container">
+                                                                    <input type="text" class="floating-input" name="city" id="city" data-ng-model="transporter.address.city"  xrequired="true" placeholder="Enter City"  style="text-transform: capitalize;"/>
+                                                                     <label class="input-label"  for="city">City</label>
+                                                                 </div>
+                                                             </div>
+                                                             <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                                <div class="form-group bmd-form-group floating-input-container">
+                                                                    <select id="ddlb_state" name="ddlb_state" data-ng-model="transporter.address.state" xdata-ng-attr-required="true" data-ng-options="a as a for a in state_list track by a">
+                                                                    </select>
+                                                                    <label class="select-label" for="ddlb_state">State</label>
+                                                                 </div>
+                                                             </div>
+                                                             <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                                <div class="form-group bmd-form-group floating-input-container">
+                                                                   <input class="floating-input" type="text" name="zip" id="zip" data-ng-model="transporter.address.zip" data-ng-pattern="/^[1-9][0-9]{5}$/" xdata-ng-attr-required="true" placeholder="Enter zip"/>
+                                                                     <label class="input-label" for="zip">Pin</label>
+                                                                 </div>
+                                                                 <span class="help-block errorText" ng-show="((myform.zip.$dirty || submitted) && myform.zip.$invalid)">Please enter valid PIN</span>
+                                                             </div>
+                                                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                                <div class="form-group bmd-form-group floating-input-container">
+                                                                    <input type="email" class="floating-input" name="email" id="email" data-ng-model="transporter.address.email1" xdata-ng-attr-required="{{!editmode}}"  placeholder="Enter email"/>
+                                                                     <label class="input-label"  for="email">Email</label>
+                                                                 </div>
+                                                             </div>
+                                                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                                <div class="form-group bmd-form-group floating-input-container">
+                                                                    <input type="text" class="floating-input" name="phone" id="phone" data-ng-model="transporter.address.phone1" data-ng-pattern="/^[6-9][0-9]{9}$/" placeholder="Enter phone" ng-class="(((myform.phone.$dirty || submitted) && myform.phone.$invalid)) ? 'error' : 'success'" maxlength="10" />
+                                                                     <label class="input-label"  for="phone">Phone</label>
+                                                                     <span class="help-block" ng-show="!((myform.phone.$dirty || submitted) && myform.phone.$invalid)">Only digits, no space</span>
+                                                                     <span class="help-block errorText" ng-show="((myform.phone.$dirty || submitted) && myform.phone.$invalid)">Please enter valid phone number</span>
+                                                                 </div>
+                                                             </div>                                                             
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                          <div class="form-group">
+                                            <div class="row-centered">
+                                                <button class="btn primarySubmitButton mobileSubmitButton" type="button" data-ng-click='submitted=true;!myform.$invalid && saveTransporter();'>Save Transporter</button>
+                                            </div>
+                                          </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>

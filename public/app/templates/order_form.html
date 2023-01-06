@@ -1,0 +1,187 @@
+ <!--<div><span><a href="#/users">Users</a></span> <span><a href="#/customers">Customers</a></span> <span><a href="#/categories">Catalog</a></span></div>-->
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+<!--26043 cambric 60 fabrics-->
+
+ <!--main content start-->
+ <section id="main-content" >
+    <section class="wrapper site-min-height">
+
+		<div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                    <div class="mat-form card">
+                        <div class="card-header card-header-primary listPagePrimaryCardHeader">
+                            <h4 class="card-title">{{title}}</h4>
+                        </div>
+                        <div class="card-body" style="min-height:400px;">
+                            <div class="quickOrderWrapper">
+                                <div class="container p-0 m-0">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <p class="quickOrderHeaderLabel">Customer Name <span class="quickOrderHeaderValue" data-ng-if="order.customer"> : {{order.customer.name}}</span></p>
+                                            <div class="quickOrderInputWrapper" data-ng-if="!order.customer.id" ng-class="(myform.txt_customer_name.$dirty && myform.txt_customer_name.$invalid) || myform.txt_customer_name.$error.required ? 'has-error' : 'has-success'">
+                                                <div data-ng-controller="mastercontroller">
+                                                    <input class="form-control" type="text" name="txt_customer_name" id="txt_customer_name" data-ng-model="order.customer" autocomplete="off" required="true" placeholder="Enter customer name" typeahead-min-length="2" typeahead-wait-ms="200" typeahead-on-select="onSelectedCustomer($item, $model, $label, $event);" typeahead-select-on-blur=true typeahead-editable=false uib-typeahead="suggestion as suggestion.name for suggestion in getCustomerListViaPromise($viewValue, 1)"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <button class="btn  btn-primary shopByCategoryButton" data-ng-show="order.customer" data-ng-click="continueShoppingForm(order.customer.id)">Shop by Category</button>
+                                        </div>
+                                        <div class="col-12 p-0 m-0">
+                                            <!--<div class="row">
+                                                <div class="col-12 col-md-12" data-ng-repeat="item in itemlist" data-ng-if="order.customer" >
+                                                    <div class="container">
+                                                        <div class="row quickOrderPage">
+                                                            <div class="col-12 col-md-4">
+                                                                <div class="quickOrderEachInputDiv quickOrderEachInput_productname" data-ng-controller="productcontroller">
+                                                                    <input class="" autocomplete="off" type="text" name="txt_product_name{{$index}}" id="txt_product_name{{$index}}" data-ng-model="item.product" placeholder="SKU / Name" typeahead-min-length="2" typeahead-wait-ms="200" typeahead-on-select="onSelectedProduct($item, $model, $label, $event)" typeahead-select-on-blur=true typeahead-editable=false uib-typeahead="suggestion as suggestion.name for suggestion in getProductListViaPromise($viewValue, order.customer, 1, 1)"/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-8">
+                                                                <div class="quickOrderFlexBox">
+                                                                    <div class="quickOrderEachInputDiv quickOrderEachInput_price" data-ng-show="item.product" >
+                                                                        <input class="" type="number" name="txt_price{{$index}}" id="txt_price{{$index}}" data-ng-required="(item.product ? true : false)" data-ng-model="item.product.order_price" placeholder="price" />
+                                                                        <label class="quickOrderSelectedQuoteText" data-ng-show="item.product"> / {{item.product.selectedQuoteUOM.name}}</label>
+                                                                    </div>
+                                                                    <div class="quickOrderEachInputDiv quickOrderEachInput_qty" data-ng-show="item.product" data-ng-class="(myform.txt_qty{{$index}}.$dirty && myform.txt_qty{{$index}}.$invalid) || myform.txt_qty{{$index}}.$error.required ? 'has-error' : 'has-success'">
+                                                                        <input  class="" type="number" name="txt_qty{{$index}}" id="txt_qty{{$index}}" data-ng-required="(item.product ? true : false)" data-ng-model="item.product.orderqty" placeholder="Qty" data-ng-min="1"/>
+                                                                        <span data-ng-show="item.product.is_qty_uom_restricted == 1 || item.product.uomlist.length == 1">{{item.product.selectedUOM.name}}</span>
+                                                                        <select class=""  ng-options="uom as uom.name for uom in item.product.uomlist track by uom.id" data-ng-init="ordercontroller.selectDefaultQuoteUOM(item.product)" data-ng-change="updateQuotePrice(item.product)" data-ng-model="item.product.selectedUOM" data-ng-hide="item.product.is_qty_uom_restricted || !item.product || item.product.uomlist.length < 2"></select>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>-->
+                                            <div class="row deliveryNotesEachSection" data-ng-repeat="item in itemlist" data-ng-if="order.customer">
+                                                <div class="col-12 col-md-4">
+                                                    <div class="quickOrderEachInputDiv quickOrderEachInput_productname" data-ng-controller="productcontroller">
+                                                        <label class="item-label">SKU / Name</label>
+                                                        <input class="" autocomplete="off" type="text" name="txt_product_name{{$index}}" id="txt_product_name{{$index}}" data-ng-model="item.product" typeahead-min-length="2" typeahead-wait-ms="200" typeahead-on-select="onSelectedProduct($item, $model, $label, $event)" typeahead-select-on-blur=true typeahead-editable=false uib-typeahead="suggestion as suggestion.name for suggestion in getProductListViaPromise($viewValue, order.customer, 1, 1)"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-5">
+                                                    <div class="quickOrderFlexBox">
+                                                        <div class="quickOrderEachInputDiv quickOrderEachInput_price" data-ng-show="item.product" >
+                                                            <input class="" type="number" name="txt_price{{$index}}" id="txt_price{{$index}}" data-ng-required="(item.product ? true : false)" data-ng-model="item.product.order_price" placeholder="price" />
+                                                            <label class="quickOrderSelectedQuoteText" data-ng-show="item.product"> / {{item.product.selectedQuoteUOM.name}}</label>
+                                                        </div>
+                                                        <div class="quickOrderEachInputDiv quickOrderEachInput_qty" data-ng-show="item.product" data-ng-class="(myform.txt_qty{{$index}}.$dirty && myform.txt_qty{{$index}}.$invalid) || myform.txt_qty{{$index}}.$error.required ? 'has-error' : 'has-success'">
+                                                            <input  class="" type="number" name="txt_qty{{$index}}" id="txt_qty{{$index}}" data-ng-required="(item.product ? true : false)" data-ng-model="item.product.orderqty" placeholder="Qty" data-ng-min="1"/>
+                                                            <span data-ng-show="item.product.is_qty_uom_restricted == 1 || item.product.uomlist.length == 1">{{item.product.selectedUOM.name}}</span>
+                                                            <select class=""  ng-options="uom as uom.name for uom in item.product.uomlist track by uom.id" data-ng-init="ordercontroller.selectDefaultQuoteUOM(item.product)" data-ng-change="updateQuotePrice(item.product)" data-ng-model="item.product.selectedUOM" data-ng-hide="item.product.is_qty_uom_restricted || !item.product || item.product.uomlist.length < 2"></select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 quickOrderButtonWrapper" data-ng-if="order.customer">
+                                                    <button class="btn btn-info" type="button" data-ng-click="assignQuickPriceQty(itemlist)" title="Apply same price by Group">Apply Same Price</button>
+                                                    <button class="btn btn-success" type="button" data-ng-click='createQuickOrder(order.customer);' data-ng-disabled="myform.$invalid">Add to Cart</button>
+                                                    <button class="btn btn-info" type="button" data-ng-click='addItemtoItemList();' >Add Line</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     <section class="wrapper" data-ng-if="false">
+         <!-- page start-->
+         <div class="row">
+             <div class="col-md-1">
+             </div>
+             <div class="col-md-10">
+                 <section class="panel">
+                     <div class="panel-heading" style="font-weight: bold">
+                         {{title}}
+<!--
+                        <div class="col-xs-4 pull-right" data-ng-if="order.customer"><a ng-click="checkoutForm()"><img src="app/assets/images/bag.png" alt="" style="width:15px;height:15px"/> <span id="simpleCart_quantity" class="simpleCart_quantity"><small>({{itemcount}})</small></span></a> <a href="javascript:;" data-ng-click="emptyCart();" class="simpleCart_empty"><small>Empty</small></a></div>
+-->
+                        <div class="text-right col-xs-6 pull-right">
+                            <button class="btn btn-primary" data-ng-show="order.customer" data-ng-click="continueShoppingForm(order.customer.id)">Shop by Category</button>
+                        </div>
+
+                        <br/><br/>
+                     </div>
+                     <div class="panel-body">
+                         <div class="form">
+                            <form class="cmxform form-horizontal tasi-form" id="order_form" method="post" name="myform">
+                                 <div class="form-group">
+                                     <label class="control-label col-xs-3 col-md-2" style="font-weight: bold">Customer</label>
+                                     <div class="col-xs-9 col-md-10" data-ng-if="!order.customer.id" ng-class="(myform.txt_customer_name.$dirty && myform.txt_customer_name.$invalid) || myform.txt_customer_name.$error.required ? 'has-error' : 'has-success'">
+                                     <div data-ng-controller="mastercontroller">
+                                        <input class="form-control" type="text" name="txt_customer_name" id="txt_customer_name" data-ng-model="order.customer" autocomplete="off" required="true" placeholder="Enter customer name" typeahead-min-length="2" typeahead-wait-ms="200" typeahead-on-select="onSelectedCustomer($item, $model, $label, $event);" typeahead-select-on-blur=true typeahead-editable=false uib-typeahead="suggestion as suggestion.name for suggestion in getCustomerListViaPromise($viewValue, 1)"/>
+                                     </div>
+                                     </div>
+                                     <div class="col-xs-9 col-md-10" data-ng-if="order.customer"><label class="control-label"> {{order.customer.name}}</label></div>
+                                 </div>
+                                 <div class="form-group" data-ng-repeat="item in itemlist" data-ng-if="order.customer" xstyle="padding:2px; margin-bottom:10px;border:solid 1px gray;border-bottom-right-radius:10px;border-top-right-radius:10px;border-bottom-left-radius:10px;border-top-left-radius:10px;">
+                                     <div class="col-xs-6 col-md-7" data-ng-controller="productcontroller">
+										<input class="form-control input-sm" autocomplete="off" type="text" name="txt_product_name{{$index}}" id="txt_product_name{{$index}}" data-ng-model="item.product" placeholder="SKU / Name" typeahead-min-length="2" typeahead-wait-ms="200" typeahead-on-select="onSelectedProduct($item, $model, $label, $event)" typeahead-select-on-blur=true typeahead-editable=false uib-typeahead="suggestion as suggestion.name for suggestion in getProductListViaPromise($viewValue, order.customer, 1, 1)"/>
+                                     </div>
+										 <div class="col-xs-3 col-md-1" data-ng-show="item.product" style="padding-left:1px;padding-right:2px">
+											 <input class="form-control input-sm" type="number" name="txt_price{{$index}}" id="txt_price{{$index}}" data-ng-required="(item.product ? true : false)" data-ng-model="item.product.order_price" placeholder="price" style="text-align:right"/>
+										 </div>
+										 <div class="col-xs-3 col-md-1" data-ng-show="item.product" style="padding-left:1px;padding-right:1px;">
+											<label class="control-label" style="vertical-align:middle"> / {{item.product.selectedQuoteUOM.name}}</label>
+										 </div>
+                                     <div data-ng-class="(myform.txt_qty{{$index}}.$dirty && myform.txt_qty{{$index}}.$invalid) || myform.txt_qty{{$index}}.$error.required ? 'has-error' : 'has-success'">
+                                     <div class="col-xs-4 col-md-1">
+                                         <input class="form-control input-sm" type="number" name="txt_qty{{$index}}" id="txt_qty{{$index}}" data-ng-required="(item.product ? true : false)" data-ng-model="item.product.orderqty" placeholder="Qty" data-ng-min="1"/>
+                                     </div>
+                                     </div>
+                                     <div class="col-xs-8 col-md-2">
+                                        <span data-ng-show="item.product.is_qty_uom_restricted == 1 || item.product.uomlist.length == 1">{{item.product.selectedUOM.name}}</span>
+										<select ng-options="uom as uom.name for uom in item.product.uomlist track by uom.id" data-ng-init="ordercontroller.selectDefaultQuoteUOM(item.product)" data-ng-change="updateQuotePrice(item.product)" data-ng-model="item.product.selectedUOM" data-ng-hide="item.product.is_qty_uom_restricted || !item.product || item.product.uomlist.length < 2"></select>
+                                     </div>
+                                 </div>
+                                 <div class="form-group pull-left">
+                                     <div class="col-xs-12">
+                                     	 <button class="btn btn-warning" type="button" data-ng-click="assignQuickPriceQty(itemlist)">Apply same price by Group</button> &nbsp;&nbsp;&nbsp;
+                                         <button class="btn btn-success" type="button" data-ng-click='createQuickOrder(order.customer);' data-ng-disabled="myform.$invalid">Add to Cart</button>
+                                         <button class="btn btn-info pull-right" type="button" data-ng-click='addItemtoItemList();' >Add Line</button>
+                                     </div>
+                                 </div>
+                            </form>
+                         </div>
+                     </div>
+                 </section>
+             </div>
+             <div class="col-md-1">
+             </div>
+         </div>
+         <!-- page end-->
+     </section>
+</section>

@@ -1,0 +1,176 @@
+<html>
+<style>
+ .mypushbutton {
+    padding-right:15px;
+ }
+.no-gutter > [class*='col-'] {
+    padding-right:0px;
+    padding-left:0px;
+}
+.text {font-family:helevetica;}
+.text2 {font-family:helevetica;font-size:15px;}
+.text5 {font-family:helevetica;font-size:11px;}
+.textsmall {font-size:10px}
+.header5 {font-size:16px;font-weight:bold}
+.header14 {font-size:14px;font-weight:bold}
+.header12 {font-size:12px;font-weight:bold}
+.number { text-align:right }
+.bborderonly {border:none;border-bottom:solid 1px black}
+.nobordertd {border:none}
+table, tr, td, th, tbody, thead, tfoot {
+    page-break-inside: avoid !important;
+}
+</style>
+<body>
+<!-- print form start -->
+<div class="row" data-ng-show="printForm" xstyle="margin-top:100px;margin-left:20px">
+	<div class="col-xs-12">
+		<section class="panel">
+		<br/>
+		<table cellpadding="4" cellspacing="0" style="width:960px">
+		<tr>
+		<td class="nobordertd">
+			<!-- header-->
+		</td>
+		</tr>
+		<tr>
+			<td class="nobordertd" style="height:5px"></td>
+		</tr>
+		<!-- detail -->
+		{% set sequence = 1 %}
+		{% set taxableamount = 0 %}
+		{% set offsetlines = offset_lines %} <!-- first assign to variable to make it work to use it in next line -->
+		{% set maxlines = 35 + offsetlines %}
+		{% set balecount = 0 %}
+		
+		<tr>
+			<td style="width:100%;padding:7px" class="nobordertd">
+				<table style="width:100%" border="1" cellspacing="0" cellpadding="4">
+				<tbody>
+				<tr>
+				<td class="header12 text5">Sr</td>
+				<td class="header12 text5">Name</td> 
+				<td class="header12 text5 number">Qty</td>
+				<td class="header12 text5 number">Rate</td>
+				<td class="header12 text5">Per</td>
+				<td class="header12 text5 number">Disc</td>
+				<td class="header12 text5 number">Tax</td>
+				<td class="header12 text5 number">Amount</td>
+				</tr>
+				{% for lineitem in lineitems %}
+				
+				{% if maxlines <= 2 %}
+				<tr><td colspan="7" style="border:0px"><span style="float:right" >(Continued in next page)</span><div style="page-break-after: always;"> </div></td></tr>
+				<tr><td colspan="7" style="border:0px"><div style="page-break-before: always;"> </div></td></tr>
+				{% set maxlines = 35 + offsetlines %}
+				{% else %}
+				<tr xstyle="line-height: 20px" >
+				{% endif %}
+				
+				<td class="text5" xstyle="border-left:none">{{sequence}}</td>
+				<td class="text5">{{ lineitem.name }}</td> 
+				<td class="text5 number">{{ lineitem.entered_quantity }}</td>
+				<td class="text5 number">{{ lineitem.order_price }}</td>
+				<td class="text5">{{ lineitem.uom_short_name }}</td>
+				<td class="text5 number">{{ ((lineitem.discount_total / lineitem.sub_total) * 100) | round(2) }}</td>
+				<td class="text5 number">{{ ((lineitem.tax_total * 100) / (lineitem.sub_total - lineitem.discount_total))  | round(1)|fixed(1)}}</td>
+				<td class="text5 number" xstyle="border-right:none">{{ (lineitem.sub_total - lineitem.discount_total) | round(2) | fixed(2) }}</td>
+				{% if lineitem.tax_total > 0 %}
+				{% set taxableamount = taxableamount - (lineitem.discount_total | round(2)) + (lineitem.sub_total | round(2)) %}
+				{% endif %}
+				{% set maxlines = maxlines - 1 %}
+				{% set sequence = sequence + 1 %}
+				</tr>
+				{% endfor %}
+
+				{# adding blank lines start #}
+					{% for k in range(1, maxlines-5) %}
+						<tr xstyle="line-height: 20px">
+							{% for l in range(1, 9) %}
+							<td>&nbsp;</td>
+							{% endfor %}
+						</tr>
+					{% endfor %}
+				{# adding blank lines end #}
+				{% if maxlines <= 2 %}
+					<tr><td colspan="7" style="border:0px"><span style="float:right" >(Continued in next page)</span><div style="page-break-after: always;"> </div></td></tr>
+				<tr><td colspan="7" style="border:0px"><div style="page-break-before: always;"> </div></td></tr>
+				{% endif %}
+				<tr>
+					<td colspan="7" class="header12 text5 number" style="border-bottom:none;border-left:none">Total</td>
+					<td class="text5 number">{{ (sub_total - discount_total) | round(2) | fixed(2) }}</td>
+				</tr>
+				{% if discount_total != 0 %}
+				<tr>
+					<td colspan="7" class="header12 text5 number nobordertd" style="border-bottom:none">Discount</td>
+					<td class="text5 number"><span style="float:right">{{ (discount_total * -1) | round(2) | fixed(2) }}</span></td>
+				</tr>
+				{% endif %}
+				{% if tax_total != 0 and tax_total_igst == 0 and tax_total_cgst == 0 and tax_total_sgst == 0 %}
+				<tr>
+					<td colspan="7" class="header12 text5 number nobordertd" style="border-bottom:none">Tax</td>
+					<td >{# <span style="float:left" class="text5">({{ ((tax_total * 100)/ taxableamount ) | round(2) }}%)</span> #} <span style="float:right" class="text5 number">{{ (tax_total) | round(2) | fixed(2) }}</span></td>
+				</tr>
+				{% endif %}
+				{% if tax_total != 0 and tax_total_igst > 0 %}
+				<tr>
+					<td colspan="7" class="header12 text5 number nobordertd" style="border-bottom:none">Tax (IGST)</td>
+					<td >{# <span style="float:left" class="text5">({{ ((tax_total_igst * 100)/ taxableamount ) | round(2) }}%) </span> #} <span style="float:right" class="text5 number">{{ tax_total_igst | round(2) | fixed(2)}}</span></td>
+				</tr>
+				{% endif %} 
+				{% if tax_total != 0 and tax_total_sgst > 0 %}
+				<tr>
+					<td colspan="7" class="header12 text5 number nobordertd" style="border-bottom:none">Tax (SGST)</td>
+					<td >{#<span style="float:left" class="text5"> ({{ ((tax_total_sgst * 100)/ taxableamount ) | round(2) }}%)</span> #} <span style="float:right" class="text5 number">{{ tax_total_sgst | round(2) | fixed(2)}}</span></td>
+				</tr>
+				{% endif %}
+				{% if tax_total != 0 and tax_total_cgst > 0 %}
+				<tr>
+					<td colspan="7" class="header12 text5 number nobordertd" style="border-bottom:none">Tax (CGST)</td>
+					<td >{#<span style="float:left" class="text5">({{ ((tax_total_cgst * 100)/ taxableamount ) | round(2) }}%)</span> #} <span style="float:right" class="text5 number">{{ tax_total_cgst | round(2) | fixed(2) }}</span></td>
+				</tr>
+				{% endif %} 
+				{% if ship_total != 0 %}
+				<tr>
+					<td colspan="7" class="header12 text5 number nobordertd" style="border-bottom:none">Shipping</td>
+					<td class="text5 number">{{ ship_total | round(2) | fixed(2)}}</td>
+				</tr>
+				{% endif %} 
+				{% if rounding_total != 0 %}
+				<tr>
+					<td colspan="7" class="header12 text5 number nobordertd" style="border-bottom:none">Rounding</td>
+					<td class="text5 number">{{ rounding_total | round(2) | fixed(2)}}</td>
+				</tr>
+				{% endif %} 
+				<tr>
+					<td colspan="7" class="header14 text2 number nobordertd" style="border-bottom:none"><b>Grand Total</b></td>
+					<td class="text2 number"><b>{{ extension | round(2) | fixed(2) }}</b></td>
+				</tr>
+				</tbody>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td class="nobordertd" style="height:5px"></td>
+		</tr>
+		<tr>
+			<td style="padding:7px" class="nobordertd">{% if show_totals == 1 %}<span class="header5">Amt. in words: </span><span class="text5">{{ extension_in_words }}</span>{% endif %}</td>
+		</tr>
+		<tr>
+			<td class="nobordertd" style="padding:7px">
+				<table style="width:100%" border="1" cellspacing="0" cellpadding="2">
+				<tr>
+					<td width="37%" style="vertical-align:top"><span class="header5" style="vertical-align: top;">Declaration</span><br/><br/><span class="textsmall">We declare that this invoice shows actual price of the goods described and that all particulars are true and correct.</span>
+					</td>		
+					<td width="63%" style="text-align:right;vertical-align:top"><span class="header5 text5" style="vertical-align: top;">for {{company.name}}</span><br/><br/><br/><br/><span class="text5" style="vertical-align: bottom;">Authorised Signatury</span>
+					</td>
+				</tr>
+				</table>
+			</td>
+		</tr>
+		</table>
+		</section>
+	</div>
+</div>
+</body>
+</html>

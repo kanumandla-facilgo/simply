@@ -1,0 +1,647 @@
+ <!--<div><span><a href="#/users">Users</a></span> <span><a href="#/customers">Customers</a></span> <span><a href="#/categories">Catalog</a></span></div>-->
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+<style>
+	.btn-split {
+		margin-left:-8px;
+		border-left-color: #0d5b68;
+		border-left-width: thin
+	}
+	.mypushbutton {
+	 	padding-right:15px;
+	 }
+	.no-gutter > [class*='col-'] {
+	    padding-right:0px;
+	    padding-left:0px;
+	}
+	.btn-print,
+	.btn-print:active, 
+	.btn-print:focus,
+	.btn-print.active,
+	.open>.dropdown-toggle.btn-print
+	 {
+	 background-color: #117a8b;
+	 color:#ffffff;
+	}
+	.btn-print:hover, .btn-print:focus{
+		background-color: #138496;
+		color:#ffffff;
+	}
+</style>
+
+<script type="text/ng-template" id="order_popover.html">
+      <span><b>Order Date: </b></span><span>{{packingslip.order.order_number}}</span><br/>
+      <span><b>Transporter: </b></span><span>{{packingslip.order.transporter.name}}</span>
+</script>
+
+<!--main content start-->
+<section id="main-content">
+    <section class="wrapper">
+        <div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                    <div class="mat-form card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title">{{title}}</h4>
+                            <div class="primaryHeaderButtonsDiv primaryHeaderButtonsForDesktop">
+                                <div class="primaryHeaderButtonsEachDiv">
+                                    <span class="primaryHeaderButton"  data-ng-click='!myform.$invalid && createDeliveryNote(delivery_note, false)' data-ng-if="delivery_note.id==-1 && isDeliveryNoteCreatePermissionExists() && !isViewOnlyDeliveryNote(delivery_note)"  title="Create Delivery Note">
+                                        <i class="fas fa-save" style="color:blue" ></i>
+                                    </span>
+                                    <span class="primaryHeaderButton" data-ng-click='updateDeliveryNote(delivery_note)' data-ng-if="delivery_note.id>0 && isDeliveryNoteUpdateAllowed(delivery_note)"  title="Update Delivery Note">
+                                        <i class="fas fa-save" style="color:blue" ></i>
+                                    </span>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv" data-ng-if="canCancelDeliveryNote(delivery_note)">
+                                    <span  class="primaryHeaderButton" data-ng-disabled="isDisabled" data-ng-click='cancelDeliveryNote(delivery_note);' >
+                                        <i class="fas fa-times"></i>
+                                    </span>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv"  data-ng-if="delivery_note.id>0 && delivery_note.status_id != 5503">
+                                    <span class="primaryHeaderButton" title="Print" data-ng-click="printDeliveryNotePdf(delivery_note, offsetLines, 1, false, delivery_note.invoice_number)">
+                                        <i class="fas fa-print" ></i>
+                                    </span>
+                                </div> 
+                                <div data-ng-if="false" class="primaryHeaderButtonsEachDiv"  data-ng-if="delivery_note.id>0">
+                                    <a class="primaryHeaderButton" title="Share" href="https://wa.me/?text=dfsd">
+                                        <i class="fas fa-share" ></i>
+                                    </a>
+                                </div>                               
+                                <div class="primaryHeaderButtonsEachDiv" data-ng-show="delivery_note.id>0 && delivery_note.status_id != 5503">
+                                    <div class="primaryHeaderDropdown">
+                                        <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
+                                        <div id="primaryHeaderButtonDiv" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                          <div class="dropdown-item" data-ng-click="printDeliveryNotePdf(delivery_note, offsetLines, 0, false, delivery_note.invoice_number)">Print Without Price</div>
+                                          <div class="dropdown-item" data-ng-if="canCompleteDeliveryNote(delivery_note)" data-ng-click='completeDeliveryNote(delivery_note);'>Mark It Complete</div>                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                          <div class="primaryHeaderButtonsDiv primaryHeaderButtonsForMobile">
+                            <div class="primaryHeaderButtonsEachDiv" data-ng-show="delivery_note.id>0 && delivery_note.status_id != 5503">
+                                    <div class="primaryHeaderDropdown">
+                                        <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-h"></i></button>
+                                        <div id="primaryHeaderButtonDiv" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                          <div class="dropdown-item" data-ng-click="printDeliveryNotePdf(delivery_note, offsetLines, 0, false, delivery_note.invoice_number)">Print Without Price</div>
+                                          <div class="dropdown-item" data-ng-if="canCompleteDeliveryNote(delivery_note)" data-ng-click='completeDeliveryNote(delivery_note);'>Mark It Complete</div>                                           
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv">
+                                    <span class="primaryHeaderButton"  data-ng-click='!myform.$invalid && createDeliveryNote(delivery_note, false)' data-ng-if="delivery_note.id==-1 && isDeliveryNoteCreatePermissionExists() && !isViewOnlyDeliveryNote(delivery_note)"  title="Create Delivery Note">
+                                        <i class="fas fa-save" style="color:blue" ></i>
+                                    </span>
+                                    <span class="primaryHeaderButton" data-ng-click='updateDeliveryNote(delivery_note)' data-ng-if="delivery_note.id>0 && isDeliveryNoteUpdateAllowed(delivery_note)"  title="Update Delivery Note">
+                                        <i class="fas fa-save" style="color:blue" ></i>
+                                    </span>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv" data-ng-if="canCancelDeliveryNote(delivery_note)">
+                                    <span  class="primaryHeaderButton" data-ng-disabled="isDisabled" data-ng-click='cancelDeliveryNote(delivery_note);' >
+                                        <i class="fas fa-times"></i>
+                                    </span>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv"  data-ng-if="delivery_note.id>0 && delivery_note.status_id != 5503">
+                                    <span class="primaryHeaderButton" title="Print" data-ng-click="printDeliveryNotePdf(delivery_note, offsetLines, 1, false, delivery_note.invoice_number)">
+                                        <i class="fas fa-print" ></i>
+                                    </span>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv"  data-ng-if="delivery_note.id>0 && delivery_note.status_id != 5503">
+                                    <span class="primaryHeaderButton" title="Print" data-ng-click="printDeliveryNotePdf(delivery_note, offsetLines, 1, true, delivery_note.invoice_number)">
+                                        <i class="fas fa-share" ></i>
+                                    </span>
+                                </div>
+                          </div>
+                            <form class="cmxform form-horizontal tasi-form" id="myform" method="post" name="myform">
+                                <div class="row">                                   
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 eachCardWrapperDiv">
+                                        <div class="card MB0">
+                                            <h5 class="card-header childcardheader">Information</h5>
+                                            <div class="card-body">
+                                               <div class="row">   
+                                                  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                 			<label class="item-label">
+                                                          Customer Name
+                                                      </label>
+                                                      <div class="item-content">{{delivery_note.customer.name}}</div>
+                                                    </div>
+                                               		</div>
+                                                  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                      <label class="item-label">Status</label>
+                                                          <div class="item-content">{{delivery_note.status_name}}</div>
+                                                    </div>
+                                                  </div>
+                                                  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container" ng-class="(myform.txt_invoice_number.$dirty && myform.txt_invoice_number.$invalid) || myform.txt_invoice_number.$error.required ? 'has-error' : 'has-success'" data-ng-if="!isViewOnlyDeliveryNote(delivery_note)">
+                                                      <input class="floating-input" type="text" id="txt_invoice_number" name="txt_invoice_number" data-ng-model="delivery_note.invoice_number" />
+                                                      <label class="input-label">Invoice#</label>
+                                                      <span class="help-block errorText" ng-show="(myform.txt_invoice_number.$dirty && myform.txt_invoice_number.$invalid) || myform.txt_invoice_number.$error.required">Please enter invoice no.</span>
+                                                    </div>
+                                                    <div class="form-group bmd-form-group floating-input-container" data-ng-if="isViewOnlyDeliveryNote(delivery_note)">
+                                                      <label class="item-label">Invoice#</label>
+                                                          <div class="item-content">{{delivery_note.invoice_number}}</div>
+                                                    </div>
+                                                  </div>
+                                               		<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                               			<div class="form-group bmd-form-group floating-input-container" ng-class="(myform.ddlb_transporter.$dirty && myform.ddlb_transporter.$invalid) || myform.ddlb_transporter.$error.required ? 'has-error' : 'has-success'" data-ng-if="!isViewOnlyDeliveryNote(delivery_note)">
+                                               				<select id="ddlb_transporter" name="ddlb_transporter" data-ng-options="transporter as transporter.name for transporter in transporterlist track by transporter.id" data-ng-model="delivery_note.transporter" data-ng-init="delivery_note.customer.transporter.id" xxdata-ng-change="updateQuotePrice(x)" xxdata-ng-hide="x.is_quote_uom_restricted" required></select>
+                                               				<label class="select-label">Transporter</label>
+                                               			</div>
+                                               			<div class="form-group bmd-form-group floating-input-container" data-ng-if="isViewOnlyDeliveryNote(delivery_note)">
+                                               				<label class="item-label">Transporter</label>
+	                                                        <div class="item-content">{{delivery_note.transporter.name}}</div>
+                                               			</div>
+                                               		</div>
+                                               		<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="false">
+                                               			<div class="form-group bmd-form-group floating-input-container" data-ng-if="!isViewOnlyDeliveryNote(delivery_note)">
+                                               				<input class="floating-input" type="text" id="txt_note_number" name="txt_note_number" data-ng-model="delivery_note.note_number" data-ng-if="delivery_note_number_edit_flag && !isViewOnlyDeliveryNote(delivery_note)" data-ng-required="delivery_note_number_edit_flag" ng-class="(((myform.txt_note_number.$dirty || submitted) && myform.txt_note_number.$invalid) || myform.txt_note_number.$error.required) ? 'error' : 'success'"/>
+                                               				<label class="input-label">Note #</label>
+                                                      <span class="help-block errorText" ng-show="(((myform.txt_note_number.$dirty || submitted) && myform.txt_note_number.$invalid) || myform.txt_note_number.$error.required)">Please enter note no.</span>
+                                               			</div>
+                                               			<div class="form-group bmd-form-group floating-input-container" data-ng-if="false">
+                                               				<label class="item-label">Note #</label>
+	                                                        <label data-ng-if="isViewOnlyDeliveryNote(delivery_note) || !delivery_note_number_edit_flag">{{ ((isViewOnlyDeliveryNote(delivery_note) || (delivery_note.note_number != null && delivery_note.note_number != "")) ? delivery_note.note_number : "Will be created")}} <i class="fas fa-edit" data-ng-click="enableDeliveryNoteNumberEdit()" data-ng-if="!isViewOnlyDeliveryNote(delivery_note) && !delivery_note_number_edit_flag"></i></label>
+                                               			</div>
+                                               		</div>                                         		
+                                               		<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                               			<div class="form-group bmd-form-group floating-input-container" ng-class="(myform.txt_dispatch_date.$dirty && myform.txt_dispatch_date.$invalid) || myform.txt_dispatch_date.$error.required ? 'has-error' : 'has-success'" data-ng-if="!isViewOnlyDeliveryNote(delivery_note)">
+                                               				<input data-ng-disabled="true" class="floating-input" type="date" id="txt_dispatch_date" name="txt_dispatch_date" data-ng-model="delivery_note.note_date" min="{{today_date | date:'yyyy-MM-dd'}}" required="true" />
+                                               				<label class="input-label">Date</label>
+                                                      <span class="help-block errorText" ng-show="(myform.txt_dispatch_date.$dirty && myform.txt_dispatch_date.$invalid) || myform.txt_dispatch_date.$error.required">Please enter note date</span>
+                                               			</div>
+                                               			<div class="form-group bmd-form-group floating-input-container" data-ng-if="isViewOnlyDeliveryNote(delivery_note)">
+                                               				<label class="item-label">Date</label>
+	                                                        <div class="item-content">{{delivery_note.note_date | date:'dd-MMM-yyyy'}}</div>
+                                               			</div>
+                                               		</div>
+                                                  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="false">
+                                                    <div class="form-group bmd-form-group floating-input-container" ng-class="(myform.txt_destination.$dirty && myform.txt_destination.$invalid) || myform.txt_destination.$error.required ? 'has-error' : 'has-success'">
+                                                      <input class="floating-input" type="text" id="txt_destination" name="txt_destination" data-ng-model="delivery_note.destination"  data-ng-required="true"/>
+                                                      <label class="input-label">Destination</label>
+                                                      <span class="help-block errorText" ng-show="(myform.txt_destination.$dirty && myform.txt_destination.$invalid) || myform.txt_destination.$error.required">Please enter destination</span>
+                                                    </div>
+                                                    <div class="form-group bmd-form-group floating-input-container" data-ng-if="isViewOnlyDeliveryNote(delivery_note)">
+                                                      <label class="item-label">Destination</label>
+                                                          <div class="item-content">{{delivery_note.destination}}</div>
+                                                    </div>
+                                                  </div>
+                                                  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="!delivery_note.proforma_invoice_flag">
+                                                    <div class="form-group bmd-form-group floating-input-container" ng-class="(myform.txt_lr_number.$dirty && myform.txt_lr_number.$invalid) || myform.txt_lr_number.$error.required ? 'has-error' : 'has-success'" data-ng-if="!isViewOnlyDeliveryNote(delivery_note)">
+                                                      <input class="floating-input" type="text" id="txt_distance" ng-class="(myform.txt_distance.$dirty && myform.txt_distance.$invalid) || myform.txt_distance.$error.required ? 'has-error' : 'has-success'" name="txt_distance" data-ng-model="delivery_note.destination_distance" required="true" />
+                                                      <label class="input-label" for="txt_distance">
+                                                          Distance
+                                                      </label>
+                                                       <span class="help-block errorText"ng-show="(myform.txt_distance.$dirty && myform.txt_distance.$invalid) && myform.txt_distance.$error.required || delivery_note.destination_distance<=0">Please enter distance > 0</span>
+                                                    </div>
+                                                    <div class="form-group bmd-form-group floating-input-container" data-ng-if="isViewOnlyDeliveryNote(delivery_note)">
+                                                      <label class="item-label">Distance</label>
+                                                          <div class="item-content">{{delivery_note.destination_distance}}</div>
+                                                    </div>
+                                                  </div>       		
+                                                  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_INTEGRATION_INVOICE)">
+                                                    <div class="form-group floating-input-container" style="padding-bottom: 0px;">
+                                                        <input type="checkbox" name="is_proforma_invoice" id="is_proforma_invoice" data-ng-click="checkProformaFlag(x)" data-ng-model="delivery_note.proforma_invoice_flag" 
+                                                        data-ng-true-value="1" data-ng-false-value="0" />
+                                                        <label class="" for="is_proforma_invoice">Proforma Invoice</label>
+                                                    </div>
+                                                  </div>   
+                                                  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_INTEGRATION_INVOICE)">
+                                                    <div class="form-group floating-input-container" style="padding-bottom: 0px;">
+                                                        <input type="checkbox" name="is_material_out_invoice" id="is_material_out_invoice" data-ng-model="delivery_note.material_out_invoice_flag" 
+                                                        data-ng-true-value="1" data-ng-false-value="0" />
+                                                        <label class="" for="is_material_out_invoice">Material Out Invoice</label>
+                                                    </div>
+                                                  </div> 
+                                                  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_INTEGRATION_INVOICE) && !delivery_note.proforma_invoice_flag">
+                                                    <div class="form-group floating-input-container" style="padding-bottom: 0px;">
+                                                        <input type="checkbox" name="do_not_sync" id="do_not_sync" data-ng-model="delivery_note.sync_status_id" 
+                                                        data-ng-true-value="4103" data-ng-false-value="4100" />
+                                                        <label class="" for="do_not_sync">Do not Sync?</label>
+                                                    </div>
+                                                  </div>                                                
+                                                  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="!delivery_note.proforma_invoice_flag">
+                                                    <div class="form-group bmd-form-group floating-input-container" ng-class="(myform.txt_lr_number.$dirty && myform.txt_lr_number.$invalid) || myform.txt_lr_number.$error.required ? 'has-error' : 'has-success'" data-ng-if="!isViewOnlyDeliveryNote(delivery_note)">
+                                                      <input class="floating-input" type="text" id="txt_lr_number" name="txt_lr_number" data-ng-model="delivery_note.lr_number" />
+                                                      <label class="input-label" for="txt_order_number">
+                                                          LR #
+                                                      </label>
+                                                    </div>
+                                                    <div class="form-group bmd-form-group floating-input-container" data-ng-if="isViewOnlyDeliveryNote(delivery_note)">
+                                                      <label class="item-label">LR #</label>
+                                                      <div class="item-content">{{delivery_note.lr_number}}</div>
+                                                    </div>
+                                                  </div>
+                                                  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="!delivery_note.proforma_invoice_flag">
+                                                    <div class="form-group bmd-form-group floating-input-container" ng-class="(myform.txt_lr_date.$dirty && myform.txt_lr_date.$invalid) || myform.txt_lr_date.$error.required ? 'has-error' : 'has-success'" data-ng-if="!isViewOnlyDeliveryNote(delivery_note)">
+                                                      <input class="floating-input" type="date" id="txt_lr_date" name="txt_lr_date" data-ng-model="delivery_note.lr_date" />
+                                                      <label class="input-label">LR Date</label>
+                                                    </div>
+                                                    <div class="form-group bmd-form-group floating-input-container" data-ng-if="isViewOnlyDeliveryNote(delivery_note)">
+                                                      <label class="item-label">LR Date</label>
+                                                          <div class="item-content">{{delivery_note.lr_date | date:'dd-MMM-yyyy'}}</div>
+                                                    </div>
+                                                  </div>     
+                                                  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="delivery_note.id>0">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                      <label class="item-label">Created By</label>
+                                                      <div class="item-content">{{delivery_note.user.first_name + ' ' + delivery_note.user.last_name}}</div>
+                                                    </div>
+                                                  </div>
+                                                  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="false">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                      <input class="floating-input" type="number" min="-30" max="30" step="1" data-ng-model="offsetLines" />
+                                                      <label class="input-label">Offset Lines</label>
+                                                    </div>
+                                                  </div>                                                 
+                                                  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container" ng-class="(myform.txtNotes.$dirty && myform.txtNotes.$invalid) || myform.txtNotes.$error.required ? 'has-error' : 'has-success'" data-ng-if="!isViewOnlyDeliveryNote(delivery_note)">
+                                                      <textarea id="txtNotes" name="txtNotes" class=" floating-input" type="text" data-ng-model="delivery_note.notes" cols="20" rows="3" maxlength="128" />
+                                                      <label class="input-label">Notes <small>(128 char)</small></label>
+                                                    </div>
+                                                    <div class="form-group bmd-form-group floating-input-container" data-ng-if="isViewOnlyDeliveryNote(delivery_note)">
+                                                      <label class="item-label">Notes <small>(128 char)</small></label>
+                                                          <div class="item-content">{{delivery_note.notes}}</div>
+                                                    </div>
+                                                  </div>     
+                                                  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-if="isErrorSyncStatus(delivery_note) && utilService.isConfigurationOn(utilService.CONST_CONFIG_INTEGRATION_INVOICE)">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                      <label class="item-label">Sync Failure Reason</label>
+                                                          <div class="item-content">{{delivery_note.sync_failure_reason}}</div>
+                                                    </div>
+                                                  </div>
+                                               	</div>
+                                           </div>
+                                       </div>
+                                   </div> 
+                                   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 eachCardWrapperDiv">
+                                      <div class="card ">
+                                          <h5 class="card-header childcardheader">Summary</h5>
+                                          <div class="card-body">
+                                              <div class="row">
+                                                <div class="col-md-12 col-xs-12">
+                                                    <div class="summaryEachDiv">
+                                                        <p class="summaryEachDivLabel">Sub Total</p>
+                                                        <span class="summaryEachDivValue" style="float:right" type="text">{{delivery_note.sub_total|number:4}}</span>
+                                                    </div>
+                                                    <div class="summaryEachDiv">
+                                                        <p class="summaryEachDivLabel">Discount</p>
+                                                        <span class="summaryEachDivValue" style="float:right" type="text">{{delivery_note.discount_total*-1|number:4}}</span>
+                                                    </div>
+                                                    <div class="summaryEachDiv">
+                                                        <p class="summaryEachDivLabel">Tax</p>
+                                                        <span class="summaryEachDivValue" style="float:right" type="text">{{delivery_note.tax_total|number:4}}</span>
+                                                    </div>
+                                                    <div class="summaryEachDiv">
+                                                        <p class="summaryEachDivLabel">S & H</p>
+                                                        <input class="summaryEachDivValue" type="number" data-ng-model="delivery_note.ship_total"  id="txt_shipping" name="txt_shipping" data-ng-disabled="isViewOnlyDeliveryNote(delivery_note)" data-ng-model="delivery_note.ship_total" min="0" step="0.01" class="floating-input" required="true" data-ng-change="updateRounding(delivery_note)" />
+                                                    </div>
+                                                    <div class="summaryEachDiv">
+                                                        <p class="summaryEachDivLabel">Rounding</p>
+                                                        <span class="summaryEachDivValue" style="float:right" type="text">{{delivery_note.rounding_total|number:4}}</span>
+                                                    </div>
+                                                    <div class="summaryEachDiv">
+                                                        <p class="summaryEachDivLabel">Grand Total</p>
+                                                        <input class="summaryEachDivValue" value="{{delivery_note.ship_total + delivery_note.tax_total + delivery_note.sub_total - delivery_note.discount_total + delivery_note.rounding_total|number:2}}" readonly disabled/>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 eachCardWrapperDiv" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_CUSTOMER_SHIP_ADDRESS) == '1'">
+                                            <div class="card">
+                                               <h5 class="card-header childcardheader">Shipping Address</h5>
+                                               <div class="deliveryNotesFilterDiv">
+                                                <div class="deliveryNotesDiscount">
+                                                    <span>
+                                                      <i class="fa fa-angle-down" aria-hidden="true" title="Edit Ship Address" data-ng-click="setShipAddressPanel(true)" data-ng-if="!showShipAddressPanel" /><i class="fa fa-file" aria-hidden="true" title="New Address" data-ng-click="clearDeliveryNoteAddress(delivery_note, true)" data-ng-if="showShipAddressPanel && canUpdateDeliveryNoteShippingAddress(delivery_note)" />&nbsp;&nbsp;<i class="fas fa-edit" aria-hidden="true" title="Edit Ship Address" data-ng-click="clearDeliveryNoteAddress(delivery_note, false)" data-ng-if="showShipAddressPanel && canUpdateDeliveryNoteShippingAddress(delivery_note) && (delivery_note.ship_address.id != '' && delivery_note.ship_address.id == delivery_note.customer.ship_address.id)"></i>&nbsp;&nbsp;<i class="fa fa-angle-up" aria-hidden="true" title="Expand Ship Address" data-ng-click="setShipAddressPanel(false)" data-ng-if="showShipAddressPanel" />
+                                                    </span>
+                                                </div>
+                                              </div>
+                                               <div class="card-body" data-ng-if="!showShipAddressPanel">{{ (delivery_note.ship_address.name != delivery_note.customer.name && delivery_note.ship_address.name != "" && delivery_note.ship_address.name != null ?  delivery_note.ship_address.name + ", ": "") + (delivery_note.ship_address.address1 != "" ? delivery_note.ship_address.address1 + ", " : "") + delivery_note.ship_address.address2 + " " + delivery_note.ship_address.city + " " + delivery_note.ship_address.state + " " + delivery_note.ship_address.zip}}</div>
+                                               <div class="card-body" data-ng-if="showShipAddressPanel">
+                                                   <div class="row">
+                                                      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                        <div class="form-group bmd-form-group floating-input-container">
+                                                            <input class="floating-input" type="text" name="ship_name" id="ship_name" data-ng-model="delivery_note.ship_address.name" placeholder="Enter firm name" style="text-transform: capitalize;" data-ng-readonly="isDeliveryNoteShippingAddressReadOnly(delivery_note)" />
+                                                            <label class="input-label" for="ship_name">
+                                                              Firm Name (if sent to customer's party directly)
+                                                            </label>
+                                                        </div>
+                                                      </div>
+                                                      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                        <div class="form-group bmd-form-group floating-input-container">
+                                                            <input class="floating-input"   type="text" name="ship_first_name" id="ship_first_name" data-ng-model="delivery_note.ship_address.first_name"  placeholder="Enter first name" style="text-transform: capitalize;" data-ng-readonly="isDeliveryNoteShippingAddressReadOnly(delivery_note)" />
+                                                            <label class="input-label" for="ship_first_name">
+                                                              First Name
+                                                            </label>
+                                                        </div>
+                                                       </div>
+                                                       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                        <div class="form-group bmd-form-group floating-input-container">
+                                                            <input class="floating-input"  type="text" name="ship_last_name" id="ship_last_name" data-ng-model="delivery_note.ship_address.last_name" xxdata-ng-attr-required="false" placeholder="Enter last name" style="text-transform: capitalize;" data-ng-readonly="isDeliveryNoteShippingAddressReadOnly(delivery_note)"  />
+                                                            <label class="input-label" for="ship_last_name">
+                                                                Last Name
+                                                            </label>
+                                                        </div>
+                                                       </div>
+                                                       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                        <div class="form-group bmd-form-group floating-input-container">
+                                                            <input class="floating-input"   type="text" name="ship_address1" id="ship_address1" data-ng-model="delivery_note.ship_address.address1"  placeholder="Enter address line 1" style="text-transform: capitalize;" data-ng-readonly="isDeliveryNoteShippingAddressReadOnly(delivery_note)" />
+                                                            <label class="input-label" for="ship_address1">
+                                                              Address Line 1
+                                                            </label>
+                                                        </div>
+                                                       </div>
+                                                       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                        <div class="form-group bmd-form-group floating-input-container">
+                                                            <input class="floating-input"  type="text" name="ship_address2" id="ship_address2" data-ng-model="delivery_note.ship_address.address2" placeholder="Enter address line 2" style="text-transform: capitalize;" data-ng-readonly="isDeliveryNoteShippingAddressReadOnly(delivery_note)" />
+                                                            <label class="input-label" for="ship_address2">
+                                                                Address Line 2
+                                                            </label>
+                                                        </div>
+                                                       </div>
+                                                       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                        <div class="form-group bmd-form-group floating-input-container">
+                                                            <input class="floating-input"  type="text" name="ship_address3" id="ship_address3" data-ng-model="delivery_note.ship_address.address3" placeholder="Enter address line 3" style="text-transform: capitalize;" data-ng-readonly="isDeliveryNoteShippingAddressReadOnly(delivery_note)"  />
+                                                            <label class="input-label" for="ship_address3">
+                                                                Address Line 3
+                                                            </label>
+                                                        </div>
+                                                       </div>
+                                                       <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                        <div class="form-group bmd-form-group floating-input-container">
+                                                            <input class="floating-input" type="text" name="ship_city" id="ship_city" data-ng-model="delivery_note.ship_address.city" placeholder="Enter city" style="text-transform: capitalize;" data-ng-readonly="isDeliveryNoteShippingAddressReadOnly(delivery_note)" />
+                                                            <label class="input-label">
+                                                                City/Destination
+                                                            </label>
+                                                        </div>
+                                                       </div>                                                          
+                                                       <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                         <div class="form-group bmd-form-group floating-input-container" >
+                                                             <select id="ddlb_ship_state" name="ddlb_ship_state" data-ng-model="delivery_note.ship_address.state" data-ng-change="onChangeShipAddressState(delivery_note)" onclick="this.setAttribute('value', this.value);" data-ng-options="a as a for a in state_list track by a" data-ng-readonly="isDeliveryNoteShippingAddressReadOnly(delivery_note)">
+                                                             </select>
+                                                             <label class="select-label">
+                                                                 State
+                                                             </label>
+                                                         </div>
+                                                       </div>
+                                                       <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                        <div class="form-group bmd-form-group floating-input-container">
+                                                            <input class="floating-input"  type="text" name="ship_zip" id="ship_zip" data-ng-model="delivery_note.ship_address.zip" data-ng-pattern="/^[1-9][0-9]{5}$/" placeholder="Enter zip" data-ng-readonly="isDeliveryNoteShippingAddressReadOnly(delivery_note)"/>
+                                                            <label class="input-label">
+                                                                PIN
+                                                            </label>
+                                                           <span class="help-block errorText" ng-show="((myform.ship_zip.$dirty || submitted) && myform.ship_zip.$invalid)">Please enter valid PIN</span>
+                                                        </div>
+                                                       </div>
+                                                       <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                        <div class="form-group bmd-form-group floating-input-container">
+                                                            <input class="floating-input"  type="email" name="ship_email" id="ship_email" data-ng-model="delivery_note.ship_address.email1" placeholder="Enter email" data-ng-readonly="isDeliveryNoteShippingAddressReadOnly(delivery_note)" />
+                                                            <label class="input-label">
+                                                                Email
+                                                            </label>
+                                                        </div>
+                                                       </div>
+                                                       <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                        <div class="form-group bmd-form-group floating-input-container">
+                                                            <input class="floating-input" type="text" name="ship_phone" id="ship_phone" data-ng-model="delivery_note.ship_address.phone1" placeholder="Enter Phone" data-ng-pattern="/^[6-9][0-9]{9}$/" maxlength="10" data-ng-class="((myform.ship_phone.$dirty || submitted) && myform.ship_phone.$invalid) ? 'error' : ''"  data-ng-readonly="isDeliveryNoteShippingAddressReadOnly(delivery_note)" />
+                                                            <label class="input-label">
+                                                                Phone (Mobile)
+                                                            </label>
+                                                            <span class="help-block" ng-show="!(myform.ship_phone.$dirty && myform.ship_phone.$invalid)">Only digits, no space</span>
+                                                            <span class="help-block errorText" ng-show="((myform.ship_phone.$dirty || submitted) && myform.ship_phone.$invalid)">Please enter valid phone number</span>
+                                                        </div>
+                                                       </div>
+                                                       <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                        <div class="form-group bmd-form-group floating-input-container">
+                                                            <input class="floating-input" type="text" name="ship_phone2" id="ship_phone2" data-ng-model="delivery_note.ship_address.phone2" data-ng-pattern="/^[6-9][0-9]{9}$/" placeholder="Enter Phone" maxlength="10" data-ng-pattern="/^[6-9][0-9]{9}$/" data-ng-class="(myform.ship_phone2.$dirty && myform.ship_phone2.$invalid) ? 'error' : ''" data-ng-readonly="isDeliveryNoteShippingAddressReadOnly(delivery_note)" />
+                                                            <label class="input-label">
+                                                                Phone (Other)
+                                                            </label>
+                                                            <span class="help-block" ng-show="!((myform.ship_phone2.$dirty || submitted) && myform.ship_phone2.$invalid)">Only digits, no space</span>
+                                                            <span class="help-block errorText" ng-show="((myform.ship_phone2.$dirty || submitted) && myform.ship_phone2.$invalid)">Please enter valid phone number</span>
+                                                        </div>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                            </div>
+                                        </div>
+                                         <div class="col-lg-12 eachCardWrapperDiv">
+                                            <div class="card" style="position:relative;">
+                                                <h5 class="card-header childcardheader">Details</h5>
+                                                <div class="deliveryNotesFilterDiv">
+                                                    <div class="deliveryNotesDiscount">
+                                                        <input type="number" id="txt_disc_head" data-ng-model="perc" style="width:100px" data-ng-min="0" data-ng-step="0.01" data-ng-max="100" placeholder="Disc%" /> 
+                                                        <span class="" data-ng-click="applyDiscount(perc)">
+                                                            <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                                        </span>
+                                                    </div>
+                                                    <div class="deliverNotesIconDiv">
+                                                        <span class="deliveryNotesIcons" data-ng-hide="delivery_note.id!=-1 && !isViewOnlyDeliveryNote(delivery_note)">
+                                                            <a data-ng-if="selectAll == 1"  data-ng-click="deselectAllPackingSlipsInDN()"><i class="far fa-check-square"></i></a>
+                                                            <a data-ng-if="selectAll == 0"  data-ng-click="selectAllPackingSlipsInDN()"><i class="far fa-square"></i></a>
+                                                        </span>
+                                                        <span class="deliveryNotesIcons">
+                                                            <a data-ng-if="!expandAll" data-ng-click="expandAllPackingSlips()"><i class="fas fa-angle-double-down"></i></a>
+                                                            <a data-ng-if="expandAll" data-ng-click="collapseAllPackingSlips()"><i class="fas fa-angle-double-up "></i></a>
+                                                        </span>
+                                                    </div>
+                                                    <!--<span data-ng-hide="delivery_note.id!=-1 && !isViewOnlyDeliveryNote(delivery_note)">&nbsp;|&nbsp;</span>-->
+                                                </div>
+                                                <div class="card-body" style="padding:15px 0;">
+                                                  <div class="row deliveryNotesEachSection p-0"  data-ng-repeat="packingslip in delivery_note.packingsliplist">
+                                                      <div class="col-1" data-ng-hide="delivery_note.id!=-1 && !isViewOnlyDeliveryNote(delivery_note)">
+                                                        <div class="deileveryNotesPrimaryRow floating-input-container " >
+                                                            <input class="delieveryNotesEachCheckbox" style="display:none;" id="select_individual_{{$index}}" type="checkbox"  data-ng-model="packingslip.checked" data-ng-true-value="1" data-ng-false-value="0" xdata-ng-checked="isDeliveryNotePackingSlipChecked(packingslip)" data-ng-click="calculateDeliveryNoteTotals(false)">
+                                                            <label for="select_individual_{{$index}}">
+                                                                <i class="far fa-check-square"></i>
+                                                                <i class="far fa-square"></i>
+                                                            </label>
+                                                        </div>
+                                                      </div>
+                                                      <div class="col-4 col-md-2">
+                                                        <div class="deileveryNotesPrimaryRow floating-input-container" >
+                                                            <label class="item-label">Slip #</label>                                                      
+                                                            <div class="item-content"><a href="#/packingslips/{{packingslip.id}}">{{packingslip.slip_number}}</a></div>
+                                                        </div>
+                                                      </div>
+                                                      <div class="col-4 col-md-2">
+                                                        <div class="deileveryNotesPrimaryRow floating-input-container" >
+                                                            <label class="item-label">Order #</label>                                                      
+                                                            <div class="item-content"><a data-ng-click="showEditOrderForm(packingslip.order.id);">{{packingslip.order.order_number}}</a></div>
+                                                        </div>
+                                                      </div>
+                                                      <div class="col-6 col-md-3">
+                                                        <div class="deileveryNotesPrimaryRow floating-input-container" >
+                                                          <input class="floating-input" type="number" id="txt_gross_weight_{{$index}}" name="txt_gross_weight_{{$index}}" data-ng-disabled="isViewOnlyDeliveryNote(delivery_note)" data-ng-model="packingslip.gross_weight" min="0" />
+                                                          <label class="input-label">Gross Wt</label>
+                                                        </div>
+                                                      </div>
+                                                      <div class="col-6 col-md-3">
+                                                        <div class="deileveryNotesPrimaryRow floating-input-container" >
+                                                            <input class="floating-input"  type="number" id="txt_net_weight_{{$index}}" name="txt_net_weight_{{$index}}" data-ng-disabled="isViewOnlyDeliveryNote(delivery_note)" data-ng-model="packingslip.net_weight" min="0" />
+                                                            <label class="input-label">Net Wt</label>
+                                                        </div>
+                                                      </div>
+                                                    <div class="deliverNotesExpandCollapseDiv" >
+                                                        <span data-ng-show="(packingslip.expanded == undefined || !packingslip.expanded)" ng-click="expandPackingSlipDetails(packingslip.id)"><i class="fa fa-angle-down" /></span>
+                                                        <span data-ng-show="packingslip.expanded" ng-click="expandPackingSlipDetails(packingslip.id)"><i class="fa fa-angle-up" /></span>
+                                                    </div>
+                                                      <div class="col-lg-12 m-0 p-0" data-ng-show="packingslip.expanded">
+                                                        <table class="table table-condensed table-bordered deliverNotesTable">
+                                                          <thead>
+                                                              <tr>
+                                                                  <th>SKU</th>
+                                                                  <th>Stock</th>
+                                                                  <th>Qty</th>
+                                                                  <th>Rate</th>
+                                                                  <th>Extn</th>
+                                                                  <th>Tax%</th>
+                                                                  <th>Discount</th>
+                                                              </tr>
+                                                          </thead>
+                                                          <tbody data-ng-repeat="item in packingslip.lineitems">
+                                                              <tr >
+                                                                <td>{{item.name}}</td>
+                                                                <td>
+                                                                  <span data-ng-if="item.is_batched_inventory == 1">{{item.bucket.code}} =  {{item.bucket.stock_quote_string}}</span>
+                                                                  <span data-ng-if="item.is_batched_inventory == 0">-</span>
+                                                                </td>
+                                                                <td>{{item.packed_qty_quote + ' ' +  item.uom_short_name}}</td>
+                                                                <td>{{item.sub_total/item.packed_qty_quote | number : 2}}</td>
+                                                                <td>{{item.sub_total | number : 2}}</td>
+                                                                <td>{{((item.tax_total * 100) / (item.sub_total - item.discount_total))  | number : 2}}</td>
+                                                                <td>
+                                                                    <input type="number" id="txt_disc_{{$index}}" name="txt_disc_{{$index}}" data-ng-disabled="isViewOnlyDeliveryNote(delivery_note)" data-ng-model="item.discount_total" data-ng-min="0" data-ng-step="0.01" class="floating-input" required="true" data-ng-change="getTax(delivery_note, delivery_note.tax_type_id, 1); getDeliveryNoteTotal(delivery_note)"/>
+                                                                </td>
+                                                              </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_INTEGRATION_EWAYBILL)">
+                                                <div class="form-group floating-input-container" style="padding-bottom: 0px;">
+                                                    <input type="checkbox" name="show_einvoice_info" id="show_einvoice_info" data-ng-model="delivery_note.show_einvoice_info"
+                                                    data-ng-true-value="1" data-ng-false-value="0" />
+                                                    <label class="" for="show_einvoice_info">Show E-Invoice (Eway Bill) Info</label>
+                                                </div>
+                                              </div> 
+                                              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 eachCardWrapperDiv" data-ng-if="delivery_note.show_einvoice_info && utilService.isConfigurationOn(utilService.CONST_CONFIG_INTEGRATION_EWAYBILL)">
+                                              <div class="card">
+                                               <h5 class="card-header childcardheader">E-Invoice (Eway Bill) Info</h5>
+                                               <div class="card-body">
+                                                   <div class="row">
+                                                        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="!delivery_note.proforma_invoice_flag">
+                                                            <div class="form-group bmd-form-group floating-input-container" data-ng-if="!isViewOnlyDeliveryNote(delivery_note)">
+                                                                <input class="floating-input" type="text" id="txt_einvoice_info_number" name="txt_einvoice_info_number" data-ng-model="delivery_note.einvoice_info.bill_number" />
+                                                                <label class="input-label">E-Way Bill #</label>
+                                                            </div>
+                                                            <div class="form-group bmd-form-group floating-input-container" data-ng-if="isViewOnlyDeliveryNote(delivery_note)">
+                                                                <label class="item-label">E-Way Bill #</label>
+                                                                <div class="item-content">{{delivery_note.einvoice_info.bill_number}}</div>
+                                                            </div>
+                                                        </div>
+                                                    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="!delivery_note.proforma_invoice_flag">
+                                                        <div class="form-group bmd-form-group floating-input-container" ng-class="(myform.txt_einvoice_info_date.$dirty && myform.txt_einvoice_info_date.$invalid) || myform.txt_einvoice_info_date.$error.required ? 'has-error' : 'has-success'" data-ng-if="!isViewOnlyDeliveryNote(delivery_note)">
+                                                            <input class="floating-input" type="date" id="txt_einvoice_info_number" name="txt_einvoice_info_number" data-ng-model="delivery_note.einvoice_info.bill_date" />
+                                                            <label class="input-label">E-Way Bill Date</label>
+                                                        </div>
+                                                        <div class="form-group bmd-form-group floating-input-container" data-ng-if="isViewOnlyDeliveryNote(delivery_note)">
+                                                            <label class="item-label">E-Way Bill Date</label>
+                                                            <div class="item-content">{{delivery_note.einvoice_info.bill_date | date:'dd-MMM-yyyy'}}</div>
+                                                        </div>
+                                                      </div>
+                                                      <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                        <div class="form-group bmd-form-group floating-input-container">
+                                                             <select id="ddlb_transport_type" name="ddlb_transport_type" data-ng-model="delivery_note.einvoice_info.transport_mode" required="true" data-ng-init="1">
+                                                                <option value=1 ng-selected="customer.transport_mode == 1">Road</option>
+                                                                <option value=2 ng-selected="customer.transport_mode == 2">Rail</option>
+                                                                <option value=3 ng-selected="customer.transport_mode == 3">Air</option>
+                                                                <option value=4 ng-selected="customer.transport_mode == 4">Ship</option>
+                                                                <option value=4 ng-selected="customer.transport_mode == 0">Not Applicable</option>
+                                                            </select>
+                                                            <label class="select-label">
+                                                                Transport Mode
+                                                            </label>
+                                                        </div>
+                                                      </div>
+                                                       <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">     
+                                                        <div class="form-group bmd-form-group floating-input-container" >
+                                                            <select id="ddlb_vehicle_type" name="ddlb_vehicle_type" data-ng-model="delivery_note.einvoice_info.vehicle_type" required="true" data-ng-init="R">
+                                                                <option value="R" ng-selected="delivery_note.einvoice_info.vehicle_type == 'R'">Regular</option>
+                                                                <option value="O" ng-selected="delivery_note.einvoice_info.vehicle_type == 'O'">ODC</option>
+                                                            </select>
+                                                            <label class="select-label">
+                                                                Vehicle Type
+                                                            </label>  
+                                                        </div>
+                                                       </div>
+                                                       <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                        <div class="form-group bmd-form-group floating-input-container" >
+                                                            <select id="ddlb_transaction_type" name="ddlb_transaction_type" data-ng-model="delivery_note.einvoice_info.transaction_type" required="true" >
+                                                                <option value=1 ng-selected="delivery_note.einvoice_info.transaction_type == 1">Regular</option>
+                                                                <option value=2 ng-selected="delivery_note.einvoice_info.transaction_type == 2">Bill To - Ship To</option>
+                                                                <option value=3 ng-selected="delivery_note.einvoice_info.transaction_type == 3">Bill From - Ship From</option>
+                                                                <option value=4 ng-selected="delivery_note.einvoice_info.transaction_type == 4">Combination of 2 & 3</option>
+                                                            </select>
+                                                            <label class="select-label">
+                                                                Transaction Type
+                                                            </label>  
+                                                        </div>
+                                                       </div>
+                                                       <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                        <div class="form-group bmd-form-group floating-input-container" >
+                                                            <input class="floating-input" type="text" id="txt_einvoice_info_number" name="txt_eway_vehicle_number" data-ng-model="delivery_note.einvoice_info.vehicle_number" required/>
+                                                            <label class="select-label">
+                                                                Vehicle Number
+                                                            </label>  
+                                                            <span style="color: #B94A48;" ng-if="delivery_note.einvoice_info.vehicle_number===''">Please enter a valid vehicle number.</span>
+                                                        </div>
+                                                        </div>
+                                                        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                        <div class="form-group bmd-form-group floating-input-container" data-ng-if="!isViewOnlyDeliveryNote(delivery_note)">
+                                                          <input class="floating-input" type="text" id="txt_einvoice_number" name="txt_einvoice_number" data-ng-model="delivery_note.einvoice_info.irn_number" />
+                                                          <label class="input-label">E-Invoice #</label>
+                                                      </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                        <div class="form-group bmd-form-group floating-input-container"  >
+                                                          <textarea class="textarea" rows="3" cols="50" type="text" id="qr_string" name="qr_code_string" data-ng-model="delivery_note.einvoice_info.qr_string" style="margin-top: 20px;"  ></textarea>
+                                                          <label class="select-label">
+                                                              E-Invoice QR Code 
+                                                          </label>  
+                                                      </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                      <div class="form-group bmd-form-group floating-input-container"  >
+                                                        <input type="checkbox" name="generateEwayBill" id="generateEwayBill"   data-ng-model="delivery_note.einvoice_info.is_generate"
+                                                        data-ng-true-value="0" data-ng-false-value="1" checked />
+                                                        <label class="select-label" for="generateEwayBill">Generate Eway Bill</label>
+                                                    </div>
+                                                   </div>
+                                               </div>
+                                            </div>
+                                        </div>
+
+                                    </div>                                      
+                               
+                               <div class="col-lg-12 col-md-12 col-xs-12 form-group">
+                                <div class="row-centered">
+                                    <button class="btn primarySubmitButton mobileSubmitButton" type="button" data-ng-click='!myform.$invalid && createDeliveryNote(delivery_note, false)' data-ng-if="delivery_note.id==-1 && isDeliveryNoteCreatePermissionExists() && !isViewOnlyDeliveryNote(delivery_note)"  title="Create Delivery Note">Create Delivery Note</button>
+                                    <button class="btn primarySubmitButton mobileSubmitButton" type="button" data-ng-click='updateDeliveryNote(delivery_note)' data-ng-if="delivery_note.id>0 && delivery_note.destination_distance>0 && isDeliveryNoteUpdateAllowed(delivery_note)"  title="Update Delivery Note">Update Delivery Note</button>
+                                </div>
+                              </div>
+                           </form>
+                       </div>                     
+                   </div>
+               </div>
+           </div>
+       </div>
+   </section>
+</section>

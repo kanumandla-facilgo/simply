@@ -1,0 +1,94 @@
+ <!--<div><span><a href="#/users">Users</a></span> <span><a href="#/customers">Customers</a></span> <span><a href="#/categories">Catalog</a></span></div>-->
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+
+<!--main content start-->
+<section id="main-content">
+    <section class="wrapper">
+        <div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                    <div class="mat-form card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title">{{title}}</h4>
+                        </div>
+                        <div class="card-body">
+                            <form class="cmxform" id="signupForm" method="post" name="myform">
+                                <div class="row">
+                                    <div class="col-lg-12 eachCardWrapperDiv">
+                                        <div class="card">
+                                            <h5 class="card-header childcardheader ">Details</h5>
+                                            <div class="card-body">
+                                               <div class="row">
+                                                   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                      <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"  type="text" name="name" id="name" data-ng-model="role.name" required="true" placeholder="Enter name" style="text-transform: capitalize;" data-ng-class="((myform.name.$dirty || submitted) && myform.name.$invalid) || ((myform.name.$dirty || submitted) && myform.name.$error.required) ? 'error' : ''"/>
+                                                        <label class="input-label" for="name">Name</label>                                                        
+                                                       <span class="help-block errorText" ng-show="((myform.name.$dirty || submitted) && myform.name.$invalid) || ((myform.name.$dirty || submitted) && myform.name.$error.required)">Please enter role name</span>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input" type="text" name="description" id="description" data-ng-model="role.description" placeholder="Enter description"/>
+                                                        <label class="input-label" for="description">
+                                                            Description
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-hide="editmode">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <select name="roletype" id="roletype" data-ng-model="role.sys_role_id" >
+                                                             <option value="4003" data-ng-selected="role.sys_role_id == 4003">User</option>
+                                                             <option value="4004" data-ng-selected="role.sys_role_id == 4004">Sales Person</option>
+                                                             <option value="4005" data-ng-selected="role.sys_role_id == 4005">Agent</option>
+                                                         </select>
+                                                        <label class="select-label" for="roletype">
+                                                            Role Type
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-show="editmode">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <div class="form-group bmd-form-group floating-input-container">
+                                                          <label class="item-label">
+                                                              Type
+                                                          </label>
+                                                          <div class="item-content">{{ role.sys_role_id === 4003 ? "User" : (role.sys_role_id === 4004 ? "Sales Person" : (role.sys_role_id === 4005 ? "Agent Admin" : (role.sys_role_id === 4002 ? "Administrator" : (role.sys_role_id === 4030 ? "Customer Administrator" : ""))))}}</div>
+                                                       </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <table class="table table-striped table-hover">
+                                                            <thead>
+                                                             <th>Name</th>
+                                                             <th>Description</th>
+                                                             <th>Value</th>
+                                                             </thead>
+                                                             <tbody>
+                                                             <tr data-ng-repeat="x in permissionlist">
+                                                                 <td>{{x.name}}</td>
+                                                                 <td>{{x.description}}</td>
+                                                                 <td><input type="checkbox" data-ng-model="x.value" id="perm{{x.id}}" data-ng-true-value="'1'" data-ng-false-value="'0'" data-ng-disabled="(role.sys_role_id == 4002)"/></td>
+                                                             </tr>
+                                                             </tbody>
+                                                        </table>
+                                                    </div>
+                                                 </div>
+                                               </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="form-group">
+                                <div class="row-centered">
+                                    <button class="btn primarySubmitButton mobileSubmitButton" type="button" data-ng-click='submitted=true;!myform.$invalid && saveRole();'>Save Role</button>
+                                </div>
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+      </section>
+  </section>

@@ -1,0 +1,87 @@
+<!--<div><span><a href="#/users">Users</a></span> <span><a href="#/customers">Customers</a></span> <span><a href="#/categories">Catalog</a></span></div>-->
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+
+
+
+
+
+
+<!--main content start-->
+<section id="main-content">
+	<section class="wrapper site-min-height">
+		<!-- page start-->
+		<section class="panel" id='categorylist'>
+			<div class="panel-heading">
+				{{title}} for {{order.customer.name}}
+			</div>
+			<div class="panel-body">
+				<div class="adv-table editable-table">
+					<div class="clearfix">
+						<div class="row">
+
+							<div class="col-lg-2 col-xs-4 col-lg-offset-7">
+								<input type="text" class="form-control input-xxlarge" placeholder="Search" data-ng-model="searchText">
+							</div>
+
+							<div class="col-lg-3 col-xs-8 pull-right">
+
+								<div class="btn-group">
+
+									<button class="btn btn-primary" id="btnCheckout"  data-ng-click="checkoutForm()">
+										Checkout
+									</button>
+								</div>
+								<button class="btn dropdown-toggle" data-toggle="dropdown">Tools <i class="fas fa-angle-down"></i>
+								</button>
+								<ul class="dropdown-menu pull-right">
+									<li><a href="#">Print</a></li>
+									<li><a href="#">Save as PDF</a></li>
+									<li><a href="#">Export to Excel</a></li>
+								</ul>
+							</div>
+
+						</div>
+					</div>
+					<br>
+					<!--<select size="1" name="editable-sample_length" aria-controls="editable-sample" class="form-control xsmall"><option value="5" selected="selected">5</option><option value="15">15</option><option value="20">20</option><option value="-1">All</option></select>-->
+					<br><br>
+					<div class="space15"></div>
+					<table class="table table-striped table-hover table-bordered" id="editable-sample">
+						<thead>
+						<tr>
+							<th>Code</th>
+							<th>Name</th>
+							<th>Type</th>
+							<th>UOM</th>
+							<th align="right">quantity</th>
+							<th align="right">System Price</th>
+							<th align="right">New Price</th>
+							<th align="right">Line Total</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr data-ng-repeat="x in productlist | filter:searchText track by $index" class="active">
+							<td><a data-ng-click="showEditProductForm(x.id);">{{x.sku}}</a></td>
+							<td>{{x.name}}</td>
+							<td>{{x.product_type_id == 4900 ? "Kit/Set": "Normal"}}</td>
+							<td>
+								<select class="form-control"  data-ng-model="lineitem.uom_name">
+									<option>-- </option>
+								</select> </td>
+							<td> <input class="form-control" type="number" step="any" data-ng-model="lineitem.quantity" data-ng-init="x.quantity=0"></td>
+							<td> {{x.unit_price}} </td>
+							<td> <input class="form-control" type="number" step="any" data-ng-model="lineitem.quote_price" data-ng-init="x.quote_price=x.unit_price;"/> </td>
+							<td> {{x.quote_price  * x.quantity}} </td>
+							<td><button id="btn{{$index}}" class="btn btn-primary btn-xs"  data-ng-click="product_to_order(x,lineitem)" ng-show="!x.addedToCartFlag">Add to cart</button>
+								<button id="btn{{$index}}" class="btn btn-primary btn-xs"  data-ng-click="removeProductFromCart(x)" ng-show="x.addedToCartFlag==true">Remove from cart</button>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</section>
+		<!-- page end-->
+	</section>
+</section>
+<!--main content end-->

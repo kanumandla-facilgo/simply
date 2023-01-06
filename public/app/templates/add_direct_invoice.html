@@ -1,0 +1,246 @@
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+
+<!--main content start-->
+<section id="main-content">
+    <section class="wrapper">
+        <div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                    <div class="mat-form card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title">{{title}}</h4>
+                             <div class="primaryHeaderButtonsDiv primaryHeaderButtonsForDesktop">
+                                <div class="primaryHeaderButtonsEachDiv" data-ng-if="canCancelDeliveryNote(delivery_note)">
+                                    <span  class="primaryHeaderButton" data-ng-disabled="isDisabled" data-ng-click='cancelDeliveryNote(delivery_note);' >
+                                        <i class="fas fa-times"></i>
+                                    </span>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv"  data-ng-if="delivery_note.id>0 && delivery_note.status_id != 5503">
+                                    <span class="primaryHeaderButton" title="Print" data-ng-click="printDeliveryNotePdf(delivery_note.id, offsetLines, 1, false, delivery_note.invoice_number)">
+                                        <i class="fas fa-print" ></i>
+                                    </span>
+                                </div> 
+                             </div>
+                        </div>
+                         <div class="card-body">
+                            <div class="primaryHeaderButtonsDiv primaryHeaderButtonsForMobile">
+                               <div class="primaryHeaderButtonsEachDiv" data-ng-if="canCancelDeliveryNote(delivery_note)">
+                                    <span  class="primaryHeaderButton" data-ng-disabled="isDisabled" data-ng-click='cancelDeliveryNote(delivery_note);' >
+                                        <i class="fas fa-times"></i>
+                                    </span>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv"  data-ng-if="delivery_note.id>0 && delivery_note.status_id != 5503">
+                                    <span class="primaryHeaderButton" title="Print" data-ng-click="printDeliveryNotePdf(delivery_note.id, offsetLines, 1, false, delivery_note.invoice_number)">
+                                        <i class="fas fa-print" ></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <form class="cmxform form-horizontal tasi-form" id="myform" method="post" name="myform">
+                                <div class="row">                                   
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 eachCardWrapperDiv">
+                                        <div class="card MB0">
+                                            <h5 class="card-header childcardheader">Information</h5>
+                                            <div class="card-body">
+                                            	<div class="row"> 
+                                            		  <div class="col-lg-6 col-md-4 col-sm-12 col-xs-12">
+                                               			<div class="form-group bmd-form-group floating-input-container" data-ng-controller="mastercontroller">
+                                               				<input style="padding-top:10px" type="text" name="txt_customer_name" id="txt_customer_name" data-ng-model="delivery_note.customer" autocomplete="off" data-ng-required="true" placeholder="Select Customer" typeahead-min-length="2" typeahead-wait-ms="200" typeahead-on-select="onSelectedCustomer($item, $model, $label, $event);" typeahead-select-on-blur=true typeahead-editable=false uib-typeahead="suggestion as suggestion.name for suggestion in getCustomerListViaPromise($viewValue, 1)"/>
+                                               				<label class="select-label"></label>
+                                               			</div>
+                                                  </div>
+                                                  <div class="col-lg-6 col-md-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                      <input class="floating-input" id="name" name="name" type="text" data-ng-model="delivery_note.customer.name" data-ng-required="true" placeholder="Enter code" data-ng-class="(((myform.code.$dirty || submitted) && myform.name.$invalid) || ((myform.name.$dirty || submitted) && myform.name.$error.required)) ? 'error' : ''" style="text-transform:uppercase" Xdata-ng-pattern="/^[a-zA-Z0-9]*$/" />
+                                                      <label class="input-label" for="name">
+                                                          Customer Name
+                                                      </label>
+                                                      <span class="help-block errorText" ng-show="(((myform.name.$dirty || submitted) && myform.name.$invalid) || ((myform.name.$dirty || submitted) && myform.name.$error.required))">Please enter customer name</span>
+                                                    </div>
+                                                  </div>
+                                                  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                      <input class="floating-input" id="phone" name="phone" type="text" data-ng-model="delivery_note.customer.address.phone1" placeholder="Enter code" style="text-transform:uppercase" Xdata-ng-pattern="/^[a-zA-Z0-9]*$/" />
+                                                      <label class="input-label" for="txt_phone_number">
+                                                          Phone Number
+                                                      </label>
+                                                      <span class="help-block" ng-show="!((myform.phone.$dirty || submitted) && myform.phone.$invalid)">Only digits, no space</span>
+                                                        <span class="help-block errorText" ng-show="myform.phone.$invalid">Please enter valid phone number</span>
+                                                    </div>
+                                                  </div>
+                                                  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_AGENT) == '1' && (!delivery_note.customer || !(delivery_note.customer.id > 0))">
+                                                    <div class="form-group bmd-form-group floating-input-container">                                                      
+                                                       <select id="agent_id" name="agent_id" data-ng-model="delivery_note.customer.agent" data-ng-required="!(delivery_note.customer.id > 0)" data-ng-change="delivery_note.customer.sales_person = delivery_note.customer.agent.sales_person" data-ng-options="a as a.name for a in agentlist track by a.id">
+                                                      </select>
+                                                      <label class="select-label">
+                                                          Agent
+                                                      </label>
+                                                      <span class="help-block errorText" ng-show="((myform.agent_id.$dirty || submitted) && myform.agent_id.$invalid) || ((myform.agent_id.$dirty || submitted) && myform.agent_id.$error.required)">Please select agent</span>
+                                                    </div>
+                                                   </div>
+                                                  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                               			<div class="form-group bmd-form-group floating-input-container">
+                                               				<input class="floating-input" id="txt_invoice_number" name="txt_invoice_number" type="text" data-ng-model="delivery_note.invoice_number" placeholder="Enter code" style="text-transform:uppercase" Xdata-ng-pattern="/^[a-zA-Z0-9]*$/"/>
+			                                                <label class="input-label" for="txt_invoice_number">
+			                                                    Invoice Number #
+			                                                </label>
+                                               			</div>
+                                                  </div>
+                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                      <div class="form-group bmd-form-group floating-input-container" data-ng-controller="mastercontroller">
+                                                        <input class="floating-input" type="date" id="txt_dispatch_date" name="txt_dispatch_date" data-ng-model="delivery_note.note_date" required="true" />                                              
+                                                        <label class="select-label">Invoice Date</label>
+                                                      </div>
+                                                    </div>
+                                                  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                      <input id="txtNotes" name="txtNotes" class=" floating-input" type="text" data-ng-model="delivery_note.notes" cols="20" rows="3" maxlength="128"/>
+                                                      <label class="input-label" for="txtNotes">
+                                                          Notes
+                                                      </label>
+                                                    </div>
+                                               		</div> 
+                                                  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_INTEGRATION_INVOICE) == '1'">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input" type="checkbox" name="do_not_sync" id="do_not_sync" data-ng-model="delivery_note.sync_status_id" data-ng-true-value="4103" data-ng-false-value="4100" />
+                                                      <label class="input-label">Do not sync?</label>
+                                                    </div>
+                                                  </div>                                                  
+                                            	</div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 eachCardWrapperDiv">
+                                      <div class="card ">
+                                          <h5 class="card-header childcardheader">Summary</h5>
+                                          <div class="card-body">
+                                              <div class="row">
+                                                <div class="col-md-12 col-xs-12">
+                                                    <div class="summaryEachDiv">
+                                                        <p class="summaryEachDivLabel">Sub Total</p>
+                                                        <span class="summaryEachDivValue" style="float:right" type="text">{{delivery_note.sub_total|number:4}}</span>
+                                                    </div>
+                                                     <div class="summaryEachDiv">
+                                                        <p class="summaryEachDivLabel">Tax</p>
+                                                        <span class="summaryEachDivValue" style="float:right" type="text">{{delivery_note.tax_total|number:4}}</span>
+                                                    </div>
+                                                    <div class="summaryEachDiv">
+                                                        <p class="summaryEachDivLabel">S & H</p>
+                                                        <input class="summaryEachDivValue" type="number" data-ng-model="delivery_note.ship_total"  id="txt_shipping" name="txt_shipping" data-ng-disabled="isViewOnlyDeliveryNote(delivery_note)" data-ng-model="delivery_note.ship_total" min="0" step="0.01" class="floating-input" required="true" data-ng-change="updateRounding(delivery_note)" />
+                                                    </div>
+                                                    <div class="summaryEachDiv" data-ng-class="(myform.discount_perc.$dirty && myform.discount_perc.$invalid) || myform.discount_perc.$error.required ? 'has-error' : 'has-success'">
+                                                        <p class="summaryEachDivLabel">Discount in %</p>
+                                                        <input tooltip="{{myform.$valid ? '%' : 'Please enter valid %'}}" class="summaryEachDivValue" name="discount_perc" id="discount_perc" type="{{delivery_note.id > 0 ? 'text' : 'number'}}" data-ng-model="delivery_note.discount_perc" data-ng-change="calculateDirectInvoiceTotals()" placeholder="%" size="3" maxlength="5" data-ng-max="100" data-ng-min="0" data-ng-step="0.01" placeholder="Discount" />
+                                                    </div>
+                                                    <div class="summaryEachDiv">
+                                                        <p class="summaryEachDivLabel">Discount Total</p>
+                                                        <span class="summaryEachDivValue" style="float:right" type="text">{{delivery_note.discount_total*-1|number:4}}</span>
+                                                    </div>
+                                                    <div class="summaryEachDiv">
+                                                        <p class="summaryEachDivLabel">Grand Total</p>
+                                                        <input class="summaryEachDivValue" value="{{delivery_note.ship_total + delivery_note.tax_total + delivery_note.sub_total - delivery_note.discount_total + delivery_note.rounding_total|number:2}}" readonly disabled/>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div> 
+                                      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 eachCardWrapperDiv">
+                                        <div class="card MB0">
+                                            <h5 class="card-header childcardheader">Details</h5>
+                                            <div class="deliveryNotesFilterDiv">
+                                                <div class="deliverNotesIconDiv">
+                                                    <span class="deliveryNotesIcons">
+                                                        <a data-ng-click="addDirectInvoiceLineItem()" title="Add Lineitem"><i class="fas fa-plus"></i></a>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                            	<div class="row deliveryNotesEachSection" data-ng-repeat="item in delivery_note.lineitems" style="background: #ffffff;">
+	                                                <div class="col-12 col-md-3">
+	                                                    <div class="quickOrderEachInputDiv quickOrderEachInput_productname" data-ng-controller="productcontroller">
+	                                                        <label class="item-label">SKU / Name</label>
+	                                                        <input data-ng-if="!item.productid || item.productid == 0" class="" autocomplete="off" type="text" name="txt_product_name{{$index}}" id="txt_product_name{{$index}}" data-ng-model="item.product" typeahead-min-length="2" typeahead-wait-ms="200" typeahead-on-select="onSelectedProduct($item, $model, $label, $event);updateDILineItem(item, $index);" typeahead-select-on-blur=true typeahead-editable=false uib-typeahead="suggestion as suggestion.name for suggestion in getNonBatchProductListNoCustomer($viewValue, 1, 1)" data-ng-required="true" data-ng-class="(((myform.txt_product_name{{$index}}.$dirty || submitted) && myform.txt_product_name{{$index}}.$invalid) || ((myform.txt_product_name{{$index}}.$dirty || submitted) && myform.txt_product_name{{$index}}.$error.required)) ? 'error' : ''" />
+                                                          <span class="help-block errorText" ng-show="(((myform.txt_product_name{{$index}}.$dirty || submitted) && myform.txt_product_name{{$index}}.$invalid) || ((myform.txt_product_name{{$index}}.$dirty || submitted) && myform.txt_product_name{{$index}}.$error.required))">Please enter sku</span>
+                                                          <div class="" data-ng-if="item.productid > 0"> {{item.name}} &nbsp;<i class="fas fa-edit" data-ng-click="item.productid=0;"></i></div>
+	                                                    </div>
+	                                                </div>
+                                                  <div class="col-12 col-md-1" data-ng-show="item.productid && item.productid>0">                      
+                                                      <div class="quickOrderEachInputDiv quickOrderEachInput_productname">
+                                                          <label class="item-label">Price ({{item.uom_short_name}})</label>
+                                                          <input class="" data-ng-required="true" type="number" name="txt_price{{$index}}" id="txt_price{{$index}}" data-ng-required="(item.product ? true : false)" data-ng-model="item.order_price" placeholder="" data-ng-change="calculateDirectInvoiceTotals()" data-ng-class="(((myform.txt_price{{$index}}.$dirty || submitted) && myform.txt_price{{$index}}.$invalid) || ((myform.txt_price{{$index}}.$dirty || submitted) && myform.txt_price{{$index}}.$error.required)) ? 'error' : ''"/>
+                                                          <span class="help-block errorText" ng-show="(((myform.txt_price{{$index}}.$dirty || submitted) && myform.txt_price{{$index}}.$invalid) || ((myform.txt_price{{$index}}.$dirty || submitted) && myform.txt_price{{$index}}.$error.required))">Please enter price</span>
+                                                      </div>
+                                                  </div>
+                                                  <div class="col-12 col-md-2" data-ng-show="item.productid && item.productid>0">
+                                                      <div class="quickOrderEachInputDiv quickOrderEachInput_productname" >
+                                                          <label class="item-label" for="txt_equation_{{$index}}" >Equation/Notes</label>
+                                                          <input class="" type="text" id="txt_equation_{{$index}}" name="txt_equation_{{$index}}" autocomplete="off" data-ng-model="item.notes" class="form-control input-sm" data-ng-blur="convertEquationtoQty(item.notes, item)" ng-class="(((myform.txt_equation_{{$index}}.$dirty || submitted) && myform.txt_equation_{{$index}}.$invalid) || ((myform.txt_equation_{{$index}}.$dirty || submitted) && myform.txt_equation_{{$index}}.$error.required)) ? 'error' : 'success'"/>     
+                                                          <span class="help-block errorText" ng-show="(((myform.txt_equation_{{$index}}.$dirty || submitted) && myform.txt_equation_{{$index}}.$invalid) || ((myform.txt_equation_{{$index}}.$dirty || submitted) && myform.txt_equation_{{$index}}.$error.required))">Please enter equation/notes</span>
+                                                      </div>
+                                                  </div>
+                                                  <div class="col-12 col-md-1" data-ng-show="item.productid && item.productid>0" >
+                                                        <div class="quickOrderEachInputDiv quickOrderEachInput_productname"  >
+                                                          <label class="item-label" for="txt_qty_qty_{{$index}}">Qty ({{item.entered_uom_short_name}})</label>
+                                                          <input class="" type="number" id="txt_qty_qty_{{$index}}" name="txt_qty_qty_{{$index}}" data-ng-model="item.entered_quantity"  data-ng-change="calculateDirectInvoiceTotals()" data-ng-required="true" data-ng-disabled="item.is_batched_inventory == 1 || item.is_batched_inventory == true" data-ng-class="(((myform.txt_qty_qty_{{$index}}.$dirty || submitted) && myform.txt_qty_qty_{{$index}}.$invalid) || ((myform.txt_qty_qty_{{$index}}.$dirty || submitted) && myform.txt_qty_qty_{{$index}}.$error.required)) ? 'error' : 'success'"/>
+                                                          
+                                                          <span class="help-block errorText"  ng-show="(((myform.txt_qty_qty_{{$index}}.$dirty || submitted) && myform.txt_qty_qty_{{$index}}.$invalid) || ((myform.txt_qty_qty_{{$index}}.$dirty || submitted) && myform.txt_qty_qty_{{$index}}.$error.required))">Please enter {{item.entered_uom_short_name}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-1" data-ng-if="item.product">
+                                                          <div class="quickOrderEachInputDiv quickOrderEachInput_productname">
+                                                            <label class="item-label"  for="txt_pcs_{{$index}}">Pieces</label>
+                                                             <input class="" type="number" id="txt_pcs_{{$index}}" name="txt_pcs_{{$index}}" data-ng-model="item.piece_count" data-ng-init="item.piece_count = 1" data-ng-required="true" ng-class="(((myform.txt_pcs_{{$index}}.$dirty || submitted) && myform.txt_pcs_{{$index}}.$invalid) || ((myform.txt_pcs_{{$index}}.$dirty || submitted) && myform.txt_pcs_{{$index}}.$error.required)) ? 'error' : 'success'" />
+                                                             
+                                                              <span class="help-block errorText" ng-show="(((myform.txt_pcs_{{$index}}.$dirty || submitted) && myform.txt_pcs_{{$index}}.$invalid) || ((myform.txt_pcs_{{$index}}.$dirty || submitted) && myform.txt_pcs_{{$index}}.$error.required))">Please enter Pieces</span>
+                                                          </div>
+                                                    </div>
+                                                    <div class="col-md-1" data-ng-show="item.productid && item.productid>0">
+                                                        <div class="item-container">
+                                                            <label class="item-label" >Extn</label>
+                                                            <div class="item-content">{{item.entered_quantity * item.order_price | number:2}}</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1" data-ng-show="item.productid && item.productid>0">
+                                                        <div class="quickOrderEachInputDiv quickOrderEachInput_productname">
+                                                            <label class="item-label" >Disc</label>
+                                                            <input class=""  data-ng-change="calculateDirectInvoiceTotals()" type="number" id="txt_disc_{{$index}}" name="txt_disc_{{$index}}" data-ng-model="item.disc_perc"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1" data-ng-show="item.productid && item.productid>0">
+                                                        <div class="item-container">
+                                                            <label class="item-label" >Tax %</label>
+                                                            <div class="" data-ng-if="isTaxAutoCalculated()"> {{(item.tax_total*100/((item.entered_quantity * item.order_price) - (item.discount_total || 0) + (item.ship_total)))|number:2}}
+                                                            </div>
+                                                            <div class="item-content" data-ng-if="((!isTaxAutoCalculated()) && edit_mode)">
+                                                                <input type="number" step="any" class="form-control input-sm" data-ng-model="item.product.tax_percent" data-ng-blur="sumLineItemTax(delivery_note, item.product)" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-8" data-ng-show="!item.productid || item.productid == 0" >
+                                                    </div>
+                                                    <div class="col-12 col-md-1" data-ng-show="item.productid && item.productid>0" >
+                                                    </div>
+                                                    <div class="col-12 col-md-1" style="float:right">
+                                                        <div>
+                                                            <a data-ng-click="removeDirectInvoiceLineItem($index)"><i class="fas fa-remove"></i></a>                                   
+                                                        </div>
+                                                    </div>
+	                                             </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-xs-12 form-group">
+                                  <div class="row-centered">
+                                      <button class="btn primarySubmitButton mobileSubmitButton" type="button" data-ng-click='submitted=true;!myform.$invalid && saveDirectInvoice();'>Submit</button>
+                                  </div>
+                                </div> 
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+

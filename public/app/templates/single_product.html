@@ -1,0 +1,61 @@
+<!--<div><span><a href="#/users">Users</a></span> <span><a href="#/customers">Customers</a></span> <span><a href="#/categories">Catalog</a></span></div>-->
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+
+<div id='categorylist' style="margin:0px;padding:0px">
+    <div>
+        <div style="float:left">
+            <h4> {{title}}</h4>
+        </div>
+
+        <div class="col-xs-4 header-bottom-right">
+            <div class="box_1-cart" style="margin-top: 10px;">
+                <div class="box_11"><a href="checkout.html" >
+                    <h4><p>Cart: <span class="simpleCart_total"></span> (<span id="simpleCart_quantity" class="simpleCart_quantity"></span> items)</p><img src="app/assets/images/bag.png" alt=""/><div class="clearfix"> </div></h4>
+                </a></div>
+                <p class="empty"><a href="javascript:;" class="simpleCart_empty">Empty Cart</a></p>
+                <div class="clearfix"> </div>
+            </div>
+            <div style="float:right;padding:10px;">
+                <input type="text" placeholder="Search" class="form-control" data-ng-model="searchText"/>&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+
+        </div>
+    </div>
+</div>
+<div style="clear:both">
+    <span data-ng-repeat="x in lineagearray"><a href="#/categories/{{x.id}}">{{x.name}} </a>&nbsp;</span> <span>  {{parentcategory.name}}</span>
+</div>
+<div class="content_top">
+    <h3 class="m_1">{{title}}</h3>
+    <div class="container">
+        <div class="box_1">
+            <div class="col-md-12" >
+                <div class="section group">
+                    <div class="col-md-3 col-md-offset-1 simpleCart_shelfItem" data-ng-repeat="x in categorylist">
+                        <div class="shop-holder">
+                            <div class="product-img">
+                                <a data-ng-click="showSubItems1(x.id)"  ng-if="x.image_url==null"><img class="img-responsive"   ng-src="app/assets/images/No-image-found.jpg" alt=" " /></a>
+                                <a data-ng-click="showSubItems1(x.id)" ><img class="img-responsive"   ng-src="{{x.image_url}}"   /></a>
+
+                                <!--<a href="single.html">-->
+                                <!--<img width="225" height="265" src="images/pic1.jpg" class="img-responsive"  alt="item4">		                            </a>-->
+                                <a href="" class="button item_add"></a>
+                            </div>
+                        </div>
+                        <div class="shop-content" style="height: 80px;">
+                            <!--<div><a href="single.html" rel="tag">humour</a></div>-->
+                            <h3><a data-ng-click="showSubItems1(x.id)" data-ng-href="#">{{x.name}}</a></h3>
+                            <!--<span class="amount item_price">$45.00</span>-->
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</div>
+

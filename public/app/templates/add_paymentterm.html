@@ -1,0 +1,77 @@
+
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+<style>
+    .btn-refresh{
+        background: none;
+    }
+</style>
+<!--main content start-->
+<section id="main-content">
+    <section class="wrapper">
+        <div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                            <div class="mat-form card">
+                                <div class="card-header card-header-primary">
+                                    <h4 class="card-title">{{title}}</h4>
+                                </div>
+                                <div class="card-body">
+                                    <form class="cmxform" id="signupForm" method="post" name="myform">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="card personal-information-card" style="padding-bottom: 0px!important">
+                                                    <h5 class="card-header childcardheader">Details</h5>
+                                                    <div class="card-body">
+                                                       <div class="row">
+                                                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                                <div class="form-group bmd-form-group floating-input-container">
+                                                                  <input class="floating-input"  type="text" name="code" id="code" data-ng-model="paymentterm.code" required="true" placeholder="Enter code (e.g. NET30)" data-ng-class="((myform.code.$dirty || submitted) && myform.code.$invalid) || ((myform.code.$dirty || submitted) && myform.code.$error.required) ? 'error' : ''"/>
+                                                                  <label class="input-label" for="code">Code</label>
+                                                                  <span class="help-block errorText" ng-show="((myform.code.$dirty || submitted) && myform.code.$invalid) || ((myform.code.$dirty || submitted) && myform.code.$error.required)">Please enter code</span>
+                                                                </div>
+                                                             </div>
+                                                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                                <div class="form-group bmd-form-group floating-input-container">
+                                                                    <input class="floating-input" type="text" name="description" id="description" data-ng-model="paymentterm.description" required="true" placeholder="Enter name" data-ng-class="((myform.description.$dirty || submitted) && myform.description.$invalid) || ((myform.description.$dirty || submitted) && myform.description.$error.required) ? 'error' : '' "/>
+                                                                     <label class="input-label"  for="description">Description</label>
+                                                                     <span class="help-block errorText" ng-show="((myform.description.$dirty || submitted) && myform.description.$invalid) || ((myform.description.$dirty || submitted) && myform.description.$error.required)">Please enter description</span>
+                                                                 </div>
+                                                             </div>
+                                                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                                <div class="form-group bmd-form-group floating-input-container">
+                                                                     <input type="text" class="floating-input " name="days" id="days" data-ng-model="paymentterm.days" required="true" placeholder="Enter days" min="0" max="999" data-ng-class="((myform.days.$dirty || submitted) && myform.days.$invalid) || ((myform.days.$dirty || submitted) && myform.days.$error.required)"/>
+                                                                     <label class="input-label"  for="days">Days (min: 0, max: 999)</label>
+                                                                     <span class="help-block errorText" ng-show="((myform.days.$dirty || submitted) && myform.days.$invalid) || ((myform.days.$dirty || submitted) && myform.days.$error.required)">Please enter description</span>
+                                                                 </div>
+                                                             </div>
+                                                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 agentCheck" data-ng-if="editmode">
+                                                                <label class="input-label">
+                                                                    Status
+                                                                </label>
+                                                                <div class="radio-group">
+                                                                    <input type="radio" id="option-one" name="selector" data-ng-model="paymentterm.status_id" required="true" value="4600">
+                                                                    <label data-ng-class="paymentterm.status_id==4600 ? 'radio-select' : ''" for="option-one" style="width:49%;">Active</label>
+                                                                    <input type="radio"  id="option-two" name="selector" data-ng-model="paymentterm.status_id" required="true" value="4601">
+                                                                    <label data-ng-class="paymentterm.status_id==4601 ? 'radio-select' : ''" for="option-two" style="width: 50%;
+                                                                    margin-right: -3px;">Inactive</label>                      
+                                                              </div>
+                                                            </div> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                  </div>
+                                  <div class="form-group">
+                                    <div class="row-centered">
+                                        <button class="btn primarySubmitButton mobileSubmitButton" type="button" data-ng-click='submitted=true;!myform.$invalid && savePaymentTerm();'>Save Payment Term</button>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>

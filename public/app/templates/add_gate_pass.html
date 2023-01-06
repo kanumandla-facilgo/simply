@@ -1,0 +1,243 @@
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+
+<!--main content start-->
+<section id="main-content">
+	<section class="wrapper">
+        <div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                    <div class="mat-form card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title">{{title}}</h4>
+                            <div class="filterButtons">
+								<span class="filterButtonIcons" >
+									<span class="dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-ellipsis-v"></i>
+									</span>
+									<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<a class="dropdown-item" data-ng-controller="mastercontroller" data-ng-click="showTempo()"><i class="fas fa-plus"></i>&nbsp;Add Tempo</a>
+										<a class="dropdown-item" data-ng-if="gatepass.id>0 && gatepass.statusid==6202" data-ng-click="printGatePass(gatepass.id)"><i class="fas fa-print"></i>&nbsp;Print</a>
+									</div>
+								</span>
+								<span class="filterButtonIcons" id="btnShowParameterForm" data-ng-if="(gatepass.id==0 || (gatepass.id > 0 && gatepass.statusid==6202))" title="Save Gatepass" data-ng-click="saveGatePass()"><i class="fas fa-save"></i></span>
+								<span class="filterButtonIcons" id="btnShowParameterForm" data-ng-if="gatepass.id>0 && gatepass.statusid==6202" data-ng-click="cancelGatePass()" title="Cancel Gatepass"><i class="fas fa-times"></i></span>
+							</div>
+                        </div>
+                        <div class="card-body">
+                            <form class="cmxform" id="signupForm" method="post" name="myform">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 eachCardWrapperDiv">
+                                        <div class="card MB0">
+                                            <h5 class="card-header childcardheader ">Details</h5>
+                                            <div class="card-body">
+                                               <div class="row">
+                                                   <div class="col-lg-12 col-md-6 col-sm-12 col-xs-12 pull-right" data-ng-if="gatepass.id!=0">
+                                                      <div class="form-group bmd-form-group floating-input-container">
+                                                        <label class="item-label">
+					                                        Status
+					                                    </label>
+					                                    <div class="item-content">{{(gatepass.statusid==6202 ? "Completed" : "Cancelled")}} </span></small></div>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-if="gatepass_number_edit_flag">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input" id="txt_order_number" name="txt_order_number" type="text" data-ng-model="gatepass.gate_pass_number" data-ng-required="gatepass_number_edit_flag" placeholder="Enter code" style="text-transform:uppercase" Xdata-ng-pattern="/^[a-zA-Z0-9]*$/" ng-class="(((myform.txt_order_number.$dirty || submitted) && myform.txt_order_number.$invalid) || ((myform.txt_order_number.$dirty || submitted) && myform.txt_order_number.$error.required)) ? 'error' : 'success'" />
+                                                         <label class="input-label" for="txt_order_number">
+			                                                Gate Pass #
+			                                            </label>
+			                                            <span class="help-block errorText" ng-show="(myform.txt_order_number.$dirty && myform.txt_order_number.$invalid) || ((myform.txt_order_number.$dirty || submitted) && myform.txt_order_number.$error.required)">Please enter gatepass#</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-if="!gatepass_number_edit_flag">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input" id="txt_person_name" name="txt_person_name" data-ng-value="(isGatePassNumberRequired && gatepass.id > 0 ? gatepass.gate_pass_number : 'Will be created')" data-ng-disabled="true" />
+                                                        <label class="input-label" for="txt_person_name">
+					                                        Gate Pass #
+					                                    </label>
+					                                    <i class="fas fa-pencil" data-ng-click="enableGatePassNumberEdit()" data-ng-if="isGatePassNumberEditAllowed() && !gatepass_number_edit_flag" aria-hidden="true"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input" type="date" id="txt_date" name="txt_date" data-ng-model="gatepass.gate_pass_date" required="true" data-ng-required="true" ng-class="(((myform.txt_date.$dirty || submitted) && myform.txt_date.$invalid) || ((myform.txt_date.$dirty || submitted) && myform.txt_date.$error.required)) ? 'error' : 'success'" />
+                                                        <label class="input-label" for="txt_tempo_vehicle">
+					                                        Date
+					                                    </label>
+					                                    <span class="help-block errorText" ng-show="(myform.txt_date.$dirty && myform.txt_date.$invalid) || ((myform.txt_date.$dirty || submitted) && myform.txt_date.$error.required)">Please select date</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-if="gatepass.id == 0">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <select class="floating-input" data-ng-model="tempoSelected" data-ng-options="tempo as tempo.name for tempo in tempolist" data-ng-change="selectTempo(tempoSelected)">
+	                                    				</select>
+                                                        <label class="input-label">Tempo</label><br/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container" style="padding-bottom: 0px;">
+                                                        <input  type="checkbox" name="is_update_tempo" id="is_update_tempo" data-ng-model="gatepass.is_update_tempo" data-ng-true-value="1" data-ng-false-value="0" />
+                                                    	<label class="input-label" for="is_update_tempo">Override Tempo Details?</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input" id="txt_person_name" name="txt_person_name" data-ng-model="gatepass.contact_name" type="text"/>
+					                                    <label class="input-label" for="txt_person_name">
+					                                        Driver Name
+					                                    </label>                                    
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input" id="txt_vehicle_number" name="txt_notes" data-ng-model="gatepass.vehicle_number" type="text"/>
+					                                    <label class="input-label" for="txt_vehicle_number">
+					                                        Vehicle Number
+					                                    </label>                                   
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input" id="txt_charges" data-ng-required="true" type="number" name="txt_charges" data-ng-model="gatepass.charges" data-ng-change="gatepass.is_total_charge=1;" type="text"  ng-class="(((myform.txt_charges.$dirty || submitted) && myform.txt_charges.$invalid) || ((myform.txt_charges.$dirty || submitted) && myform.txt_charges.$error.required)) ? 'error' : 'success'"/>
+					                                    <label class="input-label" for="txt_charges">
+					                                        Charges
+					                                    </label>         
+					                                    <span class="help-block errorText" ng-show="(myform.txt_charges.$dirty && myform.txt_charges.$invalid) || ((myform.txt_charges.$dirty || submitted) && myform.txt_charges.$error.required)">Please enter charges</span>                        
+                                                    </div>
+                                                </div>
+                                                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input  type="checkbox" name="is_total_charge" id="is_total_charge" data-ng-change="resetGatePassCharges();" data-ng-model="gatepass.is_total_charge" data-ng-true-value="1" data-ng-false-value="0" />
+                                                    	<label for="is_total_charge" class="input-label">Total Charge</label>                                
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                         <input class="floating-input" id="txt_notes" name="txt_notes" data-ng-model="gatepass.notes" type="text"/>       
+                                                         <label class="input-label" for="txt_notes">
+					                                        Notes
+					                                    </label>                     
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				                                    <div class="adv-table editable-table">
+														<div class="space15"></div>
+														<table class="table table-condensed table-bordered" id="editable-sample" data-ng-if="gatepass.id > 0">
+															<thead>
+															<tr>	
+																<th class="sortable-header">Slip #
+																	<span class="sort-icons" ng-class="getIcon('invnumber')"/>
+																</th>
+																</th>
+																<th class="sortable-header">Date
+																	<span class="sort-icons" ng-class="getIcon('cname')"/>
+																</th>
+																<th></th>
+															</tr>
+															</thead>
+															<tbody>
+															<tr data-ng-repeat="x in gatepass.gate_pass_details | filter:searchText">
+																<td>{{x.packing_slip_number}}</td>
+																<td>{{x.packing_date| date:'dd-MMM-yyyy'}}</td>
+																<td>
+																	<input type="number" placeholder="Per Bale Charge" data-ng-model="x.tempo_charges" size="5" data-ng-change="resetCharge()"/>
+																</td>
+															</tr>
+															</tbody>
+														</table>
+														
+														<table class="table table-condensed table-bordered" id="editable-sample" data-ng-if="gatepass.id == 0">
+															<thead>
+															<tr>	
+																<th></th>
+																<th class="sortable-header" data-ng-click="setDeliveryNoteSortParameters('invnumber');search_deliverynotes()">INVOICE #
+																	<span class="sort-icons" ng-class="getIcon('invnumber')"/>
+																</th>
+																</th>
+																<th class="sortable-header" data-ng-click="setDeliveryNoteSortParameters('cname');search_deliverynotes()">CUSTOMER
+																	<span class="sort-icons" ng-class="getIcon('cname')"/>
+																</th>
+																<th class="sortable-header" data-ng-click="setDeliveryNoteSortParameters('tname');search_deliverynotes()">TRANSPORTER
+																	<span class="sort-icons" ng-class="getIcon('tname')"/>
+																</th>
+																<th class="sortable-header" data-ng-click="setDeliveryNoteSortParameters('tname');search_deliverynotes()">BALE COUNT
+																	<span class="sort-icons" ng-class="getIcon('tname')"/>
+																</th>
+																<th class="sortable-header" data-ng-click="setDeliveryNoteSortParameters('creator');search_deliverynotes()">CREATOR
+																	<span class="sort-icons" ng-class="getIcon('creator')"/>
+																</th>
+																<th class="sortable-header" data-ng-click="setDeliveryNoteSortParameters('total');search_deliverynotes()" style="text-align:right">TOTAL
+																	<span class="sort-icons" ng-class="getIcon('total')"/>
+																</th>
+																<th></th>
+															</tr>
+															</thead>
+															<tbody>
+															<tr data-ng-repeat-start="x in deliverynotelist | filter:searchText">
+																<td>
+												                    <button ng-click="expand(x)">
+												                        <span ng-bind="x.expanded ? '-' : '+'"></span>
+												                    </button>
+												                    <input type="checkbox" ng-click="selectAllPackingSlips(x)" data-ng-model="x.checked">
+												                </td>
+																<td><a data-ng-click="showDeliveryNoteDetail(x)">{{x.invoice_number}}</a></td>
+																<td>{{x.customer.name}}</td>
+																<td>{{x.transporter.name}}</td>
+																<td>{{x.bale_count}}</td>
+																<td>{{x.user.first_name + ' ' + x.user.last_name}}</td>
+																<td style="text-align:right">{{x.ship_total + x.tax_total + x.sub_total - x.discount_total + x.rounding_total|number:2}}</td>
+																<td>
+																	<input type="number" placeholder="Per Bale Charge" data-ng-model="x.tempo_charges" data-ng-change="x.checked=true;selectAllPackingSlips(x)"/>
+																</td>
+															</tr>
+															<tr data-ng-repeat-end data-ng-show="x.expanded">
+												                <td colspan ="2"></td>
+												                <td colspan="8">
+												                    <table class="table table-condensed table-bordered">
+												                        <thead>
+												                            <tr>
+												                            	<th><input type="checkbox" ng-click="selectAllPackingSlips(x)" data-ng-model="x.checked"></th>
+												                                <th>#</th>
+												                                <th>Date</th>
+												                                <th>Status</th>
+												                                <th></th>
+												                            </tr>
+												                        </thead>
+												                        <tbody>
+												                            <tr data-ng-repeat="y in x.packing_slips | filter:searchText">
+												                            	<td><input type="checkbox" data-ng-model="y.checked" data-ng-click="selectPackingSlip(x, y)"></td>
+												                                <td>{{y.slip_number}}</td>
+												                                <td>{{y.packing_date| date:'dd-MMM-yyyy'}}</td>
+												                                <td>{{y.status_name}}</td>
+												                                <td>
+																					<input type="number" placeholder="Per Bale Charge" size="5" data-ng-model="y.tempo_charges" data-ng-change="y.checked=true;selectPackingSlip(x, y)"/>
+																				</td>
+												                            </tr>
+												                        </tbody>
+												                    </table>						
+												                </td>
+												            </tr>
+															</tbody>
+														</table>				
+														<div class="paginationListWrapper" data-ng-if="gatepass.id == 0">
+															<ul class="paginationList" uib-pagination boundary-links="true" total-items="totalrecords" items-per-page="itemsPerPage" ng-model="currentPage" ng-change="getPendingDispatchedDeliveryNotes(currentPage)" max-size="max_pages_mobile" boundary-links="true" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="getPendingDispatchedDeliveryNotes(currentPage)"></ul>
+														</div>		
+													</div>
+												</div>
+												</div>			                                    
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </div>
+                            </form>
+                            <div class="form-group">
+                              <div class="row-centered">
+			                        <button class="btn primarySubmitButton mobileSubmitButton" data-ng-if="(gatepass.id==0 || (gatepass.id > 0 && gatepass.statusid==6202))" data-ng-disabled="myform.$invalid" data-ng-click="submitted=true; !myform.$invalid && saveGatePass()">Save Gatepass</button>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>

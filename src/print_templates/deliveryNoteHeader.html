@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html> 
+<style>
+ .mypushbutton {
+    padding-right:15px;
+ }
+.no-gutter > [class*='col-'] {
+    padding-right:0px;
+    padding-left:0px;
+}
+.text {font-family:helevetica;}
+.text2 {font-family:helvetica;font-size:15px;}
+.text5 {font-family:helvetica;font-size:13px;}
+.textsmall {font-size:10px}
+.header {font-size:30px;font-weight:bold}
+.header5 {font-size:16px;font-weight:bold}
+.header14 {font-size:14px;font-weight:bold}
+.header12 {font-size:12px;font-weight:bold}
+.number { text-align:right }
+.bborderonly {border:none;border-bottom:solid 1px black}
+.nobordertd {border:none}
+table, tr, td, th, tbody, thead, tfoot {
+    page-break-inside: avoid !important;
+}
+</style>
+<head> <body> 
+        <table border="0" cellpadding="2" cellspacing="0" style="width:960px;">
+            <!-- header -->
+            <tr>
+                <td class="text">
+                    {% if proforma_invoice_flag == 1 %}
+                        <h2><center>PROFORMA INVOICE</center></h2>
+                    {% else %}
+                        <h2><center>TAX INVOICE</center></h2>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <table style="width:100%;"  border="1" cellspacing="0" xcellpadding="5"><tr>
+                <td style="text-align:center"> 
+                <div style="width:100%">                
+                      <div style="float:left;width:20%; padding-top:10px;">{%if configuration.logo_url != "" and configuration.logo_url != null %}
+                        <img src="{{configuration.logo_url}}" style="width:150px;height:105px;padding-top:30px"/><br><br>
+                        {% endif %}
+                      </div>
+                      <div style="display: inline-block;margin:0 auto;width:50%; padding-top:10px;"><br><br>
+                        <span class="header">{{company.name}}</span><br/>
+                        {{company.ship_address.address1 + ','}} {% if company.ship_address.address2 != "" and company.ship_address.address2 != null %} {{ company.ship_address.address2 + ','}} {%endif%} {% if company.ship_address.address3 != "" and company.ship_address.address3 != null %} {{ company.ship_address.address3 + ','}} {%endif%} {{company.ship_address.city}} - {{company.ship_address.zip}}<br/><b>Phone:</b> {{company.address.phone1}} <b>Email: </b>{{company.address.email1}}<br/>
+                                <span class="header14 text5">Bank: </span><span class="text5">{{configuration.bank_name}}, <span class="header14 text5">A/c No:</span> {{configuration.bank_account_number}}, <span class="header14 text5">IFSC:</span><span class="text5"> {{configuration.bank_isfc}}, </span><span class="header14 text5">GST #:</span><span class="text5"> {{configuration.tax_gst_number}} </span>
+                            </span>
+                      </div>
+                      <div style="float:right; height: 100%;">
+                               <img id="img1" style="height: 200px;width: 200px; " src="{{qr_code}}">
+                    </div>
+                  </div>
+                </td>
+            </tr>
+        </table>
+        </tr>
+        </table>
+            <table border="0" cellpadding="2" cellspacing="0" style="width:100%">                
+                <tr>
+                    <td>
+                        <table style="width:100%;"  border="1" cellspacing="0" xcellpadding="5">
+                        <tr>
+                        <td style="valign:top" valign="top" width="60%">
+                            <table style="width:100%; float: left;"  border="0" cellspacing="0" cellpadding="3">
+                                <tr>
+                                    <td class="header5" style="border-top:solid 1px black">Bill To</td>
+                                </tr>
+                                <tr>
+                                    <td class="text2" style="border-top:dotted 1px black">
+                                        <b>{{customer.invoicing_name}}</b><br/>
+                                            {{customer.bill_address.address1 }}
+                                            {{ customer.bill_address.address2 }}
+                                            {{ customer.bill_address.city }} {{ customer.bill_address.zip }}<br/><br/>{%if customer.bill_address.phone1 != "" and customer.bill_address.phone1 != null %}<b>Phone:</b> +{{customer.bill_address.phone1}} {% endif %} {%if customer.bill_address.email1 != "" and customer.bill_address.email1 != null %}<b>Email:</b> {{customer.bill_address.email1}}  {% endif %} <br/>
+                                            <b>GST #:</b> {{ customer.gst_number }}
+            {#                                <span class="header12">PAN #:</span>{{ customer.pan_number }}
+                                            <span class="header12">CST #:</span>{{ customer.cst_number }}
+                                            <span class="header12">VAT #:</span>{{ customer.vat_number }}
+                                            <span class="header12">Excise #:</span>{{ customer.excise_number }} #}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="header5" style="border-top:solid 1px black">Ship To</td>
+                                </tr>
+                                <tr>
+                                    <td class="text2" style="border-top:dotted 1px black">
+                                        {%if ship_address.name != '' and ship_address.name != customer.ship_address.name%}<b>{{ship_address.name}}</b><br/>
+                                        {%else%}
+                                        <b>{{customer.ship_address.name}}</b><br/>
+                                        {% endif %}
+                                        {{ship_address.address1 }} {{ ship_address.address2 }} {{ ship_address.city }} {{ ship_address.zip }}<br/><br/>{%if ship_address.phone1 != "" and ship_address.phone1 != null %}<b>Phone:</b> +{{ship_address.phone1}} {% endif %} {%if ship_address.email1 != "" and ship_address.email1 != null %}<b>Email:</b> {{ship_address.email1}}  {% endif %} <br/>
+                                    </td>
+                                </tr>
+                                {# if taxform_flag == 1 and tax_total > 0 
+                                <tr>
+                                    <td class="header5" align="center"><br/><b>Against C Form</b></td>
+                                </tr>
+                                 endif #}
+                                {% if exportform_flag == 1 %}
+                                <tr>
+                                    <td class="header5" align="center"><br/><b>Against H Form</b></td>
+                                </tr>
+                                {% endif %}
+
+                                {#
+                                <tr>
+
+                                    <td class="text5" style="border-top:dotted 1px black"><span class="header14">Notes:</span> {{notes}}</td>
+                                </tr>
+                                #}
+                            </table>
+                        </td>
+                        <td style="valign:top;" valign="top" width="40%">
+                            <table style="width:100%; float: left;"  border="0" cellspacing="0" cellpadding="0" xstyle="padding:5px">
+                                <tr>
+                                    {% if proforma_invoice_flag == 1 %}
+                                        <td class="header12 text5" style="border-right:solid 1px black;padding:5px">PI No.</td>
+                                    {% else %}
+                                        <td class="header12 text5" style="border-right:solid 1px black;padding:5px">Invoice No.</td>
+                                    {% endif %}
+                                    
+                                    <td class="text2" style="padding:5px">{{ invoice_number }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="header12 text5" style="border-top:solid 1px black;border-right:solid 1px black;padding:5px">Dated</td>
+                                    <td class="text5" style="border-top:solid 1px black;padding:5px">{{ note_date_string}}</td>
+                                </tr>{#
+                                <tr>
+                                    <td class="header12 text5" style="border-top:solid 1px black;border-right:solid 1px black;padding:5px">Delivery No.</td>
+                                    <td class="text5" style="border-top:solid 1px black;padding:5px">{{ id }}</td>                        
+                                </tr> #}
+                                <tr>
+                                    <td class="header12 text5" style="border-top:solid 1px black;border-right:solid 1px black;padding:5px">Order #</td>
+                                    <td class="text5" style="border-top:solid 1px black;padding:5px">{{ order_number_string}}</td>                        
+                                </tr>
+                                <tr>
+                                    <td class="header12 text5" style="border-top:solid 1px black;border-right:solid 1px black;padding:5px">Ref.</td>
+                                    <td class="text5" style="border-top:solid 1px black;padding:5px">{{ customer.agent.name }}</td>                        
+                                </tr>
+                                <tr>
+                                    <td class="header12 text5" style="border-top:solid 1px black;border-right:solid 1px black;padding:5px">Terms</td>
+                                    <td class="text5" style="border-top:solid 1px black;padding:5px">{{ customer.payment_term.code }}</td>                        
+                                </tr>
+                                <tr>
+                                    <td class="header12 text5" style="border-top:solid 1px black;border-right:solid 1px black;padding:5px">Transporter</td>
+                                    <td class="text5" style="border-top:solid 1px black;padding:5px">{{ transporter.name }}</td>                        
+                                </tr>
+                                <tr>
+                                    <td class="header12 text5" style="border-top:solid 1px black;border-right:solid 1px black;padding:5px">Destination</td>
+                                    <td class="text5" style="border-top:solid 1px black;padding:5px">{{ ship_address.city  }}</td>                        
+                                </tr>
+                                <tr>
+                                    <td class="header12 text5" style="border-top:solid 1px black;border-right:solid 1px black;padding:5px">LR #</td>
+                                    <td class="text5" style="border-top:solid 1px black;padding:5px">{{ lr_number }}</td>                        
+                                </tr>
+                                <tr>
+                                    <td class="header12 text5" style="border-top:solid 1px black;border-right:solid 1px black;padding:5px">LR Date</td>
+                                    <td class="text5" style="border-top:solid 1px black;padding:5px">{{ lr_date_string }}</td>                        
+                                </tr>
+                                <tr>
+                                    <td class="header12 text5" style="border-top:solid 1px black;border-right:solid 1px black;padding:5px">E-Way Bill</td>
+                                    <td class="text5" style="border-top:solid 1px black;padding:5px">{{ einvoice_info.bill_number }}</td>                        
+                                </tr>
+                            </table>
+                        </td>
+                        </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</head>
+</html>

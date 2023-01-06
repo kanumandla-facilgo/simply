@@ -1,0 +1,21 @@
+0. cd to mbt folder
+
+1. mkdir public/upload/temp;mkdir public/upload/temp/thumb; mkdir public/upload/temp/large
+
+2. Move all the images to temp/large folder. mv public/upload/*.png public/upload/temp/large; mv public/upload/temp/large/logo_* public/upload
+
+3. Run the util/resizeLargeImage.js which will resize all the images and copy in temp/thumb folder.
+
+4. Get the list of images (product, categories, images) from database
+	select replace(replace(replace(image_url1, 'https://www.simplytextile.com/upload/', ''), 'http://107.170.203.205:8081/upload/', ''), 'http://localhost:8081/upload/','') from products where image_url1 is not null and image_url1 <> '';
+
+	select replace(replace(replace(image_url, 'https://www.simplytextile.com/upload/', ''), 'http://107.170.203.205:8081/upload/', ''), 'http://localhost:8081/upload/','') from categories where image_url is not null and image_url <> '';
+
+	select replace(replace(replace(url, 'https://www.simplytextile.com/upload/', ''), 'http://107.170.203.205:8081/upload/', ''), 'http://localhost:8081/upload/','') from images where url is not null and url <> '';
+
+5. Generate mv commands like mv public/upload/temp/large/[] public/upload/large; mv public/upload/temp/thumb[] public/upload
+6. Update product table : 
+	update products set image_url2 = replace(image_url1, '/upload/', '/upload/large/') where image_url1 is not null and image_url1 <> '';
+	update categories set image_url_large = replace(image_url, '/upload/', '/upload/large/') where image_url is not null and image_url <> '';
+	update images set url_large = replace(url, '/upload/', '/upload/large/') where url is not null and url <> '';
+7. rm public/upload/temp/large/*.png; rm public/upload/temp/thumb/*.png

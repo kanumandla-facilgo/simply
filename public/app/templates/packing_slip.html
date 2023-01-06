@@ -1,0 +1,218 @@
+<!--<div><span><a href="#/users">Users</a></span> <span><a href="#/customers">Customers</a></span> <span><a href="#/categories">Catalog</a></span></div>-->
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+<style>
+.no-gutter > [class*='col-'] {
+    padding-right:0px;
+    padding-left:0px;
+}
+
+.btn-print,
+.btn-print:hover,
+.btn-print:active, 
+.btn-print:focus,
+.btn-print.active,
+.open>.dropdown-toggle.btn-print
+ {
+ background-color: #321589;
+ border-color: #321589;
+ color:#ffffff;
+}
+</style>
+
+<!--main content start-->
+<section id="main-content">
+	<section class="wrapper">
+        <div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                    <div class="mat-form card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title">{{title}}</h4>
+                            <div class="primaryHeaderButtonsDiv primaryHeaderButtonsForDesktop" >
+                            	<div class="primaryHeaderButtonsEachDiv" data-ng-if="canCancelPackingslip(packingslip)">
+                                    <span class="primaryHeaderButton" title="Cancel Packing Slip" data-ng-disabled="isDisabled" data-ng-click='cancelPackingslip(packingslip);'>
+                                        <i class="fa fa-times" ></i>
+                                    </span>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv" data-ng-if="isDeliveryNoteCreateAllowed(packingslip)">
+                                    <span class="primaryHeaderButton" title="Create Delivery Note" data-ng-click="showDeliveryNotePageForPackingSlip(packingslip.id)">
+                                        <i class="fas fa-file-invoice"></i>
+                                    </span>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv">
+                                    <span class="primaryHeaderButton" title="Print" data-ng-click="printPackingSlipPdf(packingslip.id)">
+                                        <i class="fas fa-print" ></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                        	<div class="primaryHeaderButtonsDiv primaryHeaderButtonsForMobile" >
+                            	<div class="primaryHeaderButtonsEachDiv" data-ng-if="canCancelPackingslip(packingslip)">
+                                    <span class="primaryHeaderButton" title="Cancel Packing Slip" data-ng-disabled="isDisabled" data-ng-click='cancelPackingslip(packingslip);'>
+                                        <i class="fa fa-times" ></i>
+                                    </span>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv" data-ng-if="isDeliveryNoteCreateAllowed(packingslip)">
+                                    <span class="primaryHeaderButton" title="Create Delivery Note" data-ng-click="showDeliveryNotePageForPackingSlip(packingslip.id)">
+                                        <i class="fas fa-file-invoice"></i>
+                                    </span>
+                                </div>
+                                <div class="primaryHeaderButtonsEachDiv">
+                                    <span class="primaryHeaderButton" title="Print" data-ng-click="printPackingSlipPdf(packingslip.id)">
+                                        <i class="fas fa-print" ></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <form class="cmxform" id="signupForm" method="post" name="myform">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="card personal-information-card">
+                                            <h5 class="card-header childcardheader ">Details</h5>
+                                            <div class="card-body">
+                                               <div class="row">
+                                                   <div class="col-6 col-md-3">
+                                                      	<div class="form-group bmd-form-group floating-input-container">
+                                                            <label class="item-label">
+                                                                Slip #
+                                                            </label>
+                                                            <div class="item-content">{{packingslip.slip_number}}</div>
+                                                        </div>
+                                                      
+                                                	</div>
+                                                    <div class="col-6 col-md-3">
+	                                                	<div class="form-group bmd-form-group floating-input-container">
+	                                                        <label class="item-label">
+	                                                            Order #
+	                                                        </label>
+	                                                        <div class="item-content"><a href="#/EditOrder/{{packingslip.order.id}}">{{packingslip.order.order_number}}</a></div>
+	                                                    </div>
+                                                   </div>
+                                                   <div class="col-6 col-md-3">
+	                                                	<div class="form-group bmd-form-group floating-input-container">
+	                                                        <label class="item-label">
+	                                                           Delivery #
+	                                                        </label>
+	                                                        <div class="item-content"><a href="#/deliverynotes/{{packingslip.delivery_note_id}}">{{packingslip.delivery_note_id}}</a></div>
+	                                                    </div>
+	                                                  
+                                                   </div>
+                                                   <div class="col-6 col-md-3">
+	                                                	<div class="form-group bmd-form-group floating-input-container">
+	                                                        <label class="item-label">
+	                                                           Date
+	                                                        </label>
+	                                                        <div class="item-content">{{packingslip.packing_date | date:'yyyy-MM-dd'}}</div>
+	                                                    </div>
+	                                                  
+                                                   </div>
+	                                               <div class="col-6 col-md-3">
+	                                               		<div class="form-group bmd-form-group floating-input-container">
+	                                                        <label class="item-label">
+	                                                           Status
+	                                                        </label>
+	                                                        <div class="item-content"><a href="#/deliverynotes/{{packingslip.delivery_note_id}}">{{packingslip.status_name}}</a></div>
+	                                                    </div>
+	                                                </div>
+	                                                <div class="col-6 col-md-3">
+	                                               		<div class="form-group bmd-form-group floating-input-container">
+	                                                        <label class="item-label">
+	                                                           Gross Wt.
+	                                                        </label>
+	                                                        <div class="item-content"><a href="#/deliverynotes/{{packingslip.delivery_note_id}}">{{packingslip.gross_weight}}</a></div>
+	                                                    </div>
+	                                                </div>
+	                                                <div class="col-6 col-md-3">
+	                                               		<div class="form-group bmd-form-group floating-input-container">
+	                                                        <label class="item-label">
+	                                                           Net Wt.
+	                                                        </label>
+	                                                        <div class="item-content"><a href="#/deliverynotes/{{packingslip.delivery_note_id}}">{{packingslip.net_weight}}</a></div>
+	                                                    </div>
+	                                                </div>                                                
+													<div class="col-6 col-md-3">
+														<div class="form-group bmd-form-group floating-input-container">
+	                                                        <label class="item-label">
+	                                                           Gate Pass #
+	                                                        </label>
+	                                                        <div class="item-content"><a href="#/AddGatePass/{{packingslip.gate_pass.id}}">{{packingslip.gate_pass.gate_pass_number}}</a></div>
+	                                                    </div>
+													</div>
+													<!--<div class="col-12">
+														<table  class="table table-striped table-hover " id="editable-sample">
+				                                            <thead>
+				                                            <tr>
+				                                                <th>SKU</th>
+				                                                <th>Name </th>
+				                                                <th>PCS </th>
+				                                                <th>Dispatched</th>
+				                                                <th>Notes</th>
+				                                            </tr>
+				                                            </thead>
+				                                            <tbody>
+				                                            <tr class="" data-ng-repeat="lineitem in packingslip.lineitems" class="active" data-ng-click="agentRowClick(x.id)">
+				                                                <td>{{lineitem.sku}}</td>
+				                                                <td>{{lineitem.name}}</td>
+				                                                <td>{{lineitem.piece_count}}</td>
+				                                                <td><span style="color:#449988">{{lineitem.packed_qty_qty}}</span> {{lineitem.entered_uom_name}} {{lineitem.uom_name != lineitem.entered_uom_name ? " / " + lineitem.packed_qty_quote + " " + lineitem.uom_name : ""}} <a href="#/stockbuckets/{{lineitem.stock_bucket_id}}" data-ng-if="lineitem.is_batched_inventory == 1 || lineitem.is_batched_inventory == true">[Batch:  {{lineitem.stock_bucket_code}}] </a></td>
+				                                                <td>{{lineitem.notes}}</td>
+				                                            </tr>
+				                                            </tbody>
+				                                        </table>
+				                                    </div>-->
+													<div class="col-12">
+														<div class="row packingSlipEachRow" data-ng-repeat="lineitem in packingslip.lineitems">
+															<div class="col-6 col-md-3">
+																<div class="item-container">
+																	<label class="item-label">Name</label>
+																	<div class="item-content">{{lineitem.name}}</div>
+																</div>
+															</div>
+															<div class="col-3 col-md-2">
+																<div class="item-container">
+																	<label class="item-label">SKU</label>
+																	<div class="item-content">{{lineitem.sku}}</div>
+																</div>
+															</div>
+															
+															<div class="col-3 col-md-2">
+																<div class="item-container">
+																	<label class="item-label">PCS</label>
+																	<div class="item-content">{{lineitem.piece_count}}</div>
+																</div>
+															</div>
+															<div class="col-6 col-md-3">
+																<div class="item-container">
+																	<label class="item-label">Dispatched</label>
+																	<div class="item-content"><span style="color:#449988">{{lineitem.packed_qty_qty}}</span> {{lineitem.entered_uom_name}} {{lineitem.uom_name != lineitem.entered_uom_name ? " / " + lineitem.packed_qty_quote + " " + lineitem.uom_name : ""}} <a href="#/stockbuckets/{{lineitem.stock_bucket_id}}" data-ng-if="lineitem.is_batched_inventory == 1 || lineitem.is_batched_inventory == true">[Batch:  {{lineitem.stock_bucket_code}}] </a></div>
+																</div>
+															</div>
+															<div class="col-6 col-md-2">
+																<div class="item-container">
+																	<label class="item-label">Notes</label>
+																	<div class="item-content">{{lineitem.notes}}</div>
+																</div>
+															</div>
+														</div>
+													</div>
+													
+                                               </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                    </div>
+	                              </div>
+	                              <div class="form-group">
+		                              <div class="row-centered">
+		                                  <button class="btn btn-success" type="button" data-ng-click='saveAgent();'>Submit</button>
+		                                  <span>{{message}}</span>
+		                              </div>
+	                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </section>
+    </section>

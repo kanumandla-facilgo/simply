@@ -1,0 +1,103 @@
+<!--<div><span><a href="#/users">Users</a></span> <span><a href="#/customers">Customers</a></span> <span><a href="#/categories">Catalog</a></span></div>-->
+<div data-ng-include="'/app/templates/header_latest.html'"></div>
+<!--
+<div id='categorylist' style="margin:0px;padding:0px">
+    <div>
+        <div class="col-xs-4 header-bottom-right">
+            <div class="box_1-cart" style="margin-top: 10px;">
+                <div class="box_11"><a href="checkout.html" >
+                    <h4><p>Cart: <span class="simpleCart_total"></span> (<span id="simpleCart_quantity" class="simpleCart_quantity"></span> items)</p><img src="app/assets/images/bag.png" alt=""/><div class="clearfix"> </div></h4>
+                </a></div>
+                <p class="empty"><a href="javascript:;" class="simpleCart_empty">Empty Cart</a></p>
+                <div class="clearfix"> </div>
+            </div>
+            <div style="float:right;padding:10px;">
+                <input type="text" placeholder="Search" class="form-control" data-ng-model="searchText"/>&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+
+        </div>
+    </div>
+</div>
+-->
+
+
+<!--main content start-->
+<section id="main-content">
+	<section class="wrapper">
+		<!-- page start-->
+		<div class="row">
+			<div class="col-md-12">
+				<section class="panel">
+					<div class="panel-body">
+						<div class="col-sm-12">
+							<header class="panel-heading" style="font-weight: bold">
+							<div class="col-xs-6 col-sm-4" style="padding:0px">{{title}}</div>
+							<div class="col-xs-6 col-sm-8 pull-right">
+									<div class="text-right col-xs-6 col-sm-6 col-md-3" data-ng-controller="ordercontroller">
+										<button class="btn btn-primary" data-ng-click="displayQuickOrderForm()" data-ng-if="displayQuickOrderButton()">Shop by Quick Order</button>
+									</div>
+									<div class="text-right hidden-xs hidden-sm col-xs-3 col-md-3">
+										<input type="text" placeholder="Search" class="form-control" data-ng-model="searchText" ng-keypress="product_search($event,searchText)"/>
+									</div>
+
+									<div class="col-xs-12 col-sm-12 col-md-6 pull-right" data-ng-controller="ordercontroller"><a ng-click="checkoutForm()"><img src="app/assets/images/bag.png" alt="" style="width:15px;height:15px"/> <span id="simpleCart_quantity" class="simpleCart_quantity"><small>({{itemcount}})</small></span></a> <a href="javascript:;" data-ng-click="emptyCart();" class="simpleCart_empty"><small>Empty</small></a></div>
+
+							</div>
+							<br/><br/>
+							</header>
+						</div>
+					</div>
+				</section>
+				<section class="panel hidden-md hidden-lg">
+					<div class="panel-body">
+						<div class="col-sm-12 pull-left">
+							<input type="text" style="width:100%" placeholder="Search" class="form-control" data-ng-model="searchText" ng-keypress="product_search($event,searchText)"/>
+						</div>
+					</div>
+				</section>
+				
+				<div style="clear:both" data-ng-if="show_lineage()">
+					<span data-ng-repeat="x in lineagearray"><a href="#/Home">{{x.name}} </a>&gt; &nbsp;</span> <span>{{parentcategory.name}}</span>
+				</div>
+				
+				
+				<div xclass="row product-list" data-ng-repeat="x in categorylist">
+					<div class="col-md-3">
+						<section class="panel">
+<!--						
+							<div class="pro-img-box">
+								<a data-ng-click="showSubItems1(x.id)"  ng-if="x.image_url==null || x.image_url == ''"><img class="img-responsive"   data-ng-src="app/assets/images/no-image-found.jpg" alt=" " /></a>
+								<a data-ng-click="showSubItems1(x.id)" ><img class="img-responsive"   data-ng-src="{{x.image_url}}"   /></a>
+							</div>
+-->
+							<div class="sub-cat text-center">
+									<a data-ng-click="showSubItems1(x.id)"  class="pro-title">{{x.name}}</a><i class="fa fa-star" data-ng-if="isNewCategory(x)" style="color:red;font-weight:bolder" title="New Category"></i><a style="padding:3px" id="btnc{{$index}}" data-ng-click="showCatalog(x)"><i class="fa fa-share-alt" aria-hidden="true"></i></a>
+									<!--<a href="#" class="pro-title">-->
+									<!--Leopard Shirt Dress-->
+									<!--</a>-->
+								<!--<p class="price">$300.00</p>-->
+							</div>
+						</section>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<!-- page end-->
+	</section>
+</section>
+<!--main content end-->
+
+
+<slick class="slider" settings="slickConfig3" xng-if="slickConfig3Loaded">
+    <div ng-repeat="x in categorylist">
+    	<div style="border: solid 1px #334455; border-radius: 25px;padding:10px;width:100px;height:30px;vertical-align: center;horizontal-align:center;">{{ x.name }}</div>
+    </div>
+</slick>
+
+<div ng-include="'modal.html'"></div>
+<div ng-include="'modal_customer.html'"></div>
+
+
+
+

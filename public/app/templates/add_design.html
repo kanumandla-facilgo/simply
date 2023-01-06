@@ -1,0 +1,196 @@
+   <style>
+
+	.divtable{
+		display:table;         
+		width:auto;         
+		background-color:#eee;         
+		border:1px solid  #666666;         
+		border-spacing:5px;/*cellspacing:poor IE support for  this*/
+	}
+
+	.divRow{
+		display:table-row;
+		width:auto;
+		clear:both;
+	}
+
+	.divCell{
+		float:left;/*fix for  buggy browsers*/
+		display:table-column;         
+		xwidth:200px;         
+		xbackground-color:#ccc;  
+	}
+
+	.image-upload > input
+	{
+		display: none;
+	}
+
+	.gridStyle {
+    	border: 1px solid rgb(212,212,212);
+    	width: 400px; 
+    	height: 300px
+	}
+   </style>
+
+   <div id="divAddNewDesign">
+       <h3>{{title}}</h3>
+       <form name="form">
+			<div>
+			
+				<button id="btnSaveDesign" class="btn btn-primary" data-ng-click="setEditMode();" style="float:right" data-ng-show="!editmode">Edit</button>
+				<button id="btnSaveDesign" class="btn btn-success" data-ng-click="save();" style="float:right" data-ng-show="editmode" >Save</button>
+
+				<button class="btn btn-danger" style="float:right;margin-right:5px;" data-ng-show="design.status_id == 100" data-ng-click="deleteDesign(design.id, -1, 0)">Disable</button>
+				<button class="btn btn-success" style="float:right;margin-right:5px;" data-ng-show="design.status_id == 102" data-ng-click="activateDesign(design.id, -1, 0)">Enable</button>
+				<button class="btn btn-primary :active" style="float:right;margin-right:5px;" data-ng-show="design.status_id == 101" data-ng-click="deleteDesign(design.id, -1, 0)">Activate</button>
+
+				<span class="text-success" style="float:right;margin-right:5px;" data-ng-show="design.status_id == 100">Active</span>
+				<span class="text-danger" style="float:right;margin-right:5px;" data-ng-show="design.status_id == 102">Disabled</span>
+				<span class="text-muted" style="float:right;margin-right:5px;" data-ng-show="design.status_id == 101">In Progress</span>
+
+			</div>
+
+			<div>
+			   <div>
+				<label>Name: </label>
+				<span data-ng-hide="editmode">{{design.design_name}}</span>
+				<input type="text" name="txtDesignName" data-ng-model="design.design_name" data-ng-show="editmode" />
+			   </div>
+			</div>
+       
+		   <div class="divTable">
+			<div class="divRow" style="border:solid 2px black">
+
+			   <div class="divCell" xstyle="border:solid 2px blue;xmargin:15px 0px 0px 0px;">
+					<img data-ng-src="{{design.image_url}}"  data-imagetypeid="-1" data-rowindex="-1" style="width:240px;height:426px;border:0px" src="app/assets/images/noimage.gif" id="imgImageURL" name="imgImageURL" data-dirty="-1" ximg-load="imgLoad('imgImageURL')" xclass="cropimage" xcrossorigin="anonymous" xcropwidth="240" xcropheight="426"/>
+					<img style="display:none" id="imgTempImageURL" name="imgTempImageURL"/>
+			   </div>
+			   <input type="hidden" id="hidImgImageURL_cropx"  value="1"/>
+			   <input type="hidden" id="hidImgImageURL_cropy"  value="2"/>
+			   <input type="hidden" id="hidImgImageURL_cropwidth"  value="3"/>
+			   <input type="hidden" id="hidImgImageURL_cropheight"  value="4"/>
+			   <input type="hidden" id="hidImgImageURL_imgwidth"  value="5"/>
+			   <input type="hidden" id="hidImgImageURL_imgheight"  value="6"/>
+			   <input type="hidden" id="hidImgImageURL_actualwidth" />
+			   <input type="hidden" id="hidImgImageURL_actualheight" />
+
+			   <div class="divCell" style="margin:20px 0px 0px 10px;width:200px">
+					<div>Partner Name:  {{design.partner_name}} </div>
+				</div>
+
+				<input type="hidden" name="hidMainImageURL" id="hidMainImageURL" data-ng-model="design.image_url"/>
+
+				<div class="image-upload" data-ng-show="editmode" style="margin-top:284px">
+					<label for="flImage">
+						<img src="app/assets/images/uploader.jpg" style="width:20px;height:20px" />
+					</label>
+					
+
+					<input id="flImage" data-imagetypeid="-1" data-rowindex="-1"  name="flImage" type="file" onchange="readURL(this, 'imgImageURL', 'hidMainImageURL', -1, 'imgTempImageURL')" xfile-upload/>
+				</div>
+
+			</div>
+
+			<div data-ng-repeat="x in design.children" style="margin:15px 0px 0px 0px;" class="divRow">
+
+			   <div class="divCell" style="margin-top:30px">
+					<img data-imagetypeid="0" data-rowindex="{{$index}}"  xxdata-ng-click="showImage(this, x.image_url)" data-ng-src="{{x.image_url}}" style="width:240px;height:426px;border:solid 1px black" src="app/assets/images/noimage.gif" id="imgImageURL{{$index}}" name="imgImageURL{{$index}}" data-dirty="-1" ximg-load="imgLoad('imgImageURL', this)" xclass="cropimage" xcrossorigin="anonymous" xcropwidth="160" xcropheight="284"/>
+					<img style="display:none" id="imgTempImageURL{{$index}}" name="imgTempImageURL{{$index}}"/>
+				</div>
+
+				<input type="hidden" name="hidImageURL{{$index}}" id="hidImageURL{{$index}}" data-ng-model="x.image_url"/>
+				<input type="hidden" name="hidID{{$index}}" id="hidID{{$index}}" data-ng-model="x.id"/>
+			    <input type="hidden" id="hidImageURL{{$index}}_cropx"  value="1"/>
+			    <input type="hidden" id="hidImageURL{{$index}}_cropy"  value="2"/>
+			    <input type="hidden" id="hidImageURL{{$index}}_cropwidth"  value="3"/>
+			    <input type="hidden" id="hidImageURL{{$index}}_cropheight"  value="4"/>
+			    <input type="hidden" id="hidImageURL{{$index}}_imgwidth"  value="5"/>
+			    <input type="hidden" id="hidImageURL{{$index}}_imgheight"  value="6"/>
+			    <input type="hidden" id="hidImageURL{{$index}}_actualwidth" />
+			    <input type="hidden" id="hidImageURL{{$index}}_actualheight" />
+
+			   <div class="divCell" style="margin:30px 0px 0px 10px;width:*">
+					<div ng-hide="editmode">Price: {{x.price|currency}} </div>
+					<div ng-show="editmode"><input type="text" data-ng-model="x.price" /></div>
+					<div ng-hide="editmode" style="width:100px">URL: <a href="{{x.partner_url}}">Click here</a> </div>
+					<div ng-show="editmode"><input type="text" data-ng-model="x.partner_url" /></div>
+					<div ng-hide="editmode">Brand Name: {{x.brand_name}} </div>
+					<div ng-show="editmode">Brand Name: <select data-ng-model="x._brand" data-ng-init="x._brand = {id: x.brand_id, name: x.brand_name}" data-ng-change="x.brand_id = x._brand.id; x.brand_name = x._brand.name;" name="ddlbrand{{$index}}" id="ddlbrand{{$index}}" data-ng-options="l.name for l in brands track by l.id"></select></div>
+				</div>
+
+				<div class="delete">
+					<button data-ng-click="deleteDesign(x.id, $index, 1)" data-ng-show="x.status_id==100">Delete</button>
+					<button data-ng-click="activateDesign(x.id, $index, 1)" data-ng-show="x.status_id==102">Enable</button>
+				</div>
+
+				<div class="image-upload" data-ng-show="editmode" style="margin-top:310px">
+					<label for="flImage{{$index}}">
+						<img src="app/assets/images/uploader.jpg" style="width:20px;height:20px" />
+					</label>
+
+					<input id="flImage{{$index}}" data-imagetypeid="0" data-rowindex="{{$index}}" name="flImage{{$index}}" type="file" onchange="readURL(this, 'imgImageURL', 'hidImageURL', 0, 'imgTempImageURL')" xfile-upload />
+				</div>
+
+				<hr/>
+			</div>
+			   <!--
+			   <div data-ng-repeat="file in files">
+					<span>{{file.name}}</span>
+			   </div>
+			   -->
+		</div> <!-- div for table head -->
+		<!--
+		</form>
+		<form name="formAddFields" enctype="multipart/formdata" action="upload.php">
+		-->
+		 <div>
+			<button id="btnAddChild" class="btn btn-success" name="btnAddChild" data-ng-click="showAddNewForm();" data-ng-hide="!editmode || bAddNewChild">Add New</button>
+			<button id="btnAppendChild" class="btn btn-success" name="btnAppendChild" data-ng-click="appendDesign();"  data-ng-show="bAddNewChild">Append</button>
+			<button id="btnCancelChild" class="btn btn-cancel" name="btnCancelChild" data-ng-click="bAddNewChild=false;"  data-ng-show="bAddNewChild">Cancel</button>
+		 </div>
+
+		 <div data-ng-show="bAddNewChild && editmode">
+			<div>
+				<xinput type="text" name="lblBrand" xdata-ng-model="newDesign.brand_name" />
+<!--				<div>Brand Name: <select data-ng-model="newDesign.brand_id" name="ddlAddbrand" id="ddlAddbrand" data-ng-options="l.name for l in brands track by l.id"></select></div>-->
+				<div>Brand Name: <select data-ng-model="newDesign._brand" xxdata-ng-init="newDesign._brand = {id: x.brand_id, name: x.brand_name}" data-ng-change="newDesign.brand_id = newDesign._brand.id; newDesign.brand_name = newDesign._brand.name;" name="ddlbrand{{$index}}" id="ddlbrand{{$index}}" data-ng-options="l.name for l in brands track by l.id"></select></div>
+			</div>
+
+			<input type="hidden" name="hidAddImageURL" id="hidAddImageURL" data-ng-model="newDesign.image_url" />
+			<input type="hidden" id="hidAddImageURL_cropx"  value="1"/>
+			<input type="hidden" id="hidAddImageURL_cropy"  value="2"/>
+			<input type="hidden" id="hidAddImageURL_cropwidth"  value="3"/>
+			<input type="hidden" id="hidAddImageURL_cropheight"  value="4"/>
+			<input type="hidden" id="hidAddImageURL_imgwidth"  value="5"/>
+			<input type="hidden" id="hidAddImageURL_imgheight"  value="6"/>
+			<input type="hidden" id="hidAddImageURL_actualwidth" value="7"/>
+			<input type="hidden" id="hidAddImageURL_actualheight" value="8"/>
+
+			<div>
+				<label>Shop URL</label>
+				<input type="text" name="lblPartnerURL" data-ng-model="newDesign.partner_url" />
+			</div>
+			<div>
+				<label>Price</label>
+				<input type="text" name="lblPrice" data-ng-model="newDesign.price"/>
+			</div>
+			<div>
+				<img data-ng-src="app/assets/images/noimage.gif" data-imagetypeid="1" data-rowindex="-2" xdata-ng-src="http://placehold.it/230x460&text=select+image" style="width:240px;height:426px" id="imgAddImageURL" name="imgAddImageURL" data-dirty="-1" ximg-load="imgLoad('imgAddImageURL')" xclass="cropimage" xcrossorigin="anonymous" xcropwidth="160" xcropheight="284" ycropwidth="240" ycropheight="336"/>
+				<img style="display:none" id="imgAddTempImageURL"/>
+  		    </div>
+			<div>
+				<div class="image-upload">
+
+					<label for="flImageAdd">
+						<img src="app/assets/images/uploader.jpg" style="width:20px;height:20px" />
+					</label>
+
+					<input id="flImageAdd" data-imagetypeid="1" data-rowindex="-2"  name="flImageAdd" type="file" onchange="readURL(this, 'imgAddImageURL', 'hidAddImageURL', 1, 'imgAddTempImageURL')" xfile-upload/>
+
+				</div>			
+			</div>
+		 </div>
+       </form>
+     </div>
+     <hr/>

@@ -1,0 +1,10 @@
+schema.mwb.bak
+node_modules
+logs/err.log
+logs/out.log
+public/upload
+db/backups
+api/__pycache__
+api/log
+mobile/*
+api/*.pyc

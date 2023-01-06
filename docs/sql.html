@@ -1,0 +1,248 @@
+====
+How to make async requests in the loop
+https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-loop
+====
+
+select id from products p where (stock_in_process_qty > 0 or stock_in_process_quote > 0)
+and not exists (select 1 from order_details d, orders o where o.id = d.orders_id and o.sysorderstatuses_id in (4201, 4203) and d.products_id = p.id);
+
+================= start to fix the issue of in process qty =================
+
+CREATE TEMPORARY TABLE T1 AS 
+SELECT d.products_id, SUM(d.stock_quantity - CASE WHEN d.is_complete = 1 THEN d.stock_quantity ELSE d.stock_quantity_packed END) as qty1, SUM(d.stock_alt_quantity - CASE WHEN d.is_complete = 1 THEN d.stock_alt_quantity ELSE d.stock_alt_quantity_packed END) as qty2
+FROM orders o, order_details d WHERE d.orders_id = o.id AND o.sysorderstatuses_id in (4201, 4203) group by d.products_id;
+
+
+SELECT p.id, p.sku, p.name, p.stock_in_process_qty, t1.qty1 as new_qty1, p.stock_in_process_qty, t1.qty2 as new_qty2 FROM products p, T1 t1 where p.id = t1.products_id AND (p.stock_in_process_qty != t1.qty1 OR p.stock_in_process_quote != t1.qty2);
+
+START TRANSACTION;
+
+UPDATE products
+INNER JOIN T1 ON T1.products_id = products.id
+SET 
+  stock_in_process_qty = T1.qty1,
+  stock_in_process_quote = T1.qty2;
+
+SELECT p.* FROM products p WHERE (stock_in_process_qty <> 0 OR stock_in_process_quote <> 0)
+AND id NOT IN (SELECT products_id FROM T1);
+
+UPDATE products
+SET stock_in_process_qty = 0, stock_in_process_quote = 0
+WHERE (stock_in_process_qty <> 0 OR stock_in_process_quote <> 0)
+AND id NOT IN (SELECT products_id FROM T1);
+
+COMMIT;
+
+DROP TABLE T1;
+
+================= end =================  
+
+Find Open stock bucket if product qty is zero.
+
+select id, name from products where is_batched_inventory = 1 and stock_qty = 0 and exists (select 1 from stock_buckets b where products.id = b.products_id and b.sysstatuses_id = 4600 and b.is_system = 0);
+
+================================
+Find If stock is showing different than sum of journal
+
+SELECT p.id, p.name, jqty_ordered, jqty_entered, stock_quote, stock_qty
+FROM products p, (
+SELECT j.products_id, SUM(j.quantity_ordered) as jqty_ordered, SUM(j.quantity_entered) as jqty_entered
+FROM stock_journal j
+GROUP BY j.products_id
+) d
+WHERE d.products_id = p.id
+AND (jqty_ordered <> stock_quote OR jqty_entered <> stock_qty);
+
+================================
+Find If stock is showing different than sum of buckets
+
+SELECT p.id, p.name, d.qty, p.stock_qty, p.stock_quote
+FROM (
+SELECT s.products_id, SUM(quantity_entered) as qty
+FROM stock_buckets s
+WHERE s.sysstatuses_id = 4600
+AND s.companies_id = 10003 GROUP BY s.products_id) d, products p WHERE d.products_id = p.id AND d.qty <> p.stock_qty;
+================================
+
+
+Find If stock is showing different than sum of journal for batched products
+
+SELECT p.id, p.name, jqty_ordered, jqty_entered, stock_quote, stock_qty
+FROM products p, (
+SELECT j.products_id, SUM(j.quantity_ordered) as jqty_ordered, SUM(j.quantity_entered) as jqty_entered
+FROM stock_journal j
+GROUP BY j.products_id
+) d
+WHERE p.is_batched_inventory = 1 AND d.products_id = p.id
+AND (jqty_ordered <> stock_quote OR jqty_entered <> stock_qty);
+================================
+
+Find If stock is showing different than sum of journal for batched products ANd if batch is open
+
+SELECT p.id, p.name, jqty_ordered, jqty_entered, stock_quote, stock_qty
+FROM products p, (
+SELECT j.products_id, SUM(j.quantity_ordered) as jqty_ordered, SUM(j.quantity_entered) as jqty_entered
+FROM stock_journal j
+GROUP BY j.products_id
+) d
+WHERE p.is_batched_inventory = 1 AND d.products_id = p.id
+AND (jqty_ordered <> stock_quote OR jqty_entered <> stock_qty)
+AND exists (select 1 from stock_buckets b WHERE b.products_id = p.id and b.is_system = 0 and b.sysstatuses_id = 4600);
+================================
+
+Update the stock for above products to fix.
+
+START TRANSACTION;
+
+UPDATE products 
+INNER JOIN (
+	SELECT p.id, p.name, jqty_ordered, jqty_entered, stock_quote, stock_qty
+	FROM products p, (
+	SELECT j.products_id, SUM(j.quantity_ordered) as jqty_ordered, SUM(j.quantity_entered) as jqty_entered
+	FROM stock_journal j
+	GROUP BY j.products_id
+	) d
+	WHERE p.is_batched_inventory = 1 AND d.products_id = p.id
+	AND (jqty_ordered <> stock_quote OR jqty_entered <> stock_qty)
+) data ON data.id = products.id
+SET products.stock_quote = data.jqty_ordered, products.stock_qty = data.jqty_entered;
+
+
+================================
+
+select u.id, a.phone1, a.email1 from users u, addresses a where u.companies_id in (select id from companies where parent_id = 10003 and companytypes_id = 4703)
+and not exists (select 1 from sessions s where s.users_id = u.id and s.created > date_add(now(), interval -90 day))
+and u.addresses_id = a.id;
+
+================================
+update users 
+inner join (
+	select u.id, a.phone1, a.email1 from users u, addresses a where u.companies_id in (select id from companies where parent_id = 10003 and companytypes_id = 4703)
+	and not exists (select 1 from sessions s where s.users_id = u.id and s.created > date_add(now(), interval -90 day))
+	and u.addresses_id = a.id
+	and a.phone1 is not null
+) a
+set users.password = MD5(CONCAT('A9074#321', a.phone1, salt, 'Arihant'))
+where users.id = a.id;
+
+
+update users 
+inner join (
+	select u.id, a.phone1, a.email1 from users u, addresses a where u.companies_id in (select id from companies where id = 10128)
+	and u.addresses_id = a.id
+	and a.phone1 is not null
+) a
+set users.password = MD5(CONCAT('A9074#321', a.phone1, salt, 'Arihant'))
+where users.id = a.id;
+
+================= 
+
+select id, name from products where is_batched_inventory = 1 and stock_qty = 0 and exists (select 1 from stock_buckets b where products.id = b.products_id and b.sysstatuses_id = 4600 and b.is_system = 0);
+
+=================
+
+SELECT d.products_id, SUM(d.stock_quantity - CASE WHEN d.is_complete = 1 THEN d.stock_quantity ELSE d.stock_quantity_packed END) as qty1, SUM(d.stock_alt_quantity - CASE WHEN d.is_complete = 1 THEN d.stock_alt_quantity ELSE d.stock_alt_quantity_packed END) as qty2
+FROM orders o, order_details d WHERE d.orders_id = o.id AND o.sysorderstatuses_id in (4201, 4203) group by d.products_id;
+
+================= 
+To check if product total is diff than stock journal:
+SELECT p.id, p.name, jqty_ordered, jqty_entered, stock_quote, stock_qty
+FROM products p, (
+SELECT j.products_id, SUM(j.quantity_ordered) as jqty_ordered, SUM(j.quantity_entered) as jqty_entered
+FROM stock_journal j
+GROUP BY j.products_id
+) d
+WHERE d.products_id = p.id
+AND (jqty_ordered <> stock_quote OR jqty_entered <> stock_qty);
+================= 
+
+check if stock bucket qty = 0 but packing slip has more
+select b.id, b.code, b.products_id, b.sysstatuses_id, b.quantity_entered, b.quantity_ordered, d.* from stock_buckets b, packing_slip_details d where (b.quantity_ordered = 0 or b.quantity_entered = 0) and b.code <> 'DEFAULT' and d.stock_buckets_id = b.id AND (d.quantity_ordered_packed <> 0 or d.quantity_entered_packed <> 0);
+
+=================
+bad product codes: 621,232
+
+http://www.jvandemo.com/how-to-configure-your-angularjs-application-using-environment-variables/
+
+call spCreateCompany (@err, @msg, @id, 'T C Krupa Fabrics', 'tck', 'T C Krupa', '1-5 Dhanraj Estate', 'Matangali, Narol', '', 'Ahmedabad', 'Gujarat', '380001', '+919879511957', 'info@simplytextile.com', 'Rahul', 'Agarwal', 'ragarwal', 'rahul!', '+919879511957', 'info@simplytextile.com');
+
+insert into images(companies_id, document_id, document_type_char, url, description, created, last_updated) values (10003, 1006, 'P', 'https://www.simplytextile.com/upload/yszCkaHYPht8Tibc.png', 'Image1', now(), now());
+
+insert into images(companies_id, document_id, document_type_char, url, description, created, last_updated) values (10003, 1006, 'P', 'https://www.simplytextile.com/upload/9LwQ68uKUeNXmDIA.png', 'Image1', now(), now());
+
+insert into images(companies_id, document_id, document_type_char, url, description, created, last_updated) values (10003, 1006, 'P', 'https://www.simplytextile.com/upload/bdr4GaaycVbVSY2h.png', 'Image1', now(), now());
+
+insert into images(companies_id, document_id, document_type_char, url, description, created, last_updated) values (10003, 1006, 'P', 'https://www.simplytextile.com/upload/c29QYjbW2jqMb7Ky.png', 'Image1', now(), now());
+
+update users set password = '1230cce6358e3780224fb3ca750a3b3e', salt = 'f549353c2c7b11e6af0c0401176a8201'
+where sysroles_id = 4005 AND id not in (select users_id from sessions);
+
+In order to detect the click, send $event to a controller function from template as an function argument and then detect key as below.
+	console.log($event.altKey);
+	console.log($event.shiftKey);
+
+select c.code, c.name, a.address1, a.address2, a.address3, a.city, a.pin, a.phone1, a.phone2, a.email1, a.email2, a.id as addressid, c.id from companies c, addresses a where c.syscompanytypes_id = 4702 and c.addresses_id = a.id;
+<!doctype html>  
+<html lang="en">  
+    <head>
+
+    </head>
+    <body>
+        <h1>Hello World!</h1>
+        <div id="future"></div>
+        <form id="form" id="chat_form">
+            <input id="chat_input" type="text">
+            <input type="submit" value="Send">
+			<div id="commentBox">
+				<input type = "text" id = "name" size = "40" placeholder="Your name - put shahid"><br><br>
+				<textarea cols = "38" rows = "10" id = "comment" placeholder="Add your comment"></textarea><br><br>
+				<input type = "button" id = "addComment" value = "Comment"><br>
+				<span id = "message"></span>
+			</div>
+        </form>
+         <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.7/socket.io.js"></script>            
+    </body>
+
+	<script>
+	$(document).ready(function(){
+		//var socket = io(); //this works too.
+		var socket = io('http://localhost:8081');
+
+		var chat = io.connect ('http://localhost:8081/chat');
+		var news = io.connect ('http://localhost:8081/news');
+
+		chat.on('connect', function () {
+			chat.emit('message', 'hi!');
+		});
+
+		news.on('connect', function () {
+			news.emit('woot!');
+		});
+
+		chat.on('chat response', function (msg) {
+			console.log(msg);
+		});
+
+		// API to get status from DB.
+		$("#addComment").click(function(event){
+			var userName = $("#name").val();
+			var userComment = $("#comment").val();
+			if(userName === "" || userComment === "") {
+				alert("Please fill the form.");
+				return;
+			}
+			// Here we emit the event and back-end will add it into DB.
+			socket.emit('comment added',{user : userName, comment : userComment});
+			socket.emit('news', userComment);
+			socket.on('notify everyone',function(msg){
+				console.log(msg);
+				chat.emit('chat', msg);
+			});
+		});
+
+		
+	});
+	</script>
+
+</html>  

@@ -1,0 +1,226 @@
+<style>
+.navbar-nav>li>a {
+ padding-right: 5px;
+ padding-left: 5px;
+}
+.fa-stack[data-count]:after{
+  position:absolute;
+  right:0%;
+  top:0%;
+  content: attr(data-count);
+  font-size:40%;
+  padding:.6em;
+  border-radius:999px;
+  line-height:.75em;
+  color: white;
+  color:$shopping-cart-red;
+  text-align:center;
+  min-width:2em;
+  font-weight:bold;
+  background: white;
+  border-style:solid;
+}
+.fa-circle {
+  color:#DF5500;
+}
+</style>
+<!--
+<nav class="navbar navbar-inverse" data-ng-controller="menucontroller">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">SimplyTextile</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Page 1-1</a></li>
+          <li><a href="#">Page 1-2</a></li>
+          <li><a href="#">Page 1-3</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Page 2</a></li>
+      <li><a href="#">Page 3</a></li>
+    </ul>
+  </div>
+</nav>
+-->
+  <!--
+<div class="container">
+  <h3>Navbar With Dropdown</h3>
+  <p>This example adds a dropdown menu for the "Page 1" button in the navigation bar.</p>
+</div>
+
+</body>
+</html> -->
+ <section class="full-width hidden-print">
+ <header class="header white-bg" data-ng-controller="menucontroller">
+<!--<i data-ng-controller="categorycontroller" data-ng-init="loadCategoryTree()" />-->
+<!--
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Page 1-1</a></li>
+            <li><a href="#">Page 1-2</a></li>
+            <li><a href="#">Page 1-3</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Page 2</a></li>
+        <li><a href="#">Page 3</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+-->
+<!--
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">WebSiteName</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Page 1-1</a></li>
+          <li><a href="#">Page 1-2</a></li>
+          <li><a href="#">Page 1-3</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Page 2</a></li>
+      <li><a href="#">Page 3</a></li>
+    </ul>
+  </div>
+</nav>
+-->
+	 <div class="navbar-header" data-ng-show="!isOneTimeSession()">
+		 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+			 <span class="fas fa-bars"></span>
+		 </button>		 
+		 <a xhref="#" data-ng-if="utilService.getTemplateId()!=6302"  data-ng-click="showDashboard()" class="logo" ><img data-ng-src="{{getCompanyLogo()}}" style="width:80px;height:35px;padding-bottom:3px"/> </a>
+
+		 <a xhref="#" data-ng-if="utilService.getTemplateId()==6302" class="logo" ><img data-ng-src="{{getCompanyLogo()}}" style="width:80px;height:35px;padding-bottom:3px"/> </a>
+
+
+		 <div class="horizontal-menu navbar-collapse collapse hidden-xs hidden-sm">
+		   <div class="btn-group" uib-dropdown keyboard-nav style="padding-top:10px" data-ng-show="isOrdersVisible() || isPackingslipsVisible() || isDeliveryNoteVisible() || isStockSummaryVisible() || isBillsVisible()">
+				<button id="simple-btn-keyboard-nav3" type="button" class="btn btn-primary" uib-dropdown-toggle>
+					Orders <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="simple-btn-keyboard-nav">
+					<li role="menuitem" data-ng-show="isOrdersVisible() || isPackingslipsVisible()"><a xhref="#/orders" data-ng-click="showOrders()"><u>O</u>rders</a></li>
+					<li role="menuitem"><a data-ng-click="showOrderCatalog()">Cata<u><b>l</b></u>og</a></li>				
+					<li role="menuitem" data-ng-show="isOrdersVisible()"><a xhref="#/quickorder" data-ng-click="showQuickOrder()"><u>Q</u>uick Order</a></li>
+					<li role="menuitem" data-ng-show="isOrdersVisible()"><a href="#/cart">Cart</a></li>
+					<li class="divider" data-ng-show="isOrdersVisible() && (isPackingslipsVisible() || isDeliveryNoteVisible())"></li>
+					<li role="menuitem" data-ng-show="isPackingslipsVisible() || isDeliveryNoteVisible()"><a xhref="#/packingslips" data-ng-click="showPackingslips()">Packing <u>S</u>lips</a></li>
+					<li role="menuitem" data-ng-show="isDeliveryNoteVisible()"><a xhref="#/deliverynotes" data-ng-click="showDeliveryNotes()">Delivery <u>N</u>otes</a></li>
+					<li role="menuitem" data-ng-show="isBillsVisible()"><a xhref="#/bills/" data-ng-click="showBills()">O<u>u</u>tstanding</a></li>
+				</ul>
+			</div>
+
+		   <div class="btn-group" uib-dropdown keyboard-nav style="padding-top:10px" data-ng-if="isCatalogVisible() || isStockVisible() || isUnitOfMeasureVisible() || isPriceGroupVisible() || isStockSummaryVisible()">
+				<button id="simple-btn-keyboard-nav2" type="button" class="btn btn-primary" uib-dropdown-toggle>
+					Inventory <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="simple-btn-keyboard-nav">
+					<li role="menuitem" data-ng-show="isCatalogVisible() || isStockSummaryVisible()"><a xhref="#/categories/" data-ng-click="showCatalog()"><u><b>I</b></u>nventory</a></li>
+					<li role="menuitem" data-ng-show="isStockVisible()"><a xhref="#/stockbuckets/" data-ng-click="showStockBatches()">Stock <u>B</u>atches</a></li>
+					<li role="menuitem" data-ng-show="isStockVisible()"><a xhref="#/stockjournal/" data-ng-click="showStockJournal()">Stock <u>J</u>ournal</a></li>
+					<li class="divider" data-ng-show="(isCatalogVisible() || isStockVisible()) && (isUnitOfMeasureVisible() || isPriceGroupVisible())"></li>
+				 	<li role="menuitem" data-ng-show="isUnitOfMeasureVisible()"><a xhref="#/unitofmeasures/" data-ng-click="showUnits()"><u><b>U</b></u>nits</a></li>
+				 	<li role="menuitem" data-ng-show="isPriceGroupVisible()"><a xhref="#/pricegroups/" data-ng-click="showPriceGroups()">Price <u>G</u>roups</a></li>
+				</ul>
+			</div>
+
+		   <div class="btn-group" uib-dropdown keyboard-nav style="padding-top:10px" data-ng-if="isAgentsVisible() || isUsersVisible() || isRolesVisible() || isCustomersVisible() || isCustomerTypesVisible() || isTransportersVisible() || isPaymentTermsVisible() || isWorkflowVisible()">
+				<button id="simple-btn-keyboard-nav1" type="button" class="btn btn-primary" uib-dropdown-toggle>
+					Masters <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="simple-btn-keyboard-nav">
+					<li role="menuitem" data-ng-show="isAgentsVisible()"><a xhref="#/agents/" data-ng-click="showAgents()"><u>A</u>gents</a></li>
+					<li class="divider" data-ng-show="isAgentsVisible() && (isUsersVisible() || isRolesVisible())"></li>
+					<li role="menuitem" data-ng-show="isUsersVisible()"><a xhref="#/users/" data-ng-click="showUsers()"><u>U</u>sers</a></li>
+					<li role="menuitem" data-ng-show="isRolesVisible()"><a xhref="#/roles/" data-ng-click="showRoles()">Roles</a></li>
+					<li class="divider" data-ng-show="(isUsersVisible() || isRolesVisible()) && (isCustomersVisible() || isCustomerTypesVisible())"></li>
+				 	<li role="menuitem" data-ng-show="isCustomersVisible()"><a xhref="#/customers/" data-ng-click="showCustomers()"><u>C</u>ustomers</a></li>
+				 	<li role="menuitem" data-ng-show="isCustomerTypesVisible()"><a xhref="#/customertypes/" data-ng-click="showCustomerTypes()"><u>C</u>ustomer Types</a></li>
+					<li class="divider" data-ng-show="(isCustomersVisible() || isCustomerTypesVisible()) && (isTransportersVisible() || isPaymentTermsVisible())"></li>
+				 	<li role="menuitem" data-ng-show="isTransportersVisible()"><a xhref="#/transporters/" data-ng-click="showTransporters()"><u>T</u>ransporters</a></li>
+				 	<li role="menuitem" data-ng-show="isPaymentTermsVisible()"><a xhref="#/paymentterms/" data-ng-click="showPaymentTerms()"><u>P</u>ayment Terms</a></li>
+					<li class="divider" data-ng-show="(isTransportersVisible() || isPaymentTermsVisible()) && isWorkflowVisible()"></li>
+				 	<li role="menuitem" data-ng-show="isWorkflowVisible()"><a xhref="#/workflowsetup" data-ng-click="showWorkflow()"><u>
+				 	W</u>orkflow</a></li>
+				</ul>
+			</div>
+			<div class="btn-group" uib-dropdown keyboard-nav style="padding-top:10px">
+					<button id="simple-btn-keyboard-nav4" type="button" class="btn btn-primary" uib-dropdown-toggle>
+						Reports <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="simple-btn-keyboard-nav">
+						<li role="menuitem"><a data-ng-click="showReports()">Reports</a></li>
+					</ul>
+				</div>
+			</div><!--
+			<div class="hidden=print" data-ng-controller="ordercontroller"><span id="simpleCart_quantity" class="simpleCart_quantity" style="color:white"><small>({{itemcount}})</small></span></div>-->
+<!--
+<span class="fa-stack fa-2x has-badge" data-count="5">
+  <i class="fas fa-circle fa-stack-2x"></i>
+  <i class="fas fa-shopping-cart fa-stack-1x fa-inverse"></i>
+</span>-->
+			<div class="hidden-print" style="float:right;padding-top:5px;xpadding-left:50px"><b><span style="font-size:10px;color:#ffffff">{{getUserName()}}</span></b>
+					<br/>
+					<a data-ng-click='showChangePasswordForm();'><i class="fas fa-key fa-2x" style="color:white"></i></a>
+					<a style="float:right;" href="#/Logout"><img src="app/assets/images/power.png" alt="Logout" title="Log out" width="25" height="25"/>&nbsp;</a>
+			</div>	
+		</div>
+		<div class="hidden-sm hidden-md hidden-lg" data-ng-show="!isOneTimeSession()">
+		 <div class="horizontal-menu navbar-collapse collapse">
+			<ul id="navMenus" class="nav navbar-nav" data-ng-controller="menucontroller">
+				 <li data-ng-show="isOrdersVisible()|| isPackingslipsVisible()"><a xhref="#/orders" data-ng-click="showOrders()"><u>O</u>rders</a></li>
+				 <li data-ng-show="isOrdersVisible()"><a xhref="#/quickorder" data-ng-click="showQuickOrder()"><u>Q</u>uick Order</a></li>
+				 <li><a data-ng-click="showOrderCatalog()">Cata<u><b>l</b></u>og</a></li>				
+				 <li data-ng-show="isOrdersVisible()"><a href="#/cart">Cart</a></li>
+				 <li data-ng-show="isPackingslipsVisible() || isDeliveryNoteVisible()"><a xhref="#/packingslips" data-ng-click="showPackingslips()">Packing <u>S</u>lips</a></li>
+				 <li data-ng-show="isDeliveryNoteVisible()"><a xhref="#/deliverynotes" data-ng-click="showDeliveryNotes()">Delivery <u>N</u>otes</a></li>
+				 <li data-ng-show="isBillsVisible()"><a data-ng-click="showBills()">O<u>u</u>tstanding</a></li>
+				 <li data-ng-show="isCustomersVisible()"><a xhref="#/customers/" data-ng-click="showCustomers()"><u>C</u>ustomers</a></li>
+				 <li data-ng-show="isCustomerTypesVisible()"><a xhref="#/customertypes/" data-ng-click="showCustomerTypes()"><u><b>C</b></u>ustomer Types</a></li>
+				 <li data-ng-show="isTransportersVisible()"><a xhref="#/transporters/" data-ng-click="showTransporters()"><u>T</u>ransporters</a></li>
+				 <li data-ng-show="isCatalogVisible() || isStockSummaryVisible()"><a xhref="#/categories/" data-ng-click="showCatalog()"><u><b>I</b></u>nventory</a></li>
+				 <li data-ng-show="isStockVisible()"><a xhref="#/stockbuckets/" data-ng-click="showStockBatches()">Stock <u>B</u>atches</a></li>
+				 <li data-ng-show="isStockVisible()"><a xhref="#/stockjournal/" data-ng-click="showStockJournal()">Stock <u>J</u>ournal</a></li>
+				 <li data-ng-show="isPriceGroupVisible()"><a xhref="#/pricegroups/" data-ng-click="showPriceGroups()">Price <u>G</u>roups</a></li>
+				 <li data-ng-show="isAgentsVisible()"><a xhref="#/agents/" data-ng-click="showAgents()"><u>A</u>gents</a></li>
+				 <li data-ng-show="isUnitOfMeasureVisible()"><a xhref="#/unitofmeasures/" data-ng-click="showUnits()"><u><b>U</b></u>nits</a></li>
+				 <li data-ng-show="isUsersVisible()"><a xhref="#/users/" data-ng-click="showUsers()">Users</a></li>
+				 <li data-ng-show="isRolesVisible()"><a xhref="#/roles/" data-ng-click="showRoles()"><u>R</u>oles</a></li>
+				 <li data-ng-show="isWorkflowVisible()"><a href="#/workflowsetup" data-ng-click="showWorkflow()"><u>W</u>orkflow</a></li>
+				 <li data-ng-show="isPaymentTermsVisible()"><a xhref="#/paymentterms/" data-ng-click="showPaymentTerms()"><u>P</u>ayment Terms</a></li>
+				 <li><a data-ng-click="showReports()">Reports</a></li>
+			</ul>
+		 </div>
+		</div>
+	 </div>
+ </header>
+ </section>
+

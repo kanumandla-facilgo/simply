@@ -1,0 +1,141 @@
+<html>
+<style>
+ .mypushbutton {
+ 	padding-right:15px;
+ }
+.no-gutter > [class*='col-'] {
+    padding-right:0px;
+    padding-left:0px;
+}
+.text5 {font-family:helvetica;font-size:13px;}
+.text10px {font-family:helvetica;font-size:10px}
+.header5 {font-size:16px;font-weight:bold}
+.header14 {font-size:14px;font-weight:bold}
+.header12 {font-size:12px;font-weight:bold}
+.number { text-align:right }
+.bborder {border-bottom:solid 1px black}
+.bborderonly {border:none;border-bottom:solid 1px black}
+.nobordertd {border:none}
+table, tr, td, th, tbody, thead, tfoot {
+    page-break-inside: avoid !important;
+}
+</style>
+<body>
+		<!-- print form start -->
+		<div class="row" data-ng-show="printForm" >
+			<div class="col-xs-12">
+				<section class="panel">
+				<table border="0" cellpadding="2" cellspacing="0" style="width:510px">
+					<!-- header -->
+					<tr>
+						<td style="width:100%;">
+							<h2><center>PACKING SLIP</center></h2>
+						</td>
+					</tr>
+				</table>
+
+				<table border="1" cellpadding="2" cellspacing="0" style="width:510px">
+				<tr>
+				<td>
+					<table border="0" cellpadding="4" cellspacing="0" style="width:100%">
+						<tr>
+							<td class="header12 text5" style="width:15%;border-right:solid 1px black">Bale #</td>
+							<td class="text5" style="width:20%;border-right:solid 1px black">{{slip_number}}</td>
+							<td class="header12 text5" style="border-right:solid 1px black">Date</td>
+							<td class="text5">{{packing_date}}</td>
+						</tr>
+						<tr>
+							<td class="header12 text5" style="width:15%;border-right:solid 1px black">Order #</td>
+							<td class="text5" style="width:20%;border-right:solid 1px black">{{order.order_number}}</td>
+							<td class="header12 text5" style="border-right:solid 1px black">Transporter</td>
+							<td class="text5" >{{order.transporter.name}}</td>
+						</tr>
+						<tr>
+							<td class="header12 text5" style="width:15%;border-right:solid 1px black">Gross Wt.</td>
+							<td class="text5" style="width:20%;border-right:solid 1px black">{{gross_weight}}</td>
+							<td class="header12 text5" style="border-right:solid 1px black">Destiation</td>
+							<td class="text5">{{more.ship_address.city}}</td>
+						</tr>
+						<tr>
+							<td class="header12 text5" style="width:15%;border-right:solid 1px black;border-bottom:solid 1px black">Net Wt.</td>
+							<td class="text5" style="width:20%;border-right:solid 1px black;border-bottom:solid 1px black">{{net_weight}}</td>
+							<td class="header12 text5" style="border-right:solid 1px black;border-bottom:solid 1px black"></td>
+							<td class="text5" style="border-bottom:solid 1px black"></td>
+						</tr>
+						<tr>
+							<td colspan="4" class="header12 text5" style="text-align:center;padding:5px">DETAILS</td>
+						</tr>
+						<!-- detail -->
+						<tr>
+							<td colspan="4">
+								<table border="1" cellspacing="0" cellpadding="4" style="width:100%">
+								<thead>
+								<tr>
+								<th><span class="header14 text5">Sr No</span></th>
+								<th><span class="header14 text5">Description</span></th>
+								<th class="header14 text5 number;border-right:none">Qty</th>
+								<th class="header14 text5" style="width:5px">&nbsp;</th>
+								</tr>
+								</thead>
+								<tbody>
+								{% for lineitem in lineitems %}
+								<tr>
+								<td class="text5 {% if lineitem.is_batched_inventory == 1%} nobordertd {% endif %}"" style="text-align:right">{{loop.index}}</td>
+								<td class="text5 {% if lineitem.is_batched_inventory == 1%} nobordertd {% endif %}"">{{ lineitem.name }}</span>{% if lineitem.notes != "" and lineitem.notes != null and lineitem.is_batched_inventory != 1 %}<br/><span class="text10px">{{ lineitem.notes }}</span> {% endif %}{% if lineitem.order_detail.stock_unit_of_measures_id != lineitem.order_detail.stock_alt_unit_of_measures_id and lineitem.is_batched_inventory != 1 %}<br/><span class="text10px" style="float:right">{{ lineitem.packed_qty_qty }} {{ lineitem.stock_alt_uom_short_name }}</span> {% endif %}</td>
+								<td class="text5 number {% if lineitem.is_batched_inventory == 1%} bborderonly {% endif %}">{% if lineitem.order_detail.unit_of_measures_id == lineitem.unit_of_measures_id %} {{ lineitem.packed_qty_quote }} {{ lineitem.uom_short_name }} {% else %} {{ lineitem.packed_qty_qty }} {{ lineitem.order_detail.uom_short_name }} {% endif %}</td>
+								<td class="text5 number {% if lineitem.is_batched_inventory == 1%} bborderonly {% endif %}" style="width:5px">&nbsp;</td>
+								</tr>
+								{% if lineitem.is_batched_inventory == 1 %}
+											{% for detail in lineitem.bucket.stock_bucket_detail %}
+								    		<tr>
+								    			<td class="{% if loop.last == true %} bborderonly {% else %} nobordertd {% endif %} "></td>
+								    			<td xcolspan="2" class="text5 {% if loop.last == true %} bborderonly {% else %} nobordertd {% endif %} " style="text-align:right"><span class="text10px">{% if loop.index == 1 %} <span style="float:left">{{"Batch #: " + lineitem.bucket.code}}</span>{% endif %} {{loop.index}}</span></td>
+								    			<td class="text5 number {% if loop.last == true %} bborderonly {% else %} nobordertd {% endif %} "><span class="text10px">{{detail.qty}} {{ lineitem.uom_short_name }}</span></td>
+								    			<td class="text5 number {% if loop.last == true %} bborderonly {% else %} nobordertd {% endif %} "><span class="text10px">{% if detail.piece_count > 1 %}* {% endif %}</span></td>
+								    		</tr>
+								 			{% endfor %} 
+								{% endif %}
+								{% endfor %}
+								</tbody>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">&nbsp;</td>
+						</tr>
+						{% if unit_list|length > 0 %}
+						<tr>
+							<td colspan="4" class="header12 text5">Total Qty by Unit</td>
+						</tr>
+						<tr>
+							<td colspan="4">
+								<table border="1" cellspacing="0" cellpadding="4" style="width:100%">
+								<thead>
+								<tr>
+								<th class="header14 text5 number">Qty</th>
+								<th style="text-align:left"><span class="header14 text5">Unit</span></th>
+								<th class="header14 text5 number">Count</th>
+								</tr>
+								</thead>
+								<tbody>
+								{% for unit in unit_list %}
+								<tr>
+								<td class="text5 number">{{ unit.qty }}</span></td>
+								<td class="text5">{{unit.unitname}}</td>
+								<td class="text5 number">{{ unit.pcs }}</td>
+								</tr>
+								{% endfor %}
+								</tbody>
+								</table>
+							</td>
+						</tr>
+						{% endif %}
+					</table>
+				</td>
+				</tr>
+				</table>
+				</section>
+			</div>
+		</div>
+</body>
+</html>

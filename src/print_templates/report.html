@@ -1,0 +1,73 @@
+<html>
+<style>
+ .mypushbutton {
+ 	padding-right:15px;
+ }
+.no-gutter > [class*='col-'] {
+    padding-right:0px;
+    padding-left:0px;
+}
+.text5 {font-family:helvetica;font-size:13px;}
+.text12px {font-family:helvetica;font-size:12px}
+.text10px {font-family:helvetica;font-size:10px}
+.header5 {font-size:16px;font-weight:bold}
+.header14 {font-size:14px;font-weight:bold}
+.header12 {font-size:12px;font-weight:bold}
+.number { text-align:right }
+.bborder {border-bottom:solid 1px black}
+.bborderonly {border:none;border-bottom:solid 1px black}
+.nobordertd {border:none}
+
+table, tr, td, th, tbody, thead, tfoot {
+    page-break-inside: avoid !important;
+}
+
+</style>
+<body>
+<!-- print form start -->
+<div class="row" data-ng-show="printForm" >
+	<div class="col-xs-12">
+		<section class="panel">
+		<table border="0" cellpadding="2" cellspacing="0" style="width:960px">
+			<!-- header -->
+			<tr>
+				<td style="width:100%;">
+					<div class="header5"><center>{{title}}</center></div>
+				</td>
+			</tr>
+		</table>
+
+		<table border="1" cellpadding="2" cellspacing="0" style="width:960px">
+		<tr>
+		<td>
+			<table border="0" cellpadding="4" cellspacing="0" style="width:100%">
+				<!-- detail -->
+				<thead>
+				<tr>
+				<th>#</th>
+				{% for row in header %}
+					<th style="text-align:{% if row.align == 1 || row.align == 3%}right {% else %} left {% endif %}" >{{row.name}}</th>
+				{% endfor %}
+				</tr>
+				</thead>
+				<tbody>
+				{% for row in data %}
+				<tr>
+				<td class="text5" style="text-align:right"><span class="text12px">{{loop.index}}</span></td>
+				<td class="text5"><span class="text12px">{{row.id}}</span></td>
+				<td class="text5"><span class="text12px">{{row.name}}</span></td>
+				<td class="text5"><span class="text12px">{{row.sku}}</span></td>
+				<td class="text5"><span class="text12px">{{row.stock_in_process_qty}}</span></td>
+				<td class="text5"><span class="text12px">{{row.stock_in_process_quote}}</span></td>
+				</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</td>
+		</tr>
+		</table>
+		</section>
+	</div>
+</div>
+</body>
+</html>

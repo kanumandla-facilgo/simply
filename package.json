@@ -1,0 +1,46 @@
+{
+  "name": "Textile",
+  "main": "server.js",
+  "start": "node ./bin/server.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "dependencies": {
+    "async": "^1.5.2",
+    "backbone": "~1.1.2",
+    "bluebird": "^3.7.2",
+    "body-parser": "^1.19.0",
+    "dateformat": "^3.0.2",
+    "elasticsearch": "^15.5.0",
+    "exceljs": "^3.8.1",
+    "express": "^4.17.1",
+    "formidable": "^1.2.1",
+    "html-pdf": "^2.2.0",
+    "imagemin": "^7.0.1",
+    "imagemin-jpegtran": "^6.0.0",
+    "imagemin-mozjpeg": "^8.0.0",
+    "jimp": "^0.9.3",
+    "jszip": "^3.2.2",
+    "moment": "^2.23.0",
+    "moment-timezone": "^0.5.27",
+    "mysql": "^2.18.1",
+    "mysql-model": "~0.0.2",
+    "nodemailer": "^4.0.1",
+    "nunjucks": "^3.2.2",
+    "qrcode": "^1.5.0",
+    "socket.io": "^2.4.1",
+    "underscore": "~1.8.3",
+    "wkhtmltopdf": "^0.3.3",
+    "xlsx": "^0.14.5"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "grunt": "^1.0.3",
+    "grunt-contrib-jshint": "^2.0.0",
+    "grunt-nodemon": "^0.4.0",
+    "jshint": "^2.11.0",
+    "mocha": "^8.1.1",
+    "supertest": "^4.0.2",
+    "testcafe": "^15.1.317522"
+  }
+}

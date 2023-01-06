@@ -1,0 +1,152 @@
+<!--<div><span><a href="#/users">Users</a></span> <span><a href="#/customers">Customers</a></span> <span><a href="#/categories">Catalog</a></span></div>-->
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+
+<!--main content start-->
+<section id="main-content">
+	<section class="wrapper site-min-height" id='userlist'>
+		<div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                    <div class="mat-form card">
+                        <div class="card-header card-header-primary listPagePrimaryCardHeader">
+                            <h4 class="card-title">{{title}}</h4>
+                        </div>
+						<div class="card-body">
+							<div class="container" style="max-width:100%">
+								<div class="row">
+									<div class="col-12 col-md-3">
+										<div class="eachselectionDiv" data-ng-repeat="x in report_list | filter:searchText">
+											<div class="eachselectionDivHeader">
+												<p>{{x.title}} </p>
+												<div class="reportsSelectionButtonWrapper">
+													<input class="btn btn-primary" type="button" value="Submit" data-ng-click="getReport(x.id, {})" xdata-ng-click="printReportPdf(x.id, {})" />
+												</div>
+											</div>
+											<div class="reportsSelectionCriteria"  data-ng-repeat="b in x.parameterlist">
+												<p class="reportSelectionCaptionText">{{b.caption}}</p>
+												<div class="reportSelectionCaptionInputDiv" data-ng-if="b.control_type == 'textbox'">
+													<input style="font-size:12px;" data-ng-if="b.data_type == 'date'" type="date" class="form-control" data-ng-model="b.model_name" id="{{b.name}}" name="{{b.name}}" required="{{b.required" />
+													<input style="font-size:12px;" data-ng-if="b.data_type == 'text'" type="text" class="form-control" data-ng-model="b.model_name" id="{{b.name}}" name="{{b.name}}" required="{{b.required}}" />
+													<input style="font-size:12px;" data-ng-if="b.data_type == 'int'" type="number" class="form-control" data-ng-model="b.value" id="{{b.name}}" name="{{b.name}}" required="{{b.required}}" min="0" />
+												</div>
+												<div  class="reportSelectionCaptionInputDiv" data-ng-if="b.control_type == 'dropdown'">
+													<select style="font-size:12px;" class="form-control" name="{{b.name}}" id="{{b.name}}" required="{{b.required}}">
+														<option value="{{option.id}}" data-ng-repeat="option in b.options"> {{option.text}} </option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-12 col-md-9">
+										<div class="reportsTableDiv" data-ng-if="report != undefined">
+											<p class="reportsTableHeader">{{report.title}}</p>
+											<table class="table table-striped table-hover" id="editable-sample">
+												<thead>
+													<tr>
+														<th style="text-align:right">#</th>
+														<th data-ng-repeat="column in report.column_header_list" style="text-align: {{(column.align == 1 || column.align == 3 ? 'right' : 'left')}}">{{column.name}}</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr data-ng-repeat="row in report.data">
+														<td class="text5" style="text-align:right"><span class="text12px">{{$index + 1}}</span></td>
+														<td class="text5" data-ng-repeat="(key, value) in row" style="text-align: {{align[key]}}"><span class="text12px">{{value}}</span></td>
+													</tr>
+												</tbody>
+											</table>
+											</div>
+										</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<section class="wrapper site-min-height" data-ng-if="false">
+		<!-- page start-->
+		<section class="panel" id='categorylist'>
+			<div class="panel-heading">
+				<label class="control-label col-sm-2 col-xs-12">{{title}}</label>
+			</div>
+			<div class="panel-body">
+				<div class="adv-table editable-table">
+					<div class="clearfix">
+
+					</div>
+
+					<div style="overflow-x:auto;">
+						<div style="border:solid 1px black;padding:0px;" class="col-sm-4 table-striped table-hover table-bordered" id="editable-sample" data-ng-repeat="x in report_list | filter:searchText">
+							<div class="col-xs-12" style="background-color:cyan;padding:5px"> 
+								{{x.title}} 
+								<div style="float: right;display:none">
+									<i class="fas fa-chevron-down" aria-hidden="true"></i>
+								</div>
+								<div style="float: right;display:none">
+									<i class="fas fa-chevron-up" aria-hidden="true"></i>
+								</div>
+							</div>
+							<div data-ng-repeat="b in x.parameterlist" style="background-color: white;padding:2px">
+								<div class="col-sm-6">{{b.caption}}</div>
+								<div class="col-sm-6" data-ng-if="b.control_type == 'textbox'">
+									<input data-ng-if="b.data_type == 'date'" type="date" class="form-control" data-ng-model="b.model_name" id="{{b.name}}" name="{{b.name}}" required="{{b.required" />
+									<input data-ng-if="b.data_type == 'text'" type="text" class="form-control" data-ng-model="b.model_name" id="{{b.name}}" name="{{b.name}}" required="{{b.required}}" />
+									<input data-ng-if="b.data_type == 'int'" type="number" class="form-control" data-ng-model="b.value" id="{{b.name}}" name="{{b.name}}" required="{{b.required}}" min="0" />
+								</div>
+								<div class="col-sm-6" data-ng-if="b.control_type == 'dropdown'">
+									<select class="form-control" name="{{b.name}}" id="{{b.name}}" required="{{b.required}}">
+										<option value="{{option.id}}" data-ng-repeat="option in b.options"> {{option.text}} </option>
+									</select>
+								</div>
+							</div>
+							<div style="background-color: white;float:right">
+								<div class="col-sm-12">
+									<input type="button" value="Submit" data-ng-click="getReport(x.id, {})" xdata-ng-click="printReportPdf(x.id, {})">
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<div data-ng-if="report != undefined">		
+					<div>{{report.title}}</div>
+					<div>
+					<table class="table table-striped table-hover" id="editable-sample">
+							<!-- detail -->
+							<thead>
+							<tr>
+							<th style="text-align:right">#</th>
+							<th data-ng-repeat="column in report.column_header_list" style="text-align: {{(column.align == 1 || column.align == 3 ? 'right' : 'left')}}">{{column.name}}</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr data-ng-repeat="row in report.data">
+							<td class="text5" style="text-align:right"><span class="text12px">{{$index + 1}}</span></td>
+							<td class="text5" data-ng-repeat="(key, value) in row" style="text-align: {{align[key]}}"><span class="text12px">{{value}}</span></td>
+							</tr>
+							</tbody>
+					</table>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- page end-->
+	</section>
+</section>
+<!--main content end-->

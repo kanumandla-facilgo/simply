@@ -1,0 +1,33 @@
+[System: UDF]
+UDFSimplyTextileCustomerCode:String:1000
+UDFSimplyPaymentReminderMobile:String:1005
+UDFSimplyPaymentReminderEmail:String:1006
+
+[#Part: LEd Other Details]
+Add: Line:SimplyTextileCustomerCodeUDFLine
+Add: Line:SimplyPaymentReminderMobileUDFLine
+Add: Line:SimplyPaymentReminderEmailUDFLine
+
+[Line:SimplyTextileCustomerCodeUDFLine]
+Field: Short Prompt,SimplyTextile Customer Code UDF Field
+Local:Field:Short Prompt:Set as:"Simply Customer Code:"
+
+[Line:SimplyPaymentReminderMobileUDFLine]
+Field: Short Prompt,Simply Payment Reminder Mobile UDF Field
+Local:Field:Short Prompt:Set as:"Simply Payment Reminder Mobile:"
+
+[Line:SimplyPaymentReminderEmailUDFLine]
+Field: Short Prompt,Simply Payment Reminder Email UDF Field
+Local:Field:Short Prompt:Set as:"Simply Payment Reminder Email:"
+
+[Field:SimplyTextile Customer Code UDF Field]
+Use: NameField
+Storage:UDFSimplyTextileCustomerCode
+
+[Field:Simply Payment Reminder Mobile UDF Field]
+Use: NameField
+Storage:UDFSimplyPaymentReminderMobile
+
+[Field:Simply Payment Reminder Email UDF Field]
+Use: NameField
+Storage:UDFSimplyPaymentReminderEmail

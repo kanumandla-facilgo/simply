@@ -1,0 +1,10 @@
+- Ability to set password for customer login
+- Removing stock quantity in batch edit
+- Showing tax same as of print in delivery note
+- Fixed date filter in stock journal
+- Fixed bug which wipes out details during agent update
+- Fixed the active checkbox in stock batch to make it work
+- User should not be able to login if agent is disabled
+- Enhanced dashboard to have line graph instead of bar graph
+- Added validation of phone number entered in Other Phone field
+- Fixed gatepass sorting in packing slip list

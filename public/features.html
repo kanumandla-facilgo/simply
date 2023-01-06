@@ -1,0 +1,785 @@
+
+    <link href="/app/assets/css/agency.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+
+<style>
+.navbar-custom {
+    background-color: #222;
+    border-color: transparent;
+}
+
+<link href="/app/assets/css/agency.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+<link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+
+<style>
+
+	.navbar-custom {
+	    background-color: #222;
+	    border-color: transparent;
+	}
+
+	.heading {
+		margin: 120px 0 16px;
+		padding: 0 16px;
+		text-align: center;
+		font-size: 40px;
+	}
+	
+	.heading p {
+		font-size: 20px;
+		padding: 0 48px;
+	}
+	
+	.article-header p {
+		font-family: Colfax-Bold,Helvetica,Arial,sans-serif;
+		font-style: normal;
+		font-weight: 600;
+		font-size: 16px;
+		color: #4a6592;
+		margin: 16px 0 0;
+	}
+	.main {
+		max-width: 1600px;
+		margin: 0 auto;
+	}
+	
+	.main-article {
+		background: #fff;
+		margin: 56px 0;
+	}
+	article {
+		display: block;
+		padding: 0;
+		border: 0;
+		font-size: 100%;
+		font: inherit;
+		vertical-align: baseline;
+	}
+	
+	.article-div {
+		max-width: 1030px;
+		margin: 0 auto;
+		padding: 0 16px;
+	}
+
+	.article-in {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-column-gap: 28px;
+		-webkit-align-items: center;
+		-webkit-box-align: center;
+		-ms-flex-align: center;
+		align-items: center;
+		grid-template-areas:
+		'header header'
+		'media content'
+		'cta cta';
+	}
+	
+
+	.article-second {
+		background: #f5f8fd;
+		padding: 56px 0;
+	}
+
+	.article--second-in {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-column-gap: 28px;
+		-webkit-align-items: center;
+		-webkit-box-align: center;
+		-ms-flex-align: center;
+		align-items: center;
+		grid-template-areas:
+		'header header'
+        'content media'
+        'cta media';
+	}
+	
+
+	.article-header {
+		grid-area: header;
+		margin-bottom: 16px;
+		text-align: center;
+	}
+	
+
+	.fig {
+		grid-area: media;
+		margin-bottom: 24px;
+		overflow: hidden;
+	}
+	.div-list p {
+		font-size: 16px;
+	}
+	.div-list {
+		grid-area: content;
+	}
+	.div-list ul {
+		border-top: 2px solid #dfe9fa;
+		padding-top: 24px;
+		margin-top: 24px;
+	}
+
+	
+	.div-list li {
+		font-weight: 500;
+		display: grid;
+		grid-template-columns: 20px auto;
+		grid-column-gap: 8px;
+		font-size: 14px;
+		color: #2c4a7d;
+		margin: 15px;
+	}
+	
+	
+	.fa-stack1 {
+		position: relative;
+		display: inline-block;
+		width: 2em;
+		height: 2em;
+		line-height: 2em;
+		vertical-align: middle;
+	}
+	.fa-4x1 {
+		font-size: 9em;
+	}
+
+	svg text#chk {
+		font-family: sans-serif;
+		font-size: 12px; 
+		fill: #00f;
+		font-weight: bold;
+	}
+	@media (max-width: 800px){
+		.article-in{
+			display: block;
+		}
+	}
+	@media (max-width: 800px){
+		.article--second-in{
+			display: block;
+		}
+	}
+
+	.div-flex{
+		display: flex;
+		justify-content: center;
+
+	}
+ .page-footer {
+    padding: 14px 0 14px;
+    background-color: #f5f8ff;
+}
+
+footer {
+    padding: 48px 0 0;
+    background: #f5f8ff;
+}
+footer .row {
+    max-width: 1280px;
+}
+.row--large {
+    max-width: 1280px;
+}
+.row {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 32px;
+    padding-right: 32px;
+    position: relative;
+}
+
+@media (max-width: 992px){
+.div-sections {
+    grid-template-columns: repeat(4,auto)!important;
+}}
+@media (max-width: 863px){
+.div-sections {
+    grid-template-columns: repeat(3,auto)!important;
+}
+}
+@media (max-width: 768px){
+
+.div-sections {
+    grid-template-columns: repeat(3,auto)!important;
+}}
+@media (max-width: 520px){
+.div-sections {
+    grid-template-columns: repeat(2,auto) !important;
+}}
+.div-sections {
+    display: grid;
+    grid-gap: 36px;
+    grid-template-columns: repeat(5,auto);
+    text-align: initial;
+}
+
+.m-bottom-5 {
+    margin-bottom: 10px;
+}
+.color-gray-700 {
+    color: #2c4a7d;
+}
+.is-bold {
+    font-family: Colfax-Bold,Helvetica,Arial,sans-serif;
+    font-style: normal;
+    font-weight: 600;
+}
+
+.footer-list li {
+	    font-size: 14px;
+    	margin-bottom: 20px;
+}
+.footer-social {
+    margin-top: 0px;
+    padding: 0px 0 0;
+    border-top: 2px solid #dfe9fa;
+}
+grid-gap-up3 {
+    grid-gap: 24px;
+}
+@media (max-width: 768px){
+.grid-two-col--wide-left-col {
+    grid-template-columns: 1fr;
+    grid-gap: 64px;
+}
+}
+.grid-two-col--wide-left-col {
+    grid-template-columns: 70% 1fr;
+    grid-gap: 104px;
+}
+@media (max-width: 768px){
+.grid {
+    grid-gap: 64px;
+}}
+.grid {
+    display: grid;
+    grid-gap: 96px;
+}
+.grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+@media (min-width: 768px){
+.footer-social-ul {
+    -webkit-flex-direction: row !important;;
+    -ms-flex-direction: row !important;;
+    flex-direction: row !important;;
+}
+}
+.footer-social-ul {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+@media (min-width: 768px){
+.footer-social-ul li {
+    margin-right: 28px;
+    margin-bottom: 0;
+}}
+.footer-social-ul li {
+    margin-bottom: 18px;
+    font-size: 14px;
+    color: #4a6592;
+}
+/*Addons*/
+.add-ons {
+    background: #fff;
+    margin: 56px 0;
+}
+.add-ons-div1 {
+	 border-top: 5px solid #dfe9fa;
+    max-width: 1030px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+.add-ons-header {
+    text-align: center;
+    margin-bottom: 24px;
+    margin-top: 75px;
+}
+sup {
+    font-family: Colfax-Medium,Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    display: block;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #4a6592;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+@media (min-width: 768px){
+.add-on-ul {
+   display: -webkit-box;
+    display: -ms-flexbox;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: justify;
+    -ms-flex-pack: justify;
+    justify-content: justify;
+}}
+@media (min-width: 992px){
+.add-on-li {
+    padding: 40px;
+    width: calc(50% - 28px / 2);
+}
+}
+@media (min-width: 768px){
+.add-on-li {
+    width: calc(50% - 16px / 2);
+}}
+.add-on-li {
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 1px 0 #a8b9d5, 0 20px 32px -8px #ebf2ff;
+    padding: 40px 32px 48px;
+    margin-bottom: 40px;
+}
+.inner-figure {
+    box-shadow: 0 0 1px 0 #a8b9d5, 0 4px 8px -2px #ebf2ff;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 32px;
+    padding: 24px;
+    height: calc(24px * 2 + 124px);
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+}
+/*Addons*/
+/*why to use css*/
+@media (min-width: 992px){
+.css-use {
+    grid-template-columns: repeat(4,1fr) !important;
+}}
+
+@media (min-width: 768px){
+.css-use {
+    grid-template-columns: repeat(2,1fr) !important;
+    grid-column-gap: 48px;
+    grid-row-gap: 56px;
+}}
+.css-use {
+    display: grid;
+    grid-row-gap: 48px;
+}
+.css-use h3{
+    color: #4a6592;
+}
+/*why to use css*/
+/*Free Trail*/
+@media (min-width: 992px){
+.css-try {
+    margin: 80px auto !important;
+}
+}
+@media (max-width: 768px){
+.css-try {
+    padding: 0 32px !important;
+}}
+.css-try {
+    max-width: 1280px;
+    margin: 56px auto;
+    padding: 0 8px;
+}
+@media (min-width: 992px){
+.css-try-inner {
+    padding: 56px;
+    text-align: center;
+}}
+
+@media (min-width: 768px){
+.  {
+    padding: 56px 56px 56px 256px;
+    text-align: left;
+}}
+.css-try-inner {
+    position: relative;
+    padding: 32px;
+    text-align: center;
+    color: #fff;
+    background-color: #3368fa;
+    border-radius: 4px;
+    box-shadow: 0 0 1px 0 rgba(68,95,140,0.45), 0 10px 29px -8px rgba(44,74,125,0.34);
+}
+@media (min-width: 992px){
+.css-try-inner .btn-list {
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+}
+@media (min-width: 768px){
+.css-try-inner .btn-list {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+}}
+.css-try-inner .btn-list {
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+.btn-list {
+    justify-content: center;
+}
+.btn-list .btn:first-child {
+    margin-left: 0;
+}
+.btn-list .btn {
+    margin-right: 12px;
+    margin-left: 12px;
+}
+.btn--reversed, .btn-reversed {
+    color: #3368fa;
+    background-color: #fff;
+    border-color: #fff;
+    box-shadow: none;
+}
+.btn {
+    font-family: Colfax-Bold,Helvetica,Arial,sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    display: inline-block;
+    padding: 12px 32px;
+    font-size: 16px;
+    line-height: normal;
+    text-align: center;
+    border: 2px solid transparent;
+    border-radius: 3px;
+    outline: 0;
+    box-shadow: 0 2px 4px 0 #c8d7ee;
+    transition: all .2s ease-in-out;
+}
+/*Free Trail*/
+</style>
+<nav id="mainNav" class="navbar navbar-default navbar-custom navbar-fixed-top">
+		<div class="homepageContainer">
+                <div class="homePageLogoDiv">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header page-scroll">
+                        <a class="navbar-brand page-scroll" href="#page-top">SimplyApp</a>
+                    </div>
+                </div>
+                <div class="homepageHeaderMenuButtonWrapper">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                    </button>
+                </div>
+                <div class="navbar-collapse collapse homePageMenuDivListDiv" id="bs-example-navbar-collapse-1">
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="homepageHeaderMenuList" >
+                        <ul class="homePageHeaderMenu">
+                            <!--<li class="hidden">
+                                <a href="#page-top"></a>
+                            </li>-->
+							<li>
+                                <a class="page-scroll" href="#/ToHome">Home</a>
+                            </li>
+                            <li>
+                                <a class="page-scroll" href="#/ToHome/#services">Features</a>
+                            </li><!--
+                            <li>
+                                <a class="page-scroll" href="#benefits">Benefits</a>
+                            </li>-->
+                            <li>
+                                <a class="page-scroll" href="#/ToHome/#about">About</a>
+                            </li>
+
+                            <li>
+                                <a class="page-scroll" href="#/ToHome/#testimonial">Testimonial</a>
+                            </li>
+                            <!--
+                            <li>
+                                <a class="page-scroll" href="#team">Team</a>
+                            </li>-->
+                            <li>
+                                <a class="page-scroll" href="#/ToHome/#contact">Contact</a>
+                            </li>
+                            <!--<li>
+                                <a href="#/FeaturesPage">HighLights</a>
+                            </li>-->
+                            <li>
+                                <a href="#/Login">Login</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </div>
+        <!-- /.container-fluid -->
+    </nav>
+<div class="heading">
+	<h1><span>HighLights</span></h1>
+	<p>Get your Wholesale Business Online with ease</p>
+</div>
+<div class="main">
+	<div>
+<article class="article-second">
+			<div class="article-div">
+				<article class="article-in">
+					<div class="article-header">
+						<h2>24/7 Ordering</h2>
+						<p>Accept Orders anytime, anywhere </p>
+					</div>
+						<div>
+						<img width="100%" src="app/assets/images/online.jpg" />
+					</div>
+					<div class="div-list">
+						<p>When we want to buy something from ecommerce websites like Amazon, Flipkart etc, we just go to the website and order, then why not in Wholesale business? Simply enables your retail customers to place orders 24x7 anytime anywhere irrespective of any exceptions. Get away from old way of accepting orders through phone or whatsapp, adapt this innovative solution and get orders simply. Simply has built in ecosystem to have your agents/customers to place orders anytime anywhere within few minutes.</p>
+						
+					</div>
+				</article>
+			</div>
+			</article>
+			<article class="main-article">
+				<div class="article-div">
+					<br/>
+					<article class="article--second-in">
+						<div class="article-header">
+							<h2>Order Processing</h2>
+							<p>Track Orders, Bales, and Delivery Notes all at one place </p>
+						</div>
+						<div>
+							<img width="100%" src="app/assets/images/order_processing.jpg" />
+						</div>	
+						<div class="div-list">
+							<p>When orders received we need to process the order in terms  of packing, creating invoices and shipping the orders. Simply brings one solution to make order processing simple. Get away from old way of doing business with manual process, automate your business using Simply. Have your staff use the system and create transparency in the environment. 0% Error Prone, productivity increases. Track Orders, Bales, and Delivery Notes all in one place customized for Textile industry. Increase the speed of your order delivery</p>
+						</div>
+					</article>
+					<br/>
+				</div>
+			</article>
+			<article class="article-second">
+				<div class="article-div">
+					<article class="article-in">
+						<div class="article-header">
+							<h2>Inventory</h2>
+							<p>Keep track of your inventory, stock. No more customer frustrations over order cancellation due to insufficient stock</p>
+						</div>
+						<div>
+							<img width="100%"  src="app/assets/images/inventory.jpg" />
+						</div>	
+						<div class="div-list">
+							<p>By having a inventory management system for you it saves lot of money and time. When received orders, auto update of stock happens so that you are absolutely worriless. Auto updation of stock has multiple advantages like avoids dead stock, better forecasting of future stock requirements, lowers the storage costs, eases in accounting  and avoids product spoilage (expiry dates). Simply has all these benefits embraced in managing stock effectively. We hold expertise in textile inventory management system </p>
+						</div>
+					</article>
+				</div>
+			</article>
+			<article class="main-article">
+				<div class="article-div">
+					<article class="article--second-in">
+						<div class="article-header">
+							<h2>Visibility</h2>
+							<p>Have complete visibility of incoming orders, order processing, deliveries whether you are at office or out of town</p>
+						</div>
+						<div>
+							<img width="100%" src="app/assets/images/visibility.jpg" />
+						</div>	
+						<div class="div-list">
+							<p>If you would like to build an high productive business, only right things should be visible to the right persons. Simply has an creative solution to have roles in place so that the respective people assigned with roles will have those functionalities only visible. Have complete visibility of incoming orders, order processing, deliveries whether you are at office or out of town. Enables visibility to agents, sales people and customers. No more calls from agents or customers to ask delivery status, LR number. Define roles and responsibilities for your sales people, agents and employees & run the business systematically</p>
+						</div>
+					</article>
+				</div>
+			</article>
+			<article class="article-second">
+				<div class="article-div">
+					<article class="article-in">
+						<div class="article-header">
+							<h2>Catalog Share</h2>
+							<p>Share your catalogs instantly</p>
+						</div>
+						<div>
+							<img width="100%" src="app/assets/images/catalog_sharing.jpg" />
+						</div>	
+						<div class="div-list">
+							<p>Sharing your catalogs to your customers gives an exposure of your stock and enables to get orders proactively. Simply has a catalog sharing feature which not only helps to share catalogs to your customers, but also the customers can choose the designs and place orders instantaneously. Get away from managing catalog in dropbox or manually sending images in Whatsapp, and enable your business to have share catalogs. This will also help to expand your business without limitations of showing designs in person and using technology effectively in this digital world.</p>
+						</div>
+					</article>
+				</div>
+			</article>
+<article class="add-ons">
+	<div class="add-ons-div1">
+		<div class="add-ons-header">
+			<sup>Add-Ons</sup>
+			<h2>Extras to maximize your business</h2>
+		</div>
+		<ul class="add-on-ul">
+			<li class="add-on-li">
+				<figure width="138" class="inner-figure">
+					<span class="fa-stack fa-4x">
+					<i class="fa fa-circle fa-stack-2x text-primary" style="color: #b982d6" ></i>
+
+					<i class="fas fa-code-branch fa-stack-1x fa-inverse"></i>
+
+				</span>
+				</figure>
+				<h3>Approval Workflow</h3>
+				<p>Help yourself in keeping your business in control financially by keeping a credit and payment due control. No time waste of price negotation on phones!</p>
+			</li>
+			<li class="add-on-li">
+				<figure width="138" class="inner-figure">
+					<span class="fa-stack fa-4x">
+					<i class="fa fa-circle fa-stack-2x text-primary" style="color: #b982d6" ></i>
+					<i class="fa fa-bell fa-stack-1x fa-inverse"></i>
+				</span>
+				</figure>
+				<h3>Notifications</h3>
+				<p>Send order notification, payment reminders automatically</p>
+			</li>
+		</ul>
+	</div>
+	</article class="add-ons">
+	<article class="add-ons">
+		<div class="add-ons-div1">
+			<div class="add-ons-header">
+				<sup>More FEATURES</sup>
+				<h2>There's even more to love</h2>
+			</div>
+			<ul class="add-on-ul">
+				<li class="add-on-li">
+					<h3>Outstanding</h3>
+					<p>Provide visibility of outstanding to your agents! No more calls! Make collection faster and smoother!</p>
+				</li>
+				<li class="add-on-li">
+					<h3>Images download</h3>
+					<p>No more sending order images through emails or WhatsApp! No more Email Inbox full messages!</p>
+				</li>
+				<li class="add-on-li">
+					<h3>Tax Management</h3>
+					<p>Auto tax calculation on orders & invoices, GST enabled</p>
+				</li>
+				<li class="add-on-li">
+					<h3>Auto Unit Conversion</h3>
+					<p>Have ordering & price unit differently? Let Simply auto calculate the order amount</p>
+				</li>
+			</ul>
+		</div>
+	</article>
+	<article class="add-ons">
+		<div class="add-ons-div1">
+			<div class="add-ons-header">
+				<sup>Why Simply?</sup>
+				<h2>Trust that all your data is safe and secure.</h2>
+			</div>
+			<div class="css-use">
+				<div><h3>Customizable</h3><p>The software could be customized to your needs of your business, and we take care of on-boarding your business seamlessly. We are more specialized in customizing for Textile based business.</p></div>
+				<div><h3>Scalable</h3><p>The software is built on a world-class platform which helps to scale your business and gives you comfort with speed. The textile management software helps to operate your business seamlessly.</p></div>
+				<div><h3>Expertise</h3><p>Experts can help you optimize your program, troubleshoot, and resolve issues.</p></div>
+				<div><h3>24/7 Support</h3><p>Our support teams can give you information and guidance when you need it most.</p></div>
+			</div>
+		</div>
+	</article>
+	<div style="display:none" class="css-try">
+		<div class="css-try-inner">
+			<h2>Ready to start sending?</h2>
+			<p>Free to get started. Free to send.</p>
+			<div class="btn-list">
+				<button title="Try for free" class="btn btn--reversed" data-gtm-track="true" data-gtm-event-type="cta" type="button">Try for free</button>
+				<button title="Take To Sales" class="btn btn--reversed" data-gtm-track="true" data-gtm-event-type="cta" type="button">Take To Sales</button>
+			</div>
+		</div>
+	</div>
+	</div>
+	<footer class="page-footer">
+		 <div class="row row--large">
+		 	<div class="div-sections">
+		 		<div style="display:none">
+		 			<div class="m-bottom-5 color-gray-700 is-bold">Products</div>
+		 			<ul class="footer-list" style="list-style: none;">
+		 			<li>
+		 				<a aria-current="page" class="" href="/solutions/email-marketing/">Email Marketing</a>
+		 			</li>
+		 			<li><a href="/">Email API</a>
+		 			</li>
+		 			<li><a href="">Twilio Programmable SMS</a></li>
+		 			<li><a href="/">Expert Services</a></li>
+		 			<li><a href="/">One Platform Solution</a></li>
+		 			<li><a href="/">Pricing</a></li>
+		 		</ul>
+		 		</div>
+		 		<div style="display:none">
+		 			<div class="m-bottom-5 color-gray-700 is-bold">Products</div>
+		 			<ul class="footer-list" style="list-style: none;">
+		 			<li>
+		 				<a aria-current="page" class="" href="/solutions/email-marketing/">Email Marketing</a>
+		 			</li>
+		 			<li><a href="//">Email API</a>
+		 			</li>
+		 			<li><a href="">Twilio Programmable SMS</a></li>
+		 			<li><a href="/solutions/expert-services/">Expert Services</a></li>
+		 			<li><a href="/solutions/">One Platform Solution</a></li>
+		 			<li><a href="/pricing/">Pricing</a></li>
+		 		</ul>
+		 		</div>
+		 		<div style="display:none">
+		 			<div class="m-bottom-5 color-gray-700 is-bold">Products</div>
+		 			<ul class="footer-list" style="list-style: none;">
+		 			<li>
+		 				<a aria-current="page" class="" href="/solutions/email-marketing/">Email Marketing</a>
+		 			</li>
+		 			<li><a href="/solutions/email-api/">Email API</a>
+		 			</li>
+		 			<li><a href="">Twilio Programmable SMS</a></li>
+		 			<li><a href="">Expert Services</a></li>
+		 			<li><a href="">One Platform Solution</a></li>
+		 			<li><a href="">Pricing</a></li>
+		 		</ul>
+		 		</div>
+		 	</div>
+		 </div>
+		 <div class="footer-social">
+
+		 	<div>
+		 		<div xclass="grid grid-two-col--wide-left-col grid-gap-up3">
+		 			<div style="text-align: center">
+		 				<ul xclass="footer-social-ul">
+		 					<li>Copyright 2020 Simply</li>
+		 				</ul>
+		 				<ul xclass="footer-social-ul">
+		 					<li style="font-size:10px">Credits to Freepik - www.freepik.com <i class="fa fa-angle-down" data-ng-show="!show_detail" data-ng-click="show_detail=true"></i><i class="fa fa-angle-up" data-ng-show="show_detail" data-ng-click="show_detail=false"></i></li>
+		 				</ul>
+		 				<div data-ng-show="show_detail">
+				 			<ul class="footer-list" style="list-style: none;">
+				 			<li>
+				 				<a href='https://www.freepik.com/free-photos-vectors/business'>Business vector created by katemangostar</a>
+				 			</li>
+				 			<li>
+				 				<a href='https://www.freepik.com/free-photos-vectors/business'>Business vector created by macrovector</a>
+				 			</li>
+				 			<li>
+				 				<a href="https://www.freepik.com/free-photos-vectors/people">People vector created by rawpixel.com</a>
+				 			</li>
+				 			<li><a href="https://www.freepik.com/free-photos-vectors/business">Business vector created by katemangostar</a></li>
+				 			<li><a href="https://www.freepik.com/free-photos-vectors/business">Business vector created by macrovector</a></li>
+				 			</ul>
+		 				</div>
+		 			</div>
+		 		</div>
+		 	</div>
+		 </div>
+</footer>
+</div>

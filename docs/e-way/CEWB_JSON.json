@@ -1,0 +1,41 @@
+{
+"version":"1.0.0123",
+"tripSheets":[{
+               "userGstin":"29AAACG0569P1Z3",
+               "vehicleNo":"KA12KA1234",
+               "fromPlace":"BANGALORE",
+               "transMode":"1",
+               "fromState":"29",
+               "tripSheetEwbBills":[
+                                     {
+
+                                      "ewbno":122092222222
+                                     },
+
+
+                                     {
+                                      "ewbno":122092222223
+                                     }
+
+                                   ]
+},
+
+{
+               "userGstin":"29AAACG0569P1Z3",
+               "vehicleNo":"KA67KA3409",
+               "fromPlace":"SOLLAPUR",
+               "transMode":"2",
+               "fromState":"10",
+               "tripSheetEwbBills":[
+                                     {
+
+                                      "ewbno":892398231232
+                                     }
+
+                                   ]
+               }
+
+               ]
+
+}
+

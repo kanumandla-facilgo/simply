@@ -1,0 +1,351 @@
+<html>
+
+<head>
+    <title>Invoice Template</title>
+
+    <style>
+
+    	#container {
+		    width:100%;
+		    text-align:center;
+		}
+
+		#left {
+		    float:left;
+		    width:100px;
+		    height: 20px;
+		}
+
+		#center {
+		    display: inline-block;
+		    margin:0 auto;
+		    width:100px;
+		    height: 20px;
+		}
+
+		#right {
+		    float:right;
+		    width:100px;
+		    height: 20px;
+		}
+    	
+        .column1 span {
+            white-space: pre;
+        }
+        .column1 span.line-break {  
+            display: block;
+        }
+
+        .column1 span:empty {  
+           visibility:hidden;
+        }
+        html {
+            font-family: "Arial Narrow";
+            line-height: 20px;
+            font-size: small;
+        }
+        table{
+            font-size: small;
+        }
+        h2 {
+            font-weight: normal;
+        }
+
+        .image1 {
+            float: left;
+        }
+
+        .image2 {
+            float: right;
+        }
+
+        .width-height-50 {
+            width: 50px;
+            height: 50px;
+        }
+
+        .overflow {
+            overflow: hidden;
+        }
+
+        .padding-sides {
+            padding: 10px;
+        }
+
+        .column1 {
+            float: left;
+            width: 40%;
+            text-align: left;
+        }
+
+        .column2 {
+            float: right;
+            width: 60%;
+        }
+
+        .right {
+            float: right;
+        }
+
+        textRight {
+            text-align: right;
+        }
+
+        textLeft {
+            text-align: left;
+        }
+
+        textCenter {
+            text-align: center;
+        }
+
+        th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: center;
+            color: white;
+        }
+
+        #due td,
+        #due th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        tableborder {
+            border: hidden !important;
+            border-radius: 0em !important;
+            border-style: hidden !important;
+        }
+
+        table.inventory {
+            clear: both;
+            width: 100%;
+        }
+
+        table.inventory th {
+            font-weight: bold;
+            text-align: center;
+        }
+
+        table.inventory td:nth-child(1) {
+            width: 26%;
+        }
+
+        table.inventory td:nth-child(2) {
+            width: 38%;
+        }
+
+        table.inventory td:nth-child(3) {
+            text-align: right;
+            width: 12%;
+        }
+
+        table.inventory td:nth-child(4) {
+            text-align: right;
+            width: 12%;
+        }
+
+        table.inventory td:nth-child(5) {
+            text-align: right;
+            width: 12%;
+        }
+
+        /* table balance */
+
+        table.balance th,
+        table.balance td {
+            width: 50%;
+        }
+
+        table.balance td {
+            text-align: right;
+        }
+
+        .invoice-table table {
+            border-collapse: collapse;
+            border-spacing: 2px;
+        }
+
+        .invoice-table th,
+        td {
+            border-width: 1px;
+            
+            position: relative;
+            text-align: left;
+        }
+
+        .invoice-table th,
+        td {
+            border-radius: 0.25em;
+            border-style: solid;
+        }
+
+        .invoice-table th {
+            background: #EEE;
+            border-color: #BBB;
+            color: black;
+        }
+
+        .invoice-table td {
+            border-color: #DDD;
+        }
+
+        table.meta,
+        table.balance {
+            float: right;
+            width: 50%;
+        }
+
+        table.meta:after,
+        table.balance:after {
+            clear: both;
+            content: "";
+            display: table;
+        }
+    </style>
+</head>
+
+<body style="border: 10px outset skyblue;padding-bottom:10px;border-radius:5px">
+	<div id="container">
+	  <div id="left"><a xhref="#"  data-ng-click="" class="logo" ><img data-ng-src="{{order.configuration.logo_url}}" style="width:80px;height:35px;padding-bottom:3px"/> </a></div>
+	  <div id="center"><span style="font:helvetica;font-size: 32px">ORDER</span></div>
+	  <div id="right"><a xhref="#"  data-ng-click="" class="logo" ><img data-ng-src="upload/logo_simply.jpg" style="width:80px;height:35px;padding-bottom:3px"/> </a></div>
+	</div>
+   
+    <div class="row1 overflow padding-sides">
+        <div class="column1" style="padding: 0 30 0 30">
+            <h2 style="margin-bottom: 0px;"><span><b>{{order.company.name}}</b> </span></h2>
+            <span class="line-break">{{order.company.address.address1 + '.'}}</span><span ng-if="order.company.address.address2 != ''  && order.company.address.address2 != null">{{ order.company.address.address2 + ','}}</span>{{order.company.address.city}} - {{order.company.address.zip}}</span>
+            <span class="line-break">Bank:{{order.configuration.bank_name}}</span>
+            <span class="line-break">A/c No: {{order.configuration.bank_account_number}}</span>
+            <span class="line-break">IFSC: {{order.configuration.bank_isfc}} </span>
+            <span class="line-break">GST #: {{order.configuration.tax_gst_number}} </span>
+        </div>
+        <div class="column2">
+            <br>
+            <table class="right" style="width: 60%;">
+                <!--<tr>
+                    <td class="textRight" style="border: hidden;">
+                        <h2 style="margin: 0px;">Order Details</h2>
+                    </td>
+                </tr>-->
+                <tr>
+                    <td class="textRight" style="border: hidden;">Order # </td>
+                    <td class="" style="border:hidden">{{order.order_number}}</td>
+                </tr>
+                <tr>
+                    <td class="textRight " style="border:hidden">Dated </td>
+                    <td class="" style="border:hidden">{{ order.order_date }}</td>
+                </tr>
+                <tr>
+                    <td class="textRight " style="border:hidden">PO #</td>
+                    <td class="" style="border:hidden">{{ order.customer_order_number }}</td>
+                </tr>
+				<tr>
+                    <td class="textRight " style="border:hidden">Ref.</td>
+                    <td class="" style="border:hidden">{{ order.customer.agent.name }}</td>
+                </tr>
+				<tr>
+                    <td class="textRight " style="border:hidden">Terms</td>
+                    <td class="" style="border:hidden">{{ payment_term_name }}</td>
+                </tr>
+				<tr>
+                    <td class="textRight " style="border:hidden">Transporter</td>
+                    <td class="" style="border:hidden">{{ order.customer.transporter.name }}</td>
+                </tr>
+				<tr>
+                    <td class="textRight " style="border:hidden">Destination</td>
+                    <td class="" style="border:hidden">{{ order.customer.ship_address.city }}</td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+    <div class="row1 padding-sides overflow">
+        <div class="column1" style="padding: 0 30 0 30">
+            <h3 style="margin: 0px;display: inline-block;color: #a39999;
+            font-weight: normal;"><span>Bill To </span></h3><br>
+            <span><b>{{order.customer.name}}</b> </span>
+            <!--<span class="line-break" style="font-size: larger;">{{order.customer.name}}</span>-->
+            <span class="line-break">{{ order.customer.address.address1 }}</span>
+            <span class="line-break">{{ order.customer.address.address2 }}</span>
+            <span class="line-break">{{ order.customer.address.city }}</span>
+			<span class="line-break">{{ order.customer.address.zip }}</span>
+			<span class="line-break" ng-if="order.customer.address.phone1 != '' && order.customer.address.phone1 != null">Phone:+{{order.customer.address.phone1}}</span>
+            <span class="line-break" ng-if="order.customer.address.email1 != '' && order.customer.address.email1 != null">Email: {{order.customer.address.email1}}</span>
+			<span class="line-break">GST #:{{ order.customer.gst_number }}</span>
+        </div>
+        <div class="column2">
+
+            <br>
+            <table class="right" id="due" style="width: 90%;
+            height: 130px;">
+                <tr>
+                    <th style="background-color: #328eb4;">Status</th>
+                    <th style="background-color: #e9dede;COLOR:black">{{ order.status_name }}<span ng-if="order.workflow_reason_string != '' && order.workflow_reason_string != null">({{order.workflow_reason_string}})</span></th>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;font-size: x-large;">₹{{ order.grand_total }}</td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+    <div class="invoice-table overflow" style="padding-left: 5px; padding-right: 5px;">
+        <table class="inventory" style="width: 100%;color: black;">
+            <thead>
+                <tr>
+                    <th><span contenteditable>#</span></th>
+                    <th><span contenteditable>Description</span></th>
+					<th><span contenteditable>Quantity</span></th>
+                    <th><span contenteditable>Rate</span></th>
+					<th><span contenteditable>Per</span></th>
+                    <th><span contenteditable>Disc</span></th>
+                    <th><span contenteditable>Tax%</span></th>
+					<th><span contenteditable>Amount</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="lineitem in order.lineitems">
+					<td style="text-align:left"><span contenteditable>{{$index + 1}}</span></td>
+					<td ng-if="lineitem.entered_unit_of_measures_id != lineitem.unit_of_measures_id"><span contenteditable >{{ lineitem.name }} ({{ lineitem.entered_quantity }} {{ lineitem.entered_uom_short_name }}) </span></td>
+					<td ng-if="lineitem.entered_unit_of_measures_id == lineitem.unit_of_measures_id"><span contenteditable >{{ lineitem.name }}</span></td>
+                    <td><span style="padding:5px">{{ lineitem.order_quantity }} {{ lineitem.uom_short_name }}</span></td>
+                    <td style="text-align:right;padding:5px"><span contenteditable>{{ lineitem.order_price }}</span></td>
+                    <td><span style="padding:5px">{{ lineitem.uom_short_name }}</span></td>
+                    <td style="text-align:right;padding:5px"><span contenteditable>{{ lineitem.discount }}</span></td>
+                    <td style="text-align:right;padding:5px"><span contenteditable>{{ ((lineitem.tax * 100)/(lineitem.extension - lineitem.discount))  | number:2}}</span></td>
+					<td style="text-align:right;padding:5px"><span contenteditable>{{ lineitem.extension }}</span></td>
+                </tr>
+	            <tr ng-if="lineitem.notes != null && lineitem.notes != ''">
+	              <td colspan="7">Notes: {{ lineitem.notes }}</td>
+	            </tr>
+            </tbody>
+        </table>
+        <table class="balance" style="border:1px;margin-top: 8px;width:30%">
+            <tr>
+                <td style="text-align:right"><span>SUB TOTAL</span></th>
+                <td style="text-align:right"><span>{{ order.sub_total }}</span></td>
+            </tr>
+            <tr ng-if="order.tax_total != 0">
+                <td style="text-align:right"><span>TAX</span></th>
+                <td style="text-align:right"><span>{{ order.tax_total }}</span></td>
+            </tr>
+            <tr ng-if="order.ship_total != 0">
+                <td style="text-align:right"><span>SHIPPING</span></th>
+                <td style="text-align:right"><span>{{ order.ship_total }}</span></td>
+            </tr>
+			<tr ng-if="order.discount_total != 0">
+                <td style="text-align:right"><span>DISCOUNT</span></th>
+                <td style="text-align:right"><span>{{ order.discount_total }}</span></td>
+            </tr>
+            <tr>
+                <td style="text-align:right"><span style="font-weight: bolder;">TOTAL</span></th>
+                <td style="text-align:right"><span style="font-weight: bolder;">{{ order.grand_total }}</span></td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

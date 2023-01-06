@@ -1,0 +1,648 @@
+
+    <link href="app/assets/css/agency.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+
+<style>
+.navbar-custom {
+    background-color: #222;
+    border-color: transparent;
+}
+
+<link href="/app/assets/css/agency.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+<link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+
+<style>
+
+	.navbar-custom {
+	    background-color: #222;
+	    border-color: transparent;
+	}
+
+	.heading {
+		margin: 120px 0 16px;
+		padding: 0 16px;
+		text-align: center;
+		font-size: 40px;
+	}
+	
+	.heading p {
+		font-size: 20px;
+		padding: 0 48px;
+	}
+	
+	.article-header p {
+		font-family: Colfax-Bold,Helvetica,Arial,sans-serif;
+		font-style: normal;
+		font-weight: 600;
+		font-size: 16px;
+		color: #4a6592;
+		margin: 16px 0 0;
+	}
+	.main {
+		max-width: 1600px;
+		margin: 0 auto;
+	}
+	
+	.main-article {
+		background: #fff;
+		margin: 56px 0;
+	}
+	article {
+		display: block;
+		padding: 0;
+		border: 0;
+		font-size: 100%;
+		font: inherit;
+		vertical-align: baseline;
+	}
+	
+	.article-div {
+		max-width: 1030px;
+		margin: 0 auto;
+		padding: 0 16px;
+	}
+
+	.article-in {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-column-gap: 28px;
+		-webkit-align-items: center;
+		-webkit-box-align: center;
+		-ms-flex-align: center;
+		align-items: center;
+		grid-template-areas:
+		'header header'
+		'media content'
+		'cta cta';
+	}
+	
+
+	.article-second {
+		background: #f5f8fd;
+		padding: 56px 0;
+	}
+
+	.article--second-in {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-column-gap: 28px;
+		-webkit-align-items: center;
+		-webkit-box-align: center;
+		-ms-flex-align: center;
+		align-items: center;
+		grid-template-areas:
+		'header header'
+        'content media'
+        'cta media';
+	}
+	
+
+	.article-header {
+		grid-area: header;
+		margin-bottom: 16px;
+		text-align: center;
+	}
+	
+
+	.fig {
+		grid-area: media;
+		margin-bottom: 24px;
+		overflow: hidden;
+	}
+	.div-list p {
+		font-size: 16px;
+	}
+	.div-list {
+		grid-area: content;
+	}
+	.div-list ul {
+		border-top: 2px solid #dfe9fa;
+		padding-top: 24px;
+		margin-top: 24px;
+	}
+
+	
+	.div-list li {
+		font-weight: 500;
+		display: grid;
+		grid-template-columns: 20px auto;
+		grid-column-gap: 8px;
+		font-size: 14px;
+		color: #2c4a7d;
+		margin: 15px;
+	}
+	
+	
+	.fa-stack1 {
+		position: relative;
+		display: inline-block;
+		width: 2em;
+		height: 2em;
+		line-height: 2em;
+		vertical-align: middle;
+	}
+	.fa-4x1 {
+		font-size: 9em;
+	}
+
+	svg text#chk {
+		font-family: sans-serif;
+		font-size: 12px; 
+		fill: #00f;
+		font-weight: bold;
+	}
+	@media (max-width: 800px){
+		.article-in{
+			display: block;
+		}
+	}
+	@media (max-width: 800px){
+		.article--second-in{
+			display: block;
+		}
+	}
+
+	.div-flex{
+		display: flex;
+		justify-content: center;
+
+	}
+ .page-footer {
+    padding: 14px 0 14px;
+    background-color: #f5f8ff;
+}
+
+footer {
+    padding: 48px 0 0;
+    background: #f5f8ff;
+}
+footer .row {
+    max-width: 1280px;
+}
+.row--large {
+    max-width: 1280px;
+}
+.row {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 32px;
+    padding-right: 32px;
+    position: relative;
+}
+
+@media (max-width: 992px){
+.div-sections {
+    grid-template-columns: repeat(4,auto)!important;
+}}
+@media (max-width: 863px){
+.div-sections {
+    grid-template-columns: repeat(3,auto)!important;
+}
+}
+@media (max-width: 768px){
+
+.div-sections {
+    grid-template-columns: repeat(3,auto)!important;
+}}
+@media (max-width: 520px){
+.div-sections {
+    grid-template-columns: repeat(2,auto) !important;
+}}
+.div-sections {
+    display: grid;
+    grid-gap: 36px;
+    grid-template-columns: repeat(5,auto);
+    text-align: initial;
+}
+
+.m-bottom-5 {
+    margin-bottom: 10px;
+}
+.color-gray-700 {
+    color: #2c4a7d;
+}
+.is-bold {
+    font-family: Colfax-Bold,Helvetica,Arial,sans-serif;
+    font-style: normal;
+    font-weight: 600;
+}
+
+.footer-list li {
+	    font-size: 14px;
+    	margin-bottom: 20px;
+}
+.footer-social {
+    margin-top: 0px;
+    padding: 0px 0 0;
+    border-top: 2px solid #dfe9fa;
+}
+grid-gap-up3 {
+    grid-gap: 24px;
+}
+@media (max-width: 768px){
+.grid-two-col--wide-left-col {
+    grid-template-columns: 1fr;
+    grid-gap: 64px;
+}
+}
+.grid-two-col--wide-left-col {
+    grid-template-columns: 70% 1fr;
+    grid-gap: 104px;
+}
+@media (max-width: 768px){
+.grid {
+    grid-gap: 64px;
+}}
+.grid {
+    display: grid;
+    grid-gap: 96px;
+}
+.grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+@media (min-width: 768px){
+.footer-social-ul {
+    -webkit-flex-direction: row !important;;
+    -ms-flex-direction: row !important;;
+    flex-direction: row !important;;
+}
+}
+.footer-social-ul {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+@media (min-width: 768px){
+.footer-social-ul li {
+    margin-right: 28px;
+    margin-bottom: 0;
+}}
+.footer-social-ul li {
+    margin-bottom: 18px;
+    font-size: 14px;
+    color: #4a6592;
+}
+/*Addons*/
+.add-ons {
+    background: #fff;
+    margin: 56px 0;
+}
+.add-ons-div1 {
+	 border-top: 5px solid #dfe9fa;
+    max-width: 1030px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+.add-ons-header {
+    text-align: center;
+    margin-bottom: 24px;
+    margin-top: 75px;
+}
+sup {
+    font-family: Colfax-Medium,Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    display: block;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #4a6592;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+@media (min-width: 768px){
+.add-on-ul {
+   display: -webkit-box;
+    display: -ms-flexbox;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: justify;
+    -ms-flex-pack: justify;
+    justify-content: justify;
+}}
+@media (min-width: 992px){
+.add-on-li {
+    padding: 40px;
+    width: calc(50% - 28px / 2);
+}
+}
+@media (min-width: 768px){
+.add-on-li {
+    width: calc(50% - 16px / 2);
+}}
+.add-on-li {
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 1px 0 #a8b9d5, 0 20px 32px -8px #ebf2ff;
+    padding: 40px 32px 48px;
+    margin-bottom: 40px;
+}
+.inner-figure {
+    box-shadow: 0 0 1px 0 #a8b9d5, 0 4px 8px -2px #ebf2ff;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 32px;
+    padding: 24px;
+    height: calc(24px * 2 + 124px);
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+}
+/*Addons*/
+/*why to use css*/
+@media (min-width: 992px){
+.css-use {
+    grid-template-columns: repeat(4,1fr) !important;
+}}
+
+@media (min-width: 768px){
+.css-use {
+    grid-template-columns: repeat(2,1fr) !important;
+    grid-column-gap: 48px;
+    grid-row-gap: 56px;
+}}
+.css-use {
+    display: grid;
+    grid-row-gap: 48px;
+}
+.css-use h3{
+    color: #4a6592;
+}
+/*why to use css*/
+/*Free Trail*/
+@media (min-width: 992px){
+.css-try {
+    margin: 80px auto !important;
+}
+}
+@media (max-width: 768px){
+.css-try {
+    padding: 0 32px !important;
+}}
+.css-try {
+    max-width: 1280px;
+    margin: 56px auto;
+    padding: 0 8px;
+}
+@media (min-width: 992px){
+.css-try-inner {
+    padding: 56px;
+    text-align: center;
+}}
+
+@media (min-width: 768px){
+.  {
+    padding: 56px 56px 56px 256px;
+    text-align: left;
+}}
+.css-try-inner {
+    position: relative;
+    padding: 32px;
+    text-align: center;
+    color: #fff;
+    background-color: #3368fa;
+    border-radius: 4px;
+    box-shadow: 0 0 1px 0 rgba(68,95,140,0.45), 0 10px 29px -8px rgba(44,74,125,0.34);
+}
+@media (min-width: 992px){
+.css-try-inner .btn-list {
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+}
+@media (min-width: 768px){
+.css-try-inner .btn-list {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+}}
+.css-try-inner .btn-list {
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+.btn-list {
+    justify-content: center;
+}
+.btn-list .btn:first-child {
+    margin-left: 0;
+}
+.btn-list .btn {
+    margin-right: 12px;
+    margin-left: 12px;
+}
+.btn--reversed, .btn-reversed {
+    color: #3368fa;
+    background-color: #fff;
+    border-color: #fff;
+    box-shadow: none;
+}
+.btn {
+    font-family: Colfax-Bold,Helvetica,Arial,sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    display: inline-block;
+    padding: 12px 32px;
+    font-size: 16px;
+    line-height: normal;
+    text-align: center;
+    border: 2px solid transparent;
+    border-radius: 3px;
+    outline: 0;
+    box-shadow: 0 2px 4px 0 #c8d7ee;
+    transition: all .2s ease-in-out;
+}
+/*Free Trail*/
+</style>
+<nav id="mainNav" class="navbar navbar-default navbar-custom navbar-fixed-top">
+		<div class="homepageContainer">
+                <div class="homePageLogoDiv">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header page-scroll">
+                        <a class="navbar-brand page-scroll" href="#page-top">SimplyReminders</a>
+                    </div>
+                </div>
+                <div class="homepageHeaderMenuButtonWrapper">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                    </button>
+                </div>
+                <div class="navbar-collapse collapse homePageMenuDivListDiv" id="bs-example-navbar-collapse-1">
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="homepageHeaderMenuList" >
+                        <ul class="homePageHeaderMenu">
+                            <li>
+                                <a class="page-scroll" href="#/ToHome">Home</a>
+                            </li>
+                            <li>
+                                <a class="page-scroll" href="#/reminders/AddCompany">Sign Up</a>
+                            </li>
+                            <!--<li>
+                                <a href="#/FeaturesPage">HighLights</a>
+                            </li>-->
+                            <li>
+                                <a href="#/Login">Login</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </div>
+        <!-- /.container-fluid -->
+    </nav>
+<div class="heading">
+	<h1><span>Auto Payment Reminders</span></h1>
+    <p>There’s no need to spend time chasing for payments or overdue invoices. We set up automatic reminders in seconds. Let Simply do the reminding for you!</p>
+</div>
+<div class="main">
+	<div>
+<article class="article-second">
+			<div class="article-div">
+				<article class="article-in">
+					<div class="article-header">
+						<h2>Get your collections faster</h2>
+						<p>Save your valuable time by 80%</p>
+					</div>
+						<div>
+						<img width="100%" src="app/assets/images/online.jpg" />
+					</div>
+					<div class="div-list">
+						<p>Simply enables you to receive payment faster. Faster payments means reduced financial risk, more investment into your business, keep your vendors happy, better money circulation, improved cashflow, more hiring to grow your business, better efficiency and hence more profit.</p>						
+                        <p>
+					</div>
+				</article>
+			</div>
+			</article>
+			<article class="main-article">
+				<div class="article-div">
+					<br/>
+					<article class="article--second-in">
+						<div class="article-header">
+							<h2>Short and friendly payment reminders</h2>
+							<p>We care and value your customers</p>
+						</div>
+						<div>
+							<img width="100%" src="app/assets/images/order_processing.jpg" />
+						</div>	
+						<div class="div-list">
+							<p>Everything matters when we interact with customers, and customer relationship is to be utmost valued. Simply provides emphathetic messages and emails to your customers so they feel good about it and thereby payments are received on time.  </p>
+						</div>
+					</article>
+					<br/>
+				</div>
+			</article>
+			<article class="article-second">
+				<div class="article-div">
+					<article class="article-in">
+						<div class="article-header">
+							<h2>Customer Relationship</h2>
+							<p>Enhance your relationship with your customers</p>
+						</div>
+						<div>
+							<img width="100%"  src="app/assets/images/inventory.jpg" />
+						</div>	
+						<div class="div-list">
+							<p>At some point or another most businesses will have to deal with a customer who doesn’t pay their invoices on time. It is not always easy, because you have to keep up a good customer relationship. However, you also need to keep the right balance so that these late payments don’t affect your own cash flow. Short and friendly payment reminders are important. There’s nothing wrong with reminding your customer that their invoice is going to be overdue soon – and with Simply, you let the software do the reminding for you!</p>
+						</div>
+					</article>
+				</div>
+			</article>
+			<article class="main-article">
+				<div class="article-div">
+					<article class="article--second-in">
+						<div class="article-header">
+							<h2>Integrations</h2>
+							<p>We do all work for you, and its ready at your fingertips</p>
+						</div>
+						<div>
+							<img width="100%" src="app/assets/images/visibility.jpg" />
+						</div>	
+						<div class="div-list">
+							<p>If you would like to build an high productive business, then the software should be embraced with your business. Simply brings an creative solution to have integrations running for you at fingertips. We work with you for integrations and make your business simple and systematic</p>
+						</div>
+					</article>
+				</div>
+			</article>
+    <article class="add-ons">
+    	<div class="add-ons-div1">
+    		<div class="add-ons-header">
+    			<sup>Pricing</sup>
+    			<h2>Creating and sending payment reminders are part of our Premium plans.</h2>
+    		</div>
+    	</div>
+	</article class="add-ons">
+	<article class="add-ons">
+		<div class="add-ons-div1">
+			<div class="add-ons-header">
+				<sup>FAQ's</sup>
+				<h2>We answer each of your questions</h2>
+			</div>
+			<ul class="add-on-ul">
+				<li class="add-on-li">
+					<h3>Can I use Simply for free?</h3>
+					<p>Yes with Simply you can create and import unlimited bills, and track your outstandings. We also give 50 credits free for the reminders</p>
+				</li>
+				<li class="add-on-li">
+					<h3>How does free trial work?</h3>
+					<p>We have free plan where in you can start using our software and it will send upto 50 credits, upon which you need to subscribe for premium plans for more reminders</p>
+				</li>
+				<li class="add-on-li">
+					<h3>What happens after my free trial?</h3>
+					<p>After your free trial you will be chosen to subscribe for any of our premium plans and will be charged according to the package and credits will be automatically credited to your account</p>
+				</li>
+				<li class="add-on-li">
+					<h3>How can I pay?</h3>
+					<p>You can subscribed to a premium plan using Google Pay or direct account transfer</p>
+				</li>
+                <li class="add-on-li">
+                    <h3>Will the Premium plans remain the same indefinitely?</h3>
+                    <p>Simply is a SaaS (Software as a Service) company, meaning that it is constantly updated and improved. However, as we’re constantly working on improving our software and adding more features to our Premium plans, there may be times when we need to make changes to both our Free and Premium plans.</p>
+                </li>
+                <li class="add-on-li">
+                    <h3>Why should I use Simply?</h3>
+                    <p>Simply is a SaaS company (Software as a Service). Simply will be constantly updated and improved over time, always offering you better value for money and new functions to help you get paid faster. This also means that you’re not tied into a long-term subscription or stuck with an expensive software.</p>
+                </li>
+			</ul>
+		</div>
+	</article>	
+	<footer class="page-footer">
+		 <div class="row row--large">
+		 	<div class="div-sections">
+		 		
+		 	</div>
+		 </div>
+		 <div class="footer-social">
+		 	<div>
+		 		<div xclass="grid grid-two-col--wide-left-col grid-gap-up3">
+		 			<div style="text-align: center">
+		 				<ul xclass="footer-social-ul">
+		 					<li>Copyright 2020 Simply</li>
+		 				</ul>
+		 			</div>
+		 		</div>
+		 	</div>
+		 </div>
+</footer>
+</div>

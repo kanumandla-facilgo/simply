@@ -1,0 +1,96 @@
+<!--<div><span><a href="#/users">Users</a></span> <span><a href="#/customers">Customers</a></span> <span><a href="#/categories">Catalog</a></span></div>-->
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+
+<!--main content start-->
+<section id="main-content">
+	<section class="wrapper site-min-height">
+
+		<div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                    <div class="mat-form card">
+                        <div class="card-header card-header-primary listPagePrimaryCardHeader">
+                            <h4 class="card-title">{{title}}</h4>
+							<div class="filterButtons">
+								<span class="filterButtonIcons">									
+								</span>
+							</div>
+                        </div>
+
+						<div class="card-body">
+							<div class="listPageFiltersWrapperDiv">	
+								<div class="listTableDiv">
+									<div class="adv-table editable-table">
+										<div class="space15"></div>
+										<table class="table table-striped table-hover" id="editable-sample">
+											<thead>
+											<tr>
+												<th></th>
+												<th class="sortable-header">ID</th>
+												<th class="sortable-header">TYPE</th>
+												<th class="text-right sortable-header">TOTAL RECORDS</th>
+												<th class="text-right sortable-header">RECORDS PROCESSED</th>
+												<th class="text-right sortable-header">RECORDS FAILED</th>
+												<th class="text-right sortable-header">PROCESSED TIME (seconds)</th>
+												<th class="sortable-header">UPLOADED BY</th>
+												<th class="sortable-header">NOTES</th>
+												<th class="sortable-header">CREATED</th>
+											</tr>
+											</thead>
+											<tbody>
+											<tr class="listPageTableRow" data-ng-repeat-start="x in uploadlist">
+												<td><span data-ng-attr-title="{{x.status_name}}" ng-class="getUploadStatusCssClass(x.status_id)" class="mobileListpageStatusIcon"></span><span ng-if="x.records_failed>0" ng-click="expandUpload(x)" ng-bind-html="isExpandUpload(x)"></span></td>
+												<td>{{x.id}}</td>
+												<td>{{x.upload_type_name}}</td>
+												<td align="right">{{x.number_of_records}}</td>
+												<td align="right">{{x.records_processed}}</td>
+												<td align="right">{{x.records_failed}}</td>
+												<td align="right">{{x.processed_time}}</td>
+												<td>{{x.uploaded_by}}</td>
+												<td>{{x.notes}}</td>
+												<td>{{x.created| date:'dd-MMM-yyyy'}}</td>
+											</tr>
+											<tr data-ng-repeat-end data-ng-show="x.expanded && x.records_failed>0" >
+								                <td colspan ="2"></td>
+								                <td colspan="8">
+								                	<span ng-click="expandUpload(x, true)"><i class="fas fa-sync"></i></span> &nbsp;
+								                	<span ng-if="false" ng-click="download(x)"><i class="fa fa-download"></i></span>
+								                	<input type="text" style="float:right" placeholder="Search" data-ng-model="searchText">
+								                	<div id="exportable_{{x.id}}">
+								                    <table class="table table-striped table-hover">
+								                        <thead>
+								                            <tr>
+								                                <th>Line Number</th>
+								                                <th>Failure Reason</th>
+								                                <th>Details</th>
+								                            </tr>
+								                        </thead>
+								                        <tbody>
+								                            <tr data-ng-repeat="y in x.error_details | filter:searchText track by $index " ng-hide="$index >= loadIndex">
+								                                <td>{{y.line_number}}</td>
+								                                <td>{{y.failure_reason}}</td>
+								                                <td>{{showUploadDetail(y.more)}}</td>
+								                            </tr>
+								                            <tr>
+								                            	<td colspan="3">
+													            	<a ng-click="showMore(x.error_details)" ng-if="loadIndex < x.error_details.length">Show More</a>
+																	<a ng-click="showLess(x.error_details)" ng-if="loadIndex >= x.error_details.length">Show Less</a>
+																</td>
+												            </tr>
+								                        </tbody>
+								                    </table>
+								                	</div>
+								                </td>
+								            </tr>								            
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>						
+						</div>
+					</div>
+                </div>
+            </div>
+		</div>
+	</section>
+</section>

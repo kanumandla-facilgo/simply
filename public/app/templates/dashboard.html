@@ -1,0 +1,330 @@
+<!--<div><span><a href="#/users">Users</a></span> <span><a href="#/customers">Customers</a></span> <span><a href="#/categories">Catalog</a></span></div>-->
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+<style>
+
+  .cards {
+       display: flex;
+       flex-wrap: wrap;
+       position: absolute
+    }
+
+  .no-gutter > [class*='col-'] {
+      padding-right:0px;
+      padding-left:0px;
+  }
+
+  #piechartdiv, #piechartdiv3d, #animatedpiechartdiv, #rotatedbarchartdiv, #barchartdiv3d, #datebasedchartdiv {
+    width: 50%;
+    height: 500px;
+  }
+
+  #barchartdiv, #donutdivwgradient, #simplebarchartdiv, #clusteredbarchartdiv {
+    width   : 100%;
+    height    : 500px;
+    font-size : 11px;
+  }
+  .morris-hover{position:absolute;z-index:1000;}
+  .tooltip {
+      position: absolute;
+      width: 150px;
+      margin-top: -190px;
+      opacity: .6;
+      z-index: 1;
+      height: auto;
+      padding: 10px;
+      color: #fff;
+      background-color: rgba(0, 0, 0, .7);
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+      -mox-box-shadow: 4px 4px 4px 10px rgba(0, 0, 0, 0.4);
+      box-shadow: 4px 4px 10px rbga(0, 0, 0, 0.4); pointer-events: none;
+  }
+  .tooltip.hidden {
+      opacity: 0;
+  }
+
+
+  .chart {
+  /*    background: #eee; */
+      padding: 3px;
+  }
+
+  .chart div {
+    width: 0;
+    transition: all 1s ease-out;
+    -moz-transition: all 1s ease-out;
+    -webkit-transition: all 1s ease-out;
+  }
+
+  .chart div {
+    font: 10px sans-serif;
+    background-color: steelblue;
+    text-align: right;
+    padding: 3px;
+    margin: 5px;
+    color: white;
+    box-shadow: 2px 2px 2px #666;
+  }
+
+  #rcorners {
+      border-radius: 15px 50px 30px;
+      padding: 20px;
+      width: 200px;
+      height: 150px;
+  }
+
+  #green {
+      background: #73AD21;
+      color: #FFFFFF;
+  }
+
+  #red {
+      background: #73AD21;
+      color: #FFFFFF;
+  }
+
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+  .bar {
+    fill: #41cac0;
+  }
+
+  .bar:hover {
+    fill: lightblue ;
+  }
+
+  .x.axis path {
+
+  }
+
+  .d3-tip {
+    line-height: 1;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 2px;
+  }
+
+  /* Creates a small triangle extender for the tooltip */
+  .d3-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.8);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+  }
+
+
+  /* Style northward tooltips differently */
+  .d3-tip.n:after {
+    margin: -1px 0 0 0;
+    top: 100%;
+    left: 0;
+  }
+
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+  }
+
+  .linechartpath {
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+  }
+
+
+  .label {
+      position:absolute;
+  }
+
+  circle {
+      cursor: pointer;
+      fill: steelblue;
+  }
+</style>
+<i ng-controller="mastercontroller" />
+<!-- place holder to make order controller listening events coming from dashboard -->
+<i ng-controller="ordercontroller" />
+<!-- place holder to make order controller listening events coming from dashboard -->
+<!--main content start-->
+<section id="main-content">
+  <section class="wrapper site-min-height">
+    <!-- page start-->
+    <div class="control-label col-12">
+      <label class="panel-heading font-bold padding-lr-zero">{{title}}</label>
+    </div>
+    <div class="" data-ng-if="showTallySetup()" style="float: right">
+      <p class="quickOrderHeaderLabel">Tally Setup</p>
+      <input type="text" data-ng-model="companyname" id="name" name="name" />
+      <button class="btn">
+        <i
+          class="fa fa-download"
+          data-ng-click="downloadSetup()"
+          aria-hidden="true"
+        ></i>
+      </button>
+    </div>
+    <div class="container-fluid no-gutter row row-eq-height banner-layout">
+      <div
+        class="col-md-2 col-6 dashboardEachCard"
+        data-ng-repeat="x in dashboard.tablist"
+        ng-class="{'col-xs-12':$last}"
+      >
+        <div
+          class="card-layout elevation-1 item-container"
+          style="color:{{x.color}}"
+        >
+          <label class="item-label">{{x.description}}</label>
+          <div class="item-content">{{x.value}}</div>
+        </div>
+      </div>
+      <div ng-controller="reportcontroller" data-ng-show="false">
+        <input type="button" data-ng-click="getReport(5, {} )" />
+      </div>
+    </div>
+    <div class="top-buffer"></div>
+    <div
+      class="container-fluid no-gutter row row-eq-height"
+      data-ng-if="dashboard.bargrouplist.length > 0"
+    >
+      <div
+        class="col-12"
+        data-ng-repeat="x in dashboard.bargrouplist"
+        data-ng-if="utilService.isUserAnInternal()"
+      >
+        <p class="label"></p>
+        <div class="card-layout elevation-1">
+          <div id="graph_bar" linechart="{{ x }}"></div>
+        </div>
+      </div>
+      <!--             <div class="col-md-4 col-sm-12 col-12 donut-carts-wrapper" data-ng-show="customfilterlist.length > 0">
+              <div class="card-layout elevation-1">
+                <div class="control-label card-heading">Quick Links</div> 
+                <div class="row no-gutter">
+                    <div class="cards" style="padding-left: 15px; " data-ng-repeat="x in customfilterlist | filter:searchText">
+                        <div  style="cursor:pointer;font-weight: bold;font-size:12px;padding-bottom:5px" data-ng-click="broadCastCustomFilterClickEvent(x)"> 
+                              <a data-ng-click="broadCastCustomFilterClickEvent(x)" style="">{{x.name}}</a>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+ -->
+      <div
+        class="container-fluid col-md-6 col-sm-12 col-6 col-lg-4 donut-carts-wrapper"
+        data-ng-repeat="section in dashboard.sectionlist" 
+      >
+        <div class="card-layout elevation-1" style="overflow:hidden;position:relative; display: flex; flex-wrap: wrap; justify-content: space-around; align-items: space-around; flex-direction: column;">
+          <div class="control-label card-heading" style="display: block;" >{{section.description}}</div>
+          <div style="max-width: 500px; align-self: center; flex-grow: 4;">
+            <div
+            class="no-data-wrapper"
+            ng-show="!section.sectionlineitems.length > 0" style="width: 500px;display: flex; flex-direction:column;align-items: center; justify-content: center; "
+          >
+            <div class="">Data not found</div>
+            <div><i
+              class="fas fa-check-circle"
+              style="color: #2e7d32; font-size: 72px;"
+            ></i></div>
+          </div>
+          </div>
+          <div
+            class="row no-gutter"
+            ng-show="section.sectionlineitems.length > 0"
+            style="max-width: 500px; align-self: center; flex-grow: 4;"
+          >
+            <div class="position-relative col-md-6 col-6 donut-cart-wrap">
+              <div
+                id="container_{{section.id}}"
+                class="chart-container"
+                style="max-width: 240px;"
+              >
+                <div
+                  class="donut-container"
+                  id="chart_{{section.id}}"
+                  donutsectionchart="{{  section }}" style="position:relative;"
+                ></div>
+              </div>
+              <div class="container-fluid no-gutter row position-absolute">
+                <div id="tooltip_chart_{{section.id}}" class="hidden tooltip">
+                  <p>
+                    <strong><span id="description"></span></strong>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="no-gutter col-md-6 col-6 p-2" style="position:relative;">
+              <div
+                class="container margin-bottom-only"
+                data-ng-repeat="sectionitem in section.sectionlineitems"
+              >
+                <div class="row">
+                  <div class="col-12">
+                    <span
+                      ><i
+                        class="circle"
+                        style="background-color: {{sectionitem.color}}"
+                      ></i
+                    ></span>
+                    <span class="heading-color"
+                      >{{sectionitem.description}}</span
+                    >
+                  </div>
+                  <div class="col-6 padding-t-zero">
+                    <label class="item-label">Count</label>
+                    <div class="item-content">{{sectionitem.count}}</div>
+                  </div>
+                  <div class="col-6 padding-t-zero">
+                    <label class="item-label">Value</label>
+                    <div class="item-content">{{sectionitem.value}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- These are comments -->
+        </div>
+      </div>
+    </div>
+    <!-- page end-->
+  </section>
+</section>
+<!--main content end-->
+
+<!--<div style="overflow-x:auto;" class="row">
+              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 no-gutter" data-ng-repeat="section in dashboard.dataset" style="border:solid 1px black;">
+                <div class="col-xs-12" style="background-color:gray">
+                  <span class="control-label" style="color:white">{{section.description}}</span>
+                </div>
+                <div class="{{($index == 0 ? 'col-xs-6' : 'col-xs-3')}} no-gutter" style="text-align: {{($index == 0 ? 'left' : 'right')}}" data-ng-repeat="header in section.headerlist">{{header}}
+                </div>
+                <div class="col-xs-12" data-ng-repeat="row in section.rowlist" style="float:clear">
+                  <div class="{{($index == 0 ? 'col-xs-6' : 'col-xs-3')}} no-gutter" data-ng-repeat="(key, value) in row">
+                    <div class="col-xs-12 no-gutter" style="text-align: {{($index == 0 ? 'left' : 'right')}}">{{value}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>  -->
+
+<!--<div class="container-fluid no-gutter row row-eq-height">
+            <div class="col-md-4 col-sm-6 col-xs-12" data-ng-repeat="x in dashboard.barlist">
+                <div class="card-layout elevation-1">  
+                    <div id="graph_bar" barchart='{{ x }}'></div>             
+                </div>
+            </div>
+        </div>-->

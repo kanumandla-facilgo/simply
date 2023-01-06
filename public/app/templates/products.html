@@ -1,0 +1,266 @@
+<!--<div><span><a href="#/users">Users</a></span> <span><a href="#/customers">Customers</a></span> <span><a href="#/categories">Catalog</a></span></div>-->
+<div data-ng-controller="ordercontroller">
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+<style>
+div.panelbody {
+padding:0px;
+margin:0px;
+}
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+}
+
+
+.container1 {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+}
+
+.item1 {
+ 	margin:12px;
+ 	flex-basis:240px;
+ 	flex-grow: 1;
+ 	max-width:320px;
+}
+
+.image-item {
+	
+	display: flex;
+	align-items: center;
+}
+
+
+
+
+</style>
+<!--main content start-->
+<section id="main-content">
+
+<section class="wrapper site-min-height" id='userlist'>
+
+		<div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                    <div class="mat-form card">
+                        <div class="card-header card-header-primary listPagePrimaryCardHeader">
+                            <h4 class="card-title">
+								<span data-ng-if="customer">{{title}} for {{customer.name}}</span>
+								<span data-ng-if="!customer">{{title}}</span>
+							</h4>
+							<div class="filterButtons">
+								<span class="filterButtonIcons" style="width:100px;" >
+									<a style="display:block;" data-ng-click="checkoutForm(customerid)"><i class="fas fa-shopping-cart"></i> <span id="simpleCart_quantity" class="simpleCart_quantity"> ({{itemcount}})</span></a>
+								</span>
+							</div>
+                        </div>
+						<div class="card-body">
+							<div class="container m-0">
+								<div class="row" id='categorylist'>
+									<div class="col-12 col-md-9" data-ng-show="show_lineage()">
+										<span data-ng-repeat="x in lineagearray"><a data-ng-if="$index == 0" href="#/Home">{{x.name}} </a><a data-ng-if="$index > 0" href="#/categories1/{{x.id}}?customerid={{customerid}}&withproductsonly=1&orderid={{orderid}}">{{x.name}} </a>&gt; &nbsp;</span> <span>  {{parentcategory.name}}</span> <span>  {{category.name}}</span><a data-ng-controller="categorycontroller"  style="padding:3px" id="btnc" data-ng-if="!isUserACustomer() && utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_CATALOG_SHARE) == '1'" data-ng-click="showCatalog(category)" ><i class="fas fa-share-alt" aria-hidden="true"></i></a>
+									</div>
+									<div class="col-12 col-md-3">
+										<input type="text" placeholder="Search" class="form-control" data-ng-model="searchText" ng-keypress="search($event,searchText, 1, 1)"/>
+									</div>
+									<div class="col-3"><span class="pull-right">{{order.customer.name}}</span></div>
+								</div>
+							</div>
+							
+							<div class="row" style="padding:10px 2%" id='productlist'>
+								<div class="col-6 col-md-3" style="margin-top:30px" data-ng-repeat="x in productlist" class="item1" >
+									<form class="form-inline" style="box-shadow:0 0 4px 1px #aaa; border-radius:3px;overflow:hidden;padding:5px;" id="myforms{{$index}}" name="myforms{{$index}}" >
+										<div data-ng-if="x.image_url1 != ''" class="image-item"><a href=""><img loading="lazy" data-ng-src="{{x.image_url1}}" xdata-ng-src="https://images.weserv.nl?url={{x.image_url1.replace('https://', '').replace('http://', '').replace('/upload/', '/upload/large/')}}" style="width:100%;height:auto;"  data-ng-click="onPhotoClick(x)"/></a></div>
+
+										<div data-ng-if="x.image_url1 == ''"><a href=""><img loading="lazy" data-ng-src="app/assets/images/no-image-found.jpg" style="width:100%;height:180px;border:dotted 1px black"/></a></div>
+
+										<div style="width:100%">
+											<span class="text-primary" style="font-weight: 600;font-size:14px">{{x.name}}</span>
+											<span data-ng-if="isNewProduct(x)" style="color:red;font-weight:bolder" title="New Product">NEW</span>
+											<a class="pull-right" data-ng-if="x.image_url1 != ''" data-ng-click="downloadProductImage(x.id)" title="Download image"><i class="fas fa-download"></i></a>
+											<a style="padding:6px" id="btncs{{$index}}" data-ng-if="utilService.isMobileApp()" data-ng-click="shareCatalog(x)" data-ng-if="(utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_CATALOG_SHARE) == '1')">
+			                                    <i class="fas fa-share" ></i>
+											</a>
+											<div class="row" style="width:100%; margin:10px 0;">
+												<div class="col-12 col-md-5" style="margin:0 0 10px 0;padding:0;">
+													<span data-ng-if="false" style="float:right">{{x.selectedQuote UOM.unit_price}} / {{x.selectedQuoteUOM.name}}</span>
+													<span style="width:22px;display:inline-block;text-align:right;"><i class="fas fa-rupee-sign"></i></span>
+													<input type="number" class="input-sm" step="any" size="3" min="1" data-ng-model="x.order_price" style="width:35px;padding: 0px;text-align: right;border:1px solid #d1d3d4;" required="true"/> / 
+													<select style="font-size:12px" ng-options="uom as uom.name for uom in x.uomlist track by uom.id" ng-model="x.selectedQuoteUOM" data-ng-init="selectDefaultQuoteUOM(x)" data-ng-change="updateQuotePrice(x)" data-ng-hide="x.is_quote_uom_restricted"></select>
+													<span ng-show="x.is_quote_uom_restricted" style="font-size:12px">{{x.selectedQuoteUOM.name}} </span>
+												</div>
+												<div class="col-12 col-md-7" style="margin:0 0 10px 0;padding:0;">
+													<span  style="width:35px;padding-left:5px;font-size:12px;">Qty</span>
+													<input type="number" class="input-sm" min="1" max="10000" size="5" data-ng-model="x.orderqty" data-ng-init="x.orderqty=x.default_sell_qty" style="width:35px;padding: 0px;text-align: right;border:1px solid #d1d3d4;" required="true"/> / 
+													<select style="font-size:128x;border:1px solid #d1d3d4;" ng-options="uom as uom.name for uom in x.uomlist track by uom.id" ng-model="x.selectedUOM"  ng-hide="x.is_qty_uom_restricted"></select>
+													<span ng-show="x.is_qty_uom_restricted" style="font-size:12px">{{x.selectedUOM.name}} </span>
+													
+													<span class="listPageActionIcons listPageActionGreen" data-ng-click="product_to_order(customerid, x)" data-ng-disabled="myforms{{$index}}.$invalid"><i class="fas fa-plus"></i></span>
+													<span class="listPageActionIcons listPageActionIconsRed" data-ng-click="removeProductFromCart(x)" data-ng-if="x.added_flag == 1"><i class="fas fa-trash"></i></span>
+												</div>
+												
+											</div>
+										</div>
+									</form>							
+								</div>
+							</div>
+							
+						</div>
+                    </div>
+                </div>
+            </div>
+		</div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<section class="wrapper site-min-height" data-ng-if="false">
+		<!-- page start-->
+		<section class="panel" >
+			<div class="panel-heading">
+				<!--<div class="form-group">-->
+				<div class="col-xs-8 col-md-8">
+					<span data-ng-if="customer">
+					<label class="control-label">{{title}}<span class="hidden-xs hidden-sm"> for {{customer.name}}</span></label></span>
+					<span data-ng-if="!customer">
+					<span class="col-xs-4 col-md-4"> <label class="control-label">{{title}}</label></span> </span>
+				</div>
+
+				<div class="col-xs-4 col-md-2 col-md-offset-2 pull-right"><a data-ng-click="checkoutForm(customerid)"><img loading="lazy" src="app/assets/images/bag.png" alt="" style="width:15px;height:15px"/> <span id="simpleCart_quantity" class="simpleCart_quantity"><small>({{itemcount}})</small></span></a><!-- <a href="javascript:;" data-ng-click="emptyCart(customerid);" class="simpleCart_empty"><small>Empty</small></a>--></div>
+
+<!--				<div class="col-xs-12 col-sm-6 col-sm-offset-3">
+					<div class="row pull-right">
+						<div class="col-xs-4 col-sm-6 clearfix">
+							<input type="text" class="form-control input-xxlarge" placeholder="Search" data-ng-model="searchText">
+						</div>
+						<div class="col-xs-4 col-sm-3 col-xs-offset-1">
+						</div>
+					</div>
+				</div>
+-->
+
+				<!--</div>-->
+
+				<!--</div>-->
+				<br>
+			</div>
+			<div class="panel-body">
+				<div xclass="adv-table editable-table">
+					<div class="clearfix"><!-- this div is to remove padding between header and search-->
+
+					</div>
+					<!--<div id='categorylist'>
+						<div style="padding:5px">
+							<div class="col-md-9 hidden-sm hidden-xs" data-ng-show="show_lineage()">
+								<span data-ng-repeat="x in lineagearray"><a data-ng-if="$index == 0" href="#/Home">{{x.name}} </a><a data-ng-if="$index > 0" href="#/categories1/{{x.id}}?customerid={{customerid}}&withproductsonly=1&orderid={{orderid}}">{{x.name}} </a>&gt; &nbsp;</span> <span>  {{parentcategory.name}}</span> <span>  {{category.name}}</span><a data-ng-controller="categorycontroller"  style="padding:3px" id="btnc" data-ng-if="!isUserACustomer()" data-ng-click="showCatalog(category)"><i class="fas fa-share-alt" aria-hidden="true"></i></a>
+							</div>
+							<div class="col-xs-6 col-md-3 header-bottom-right">
+								<input type="text" placeholder="Search" class="form-control" data-ng-model="searchText" ng-keypress="search($event,searchText, 1, 1)"/>
+							</div>
+							<div class="col-xs-6 visible-xs-block visible-sm-block"><span class="pull-right">{{order.customer.name}}</span></div>
+						</div>
+					</div>-->
+					<div class="container1" style="width:100%" id='productlist'>
+						<div data-ng-repeat="x in productlist" class="item1" >
+							<form class="form-inline" id="myforms{{$index}}" name="myforms{{$index}}" >
+								<div data-ng-if="x.image_url1 != ''" class="image-item"><a href=""><img loading="lazy" data-ng-src="{{x.image_url1}}" xdata-ng-src="https://images.weserv.nl?url={{x.image_url1.replace('https://', '').replace('http://', '').replace('/upload/', '/upload/large/')}}" style="width:100%;height:auto;"  data-ng-click="onPhotoClick(x)"/></a></div>
+
+								<div data-ng-if="x.image_url1 == ''"><a href=""><img loading="lazy" data-ng-src="app/assets/images/no-image-found.jpg" style="width:100%;height:180px;border:dotted 1px black"/></a></div>
+
+								<div>
+									<span class="text-primary" style="font-weight: 600;font-size:14px">{{x.name}}</span>
+									<span data-ng-if="isNewProduct(x)" style="color:red;font-weight:bolder" title="New Product">NEW</span>
+									<a class="pull-right" data-ng-if="x.image_url1 != ''" data-ng-click="downloadProductImage(x.id)" title="Download image"><i class="fas fa-download"></i></a>
+									<br/>
+									<div style="width:100%">
+										<span data-ng-if="false" style="float:right">{{x.selectedQuote UOM.unit_price}} / {{x.selectedQuoteUOM.name}}</span>
+										<label class="control-label" style="width:10px"><i class="fas fa-inr" aria-hidden="true"></i></label><input type="number" class="input-sm" step="any" size="3" min="1" data-ng-model="x.order_price" style="width:35px;padding: 0px;text-align: right" required="true"/> / 
+											<select style="font-size:10px" ng-options="uom as uom.name for uom in x.uomlist track by uom.id" ng-model="x.selectedQuoteUOM" data-ng-init="selectDefaultQuoteUOM(x)" data-ng-change="updateQuotePrice(x)" data-ng-hide="x.is_quote_uom_restricted"></select>
+											<span ng-show="x.is_quote_uom_restricted" style="font-size:10px">{{x.selectedQuoteUOM.name}} </span>
+										<span style="padding-top:3px">
+											<label class="control-label" style="width:35px;padding-left:5px">QTY</label><input type="number" class="input-sm" min="1" max="10000" size="5" data-ng-init="x.orderqty=x.default_sell_qty" data-ng-model="x.orderqty" style="width:35px;padding: 0px;text-align: right" required="true"/> / 
+												<select style="font-size:10px" ng-options="uom as uom.name for uom in x.uomlist track by uom.id" ng-model="x.selectedUOM"  ng-hide="x.is_qty_uom_restricted"></select>
+												<span ng-show="x.is_qty_uom_restricted" style="font-size:10px">{{x.selectedUOM.name}} </span>
+											<span class="pull-right">
+											<button class="btn btn-success btn-xs :active" data-ng-click="product_to_order(customerid, x)" data-ng-disabled="myforms{{$index}}.$invalid"><i class="fas fa-plus"></i></button><button class="btn btn-danger btn-xs :active" data-ng-click="removeProductFromCart(x)" data-ng-if="x.added_flag == 1">X</button></span>
+										</span>
+									</div>
+								</div>
+							</form>							
+						</div>
+					</div>
+
+					<div data-ng-show=false id='productlist' class="panel">
+						<div class="col-xs-12 hidden-md hidden-lg">
+							<span data-ng-repeat="x in lineagearray"><a href="#/categories1/{{x.id}}?customerid={{customerid}}&withproductsonly=1&orderid={{orderid}}">{{x.name}} </a>&nbsp;</span> <span>  {{parentcategory.name}}</span>
+						</div>
+						<div data-ng-repeat="x in productlist" class="col-xs-12 col-sm-6 col-md-6 col-lg-4" style="padding:4px; margin-left:5px;margin-bottom:5px;float:left;border:solid 1px gray;border-bottom-right-radius:10px;border-top-right-radius:10px;border-bottom-left-radius:10px;border-top-left-radius:10px;">
+							<form class="form-inline" id="myform{{$index}}" name="myform{{$index}}">
+							<div class="col-xs-8 nopadding"><span class="text-primary">{{x.name}}</span></div>
+							<div class="col-xs-4 nopadding" style="float:right"><i class="fas fa-cart-plus"></i><span style="float:right">{{x.selectedQuoteUOM.unit_price}} / {{x.selectedQuoteUOM.name}}</span></div>
+							<div class="col-xs-12 nopadding" style="padding-left:0px">
+								<div data-ng-if="x.image_url1 != ''"><a href=""><img loading="lazy" data-ng-src="{{x.image_url1}}" xdata-ng-src="https://images.weserv.nl?url={{x.image_url1.replace('https://', '').replace('http://', '').replace('/upload/', '/upload/large/')}}" style="width:100%;height:220px" data-ng-click="onPhotoClick(x)"/></a></div>
+								<div data-ng-if="x.image_url1 == ''"><a href=""><img loading="lazy" data-ng-src="app/assets/images/no-image-found.jpg" style="width:100%;height:220px;border:dotted 1px black"/></a></div>
+							</div>
+							<div class="col-xs-6 col-sm-5 col-md-5 nopadding"><xdiv class="form-group"><label class="control-label" style="width:45px">Quote:</label><input type="number" class="input-sm" step="any" size="3" min="1" data-ng-model="x.order_price" style="width:35px;padding: 0px;text-align: right" required="true"/> / 
+									<select ng-options="uom as uom.name for uom in x.uomlist track by uom.id" ng-model="x.selectedQuoteUOM" data-ng-init="selectDefaultQuoteUOM(x)" data-ng-change="updateQuotePrice(x)" data-ng-hide="x.is_quote_uom_restricted"></select>
+									<span ng-show="x.is_quote_uom_restricted">{{x.selectedQuoteUOM.name}} </span>
+								</xdiv></div>
+							<div class="col-xs-6 col-sm-5 col-md-5 nopadding"><xdiv class="form-group"><label class="control-label" style="width:35px">Qty</label><input type="number" class="input-sm" min="1" max="10000" size="5" data-ng-init="x.orderqty=x.default_sell_qty" data-ng-model="x.orderqty" style="width:35px;padding: 0px;text-align: right" required="true"/> / 
+									<select ng-options="uom as uom.name for uom in x.uomlist track by uom.id" ng-model="x.selectedUOM"  ng-hide="x.is_qty_uom_restricted"></select>
+									<span ng-show="x.is_qty_uom_restricted">{{x.selectedUOM.name}} </span>
+								</xdiv></div>
+							<div style="padding-top:3px;margin:0px;" class="col-xs-12 col-sm-2 col-md-2 pull-right nopadding"><button class="btn btn-success btn-xs :active" data-ng-click="product_to_order(customerid, x)" data-ng-disabled="myform{{$index}}.$invalid">Add</button><button class="btn btn-danger btn-xs :active" data-ng-click="removeProductFromCart(x)" data-ng-if="x.added_flag == 1">X</button>
+							</div>
+							</form>
+
+<!--							<div class="col-xs-4" style="padding-left:0px">
+								<div style="float:left" data-ng-if="x.image_url1 != ''"><a href=""><img data-ng-src="{{x.image_url1}}" style="width:110px;height:110px" data-ng-click="onPhotoClick(x)"/></a></div>
+								<div style="float:left" data-ng-if="x.image_url1 == ''"><img data-ng-src="app/assets/images/no-image-found.jpg" style="width:110px;height:110px"/></div>
+							</div>
+							<div class="col-xs-8">
+							<div>
+									<span class="text-primary">{{x.name}}</span>
+								</div>
+						 		<form class="form-inline" id="myform" name="myform">
+								<div class="row"><div style="clear:both;float:left" class="form-group"><label class="control-label" style="width:45px">Price</label><span>{{x.selectedQuoteUOM.unit_price}}</span> / <span>{{x.selectedQuoteUOM.name}}</span></div></div>
+								<div class="row"><div class="form-group"><label class="control-label" style="width:45px">Quote</label><input type="number" class="form-control input-sm" step="any" size="5" min="1" data-ng-model="x.order_price" style="width:60px" required="true"/> / 
+									<select ng-options="uom as uom.name for uom in x.uomlist track by uom.id" ng-model="x.selectedQuoteUOM" data-ng-init="selectDefaultQuoteUOM(x)" data-ng-change="updateQuotePrice(x)" data-ng-hide="x.is_quote_uom_restricted"></select>
+									<span ng-show="x.is_quote_uom_restricted">{{x.selectedQuoteUOM.name}} </span>
+								</div></div>
+						
+								<div class="row"><div class="form-group"><label class="control-label" style="width:45px">Qty</label><input type="number" class="form-control input-sm" min="1" max="10000" size="5" data-ng-model="x.orderqty" style="width:60px" required="true"/> / 
+									<select ng-options="uom as uom.name for uom in x.uomlist track by uom.id" ng-model="x.selectedUOM"  ng-hide="x.is_qty_uom_restricted"></select>
+									<span ng-show="x.is_qty_uom_restricted">{{x.selectedUOM.name}} </span>
+								</div></div>
+								<div class="form-group">&nbsp;</div>
+								<div style="clear:both"><button class="btn btn-success btn-xs :active" data-ng-click="product_to_order(customerid, x)" data-ng-disabled="myform.$invalid">Add <i class="fas fa-plus"></i></button>
+									<div style="float:right" ng-if="x.added_flag == 1" ng-click="removeProductFromCart(x)"><a href="javascript:">Remove</a></div>
+								</div>
+						 		</form>
+							</div>-->
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</section>
+</section>
+
+</div>
+
+<div ng-include="'modal.html'"></div>
+<div ng-include="'modal_customer.html'"></div>

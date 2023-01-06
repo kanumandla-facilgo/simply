@@ -1,0 +1,153 @@
+<html>
+<style>
+	 .mypushbutton {
+	 	padding-right:15px;
+	 }
+	.no-gutter > [class*='col-'] {
+	    padding-right:0px;
+	    padding-left:0px;
+	}
+	.text5 {font-family:helvetica;font-size:13px;}
+	.text10px {font-family:helvetica;font-size:10px}
+	.header5 {font-size:16px;font-weight:bold}
+	.header14 {font-size:14px;font-weight:bold}
+	.header12 {font-size:12px;font-weight:bold}
+	.number { text-align:right }
+	.bborder {border-bottom:solid 1px black}
+	.bborderonly {border:none;border-bottom:solid 1px black}
+	.nobordertd {border:none}
+	table, tr, td, th, tbody, thead, tfoot {
+	    page-break-inside: avoid !important;
+	}
+</style>
+<body>
+		<!-- print form start -->
+		<div class="row" data-ng-show="printForm" >
+			<div class="col-xs-12">
+				<section class="panel">
+					<table border="0" cellpadding="2" cellspacing="0"  style="width:100%">
+						<!-- header -->
+						<tr>
+							<td style="width:100%;">
+								<h2><center>GATE PASS</center></h2>
+							</td>
+						</tr>
+					</table>
+
+					<table border="1" cellpadding="2" cellspacing="0"  style="width:100%">
+						<tr>
+							<td>
+								<table border="0" cellpadding="4" cellspacing="0"  style="width:100%">
+									<tr>
+										<td class="header12 text5" style="width:15%;border-right:solid 1px black">Gate Pass #</td>
+										<td class="text5" style="width:20%;border-right:solid 1px black">{{gate_pass_number}}</td>
+										<td class="header12 text5" style="border-right:solid 1px black">Date</td>
+										<td class="text5">{{gate_pass_date}}</td>
+									</tr>
+									<tr>
+										<td class="header12 text5" style="width:15%;border-right:solid 1px black">Contact Person #</td>
+										<td class="text5" style="width:20%;border-right:solid 1px black">{{contact_name}}</td>
+										<td class="header12 text5" style="border-right:solid 1px black">Tempo Vehicle #</td>
+										<td class="text5" >{{vehicle_number}}</td>
+									</tr>
+									<tr>
+										<td colspan="4" class="text5" style="border-bottom:solid 1px black"></td>
+									<tr>
+									<tr>
+										<td colspan="2" class="header12 text5" style="width:15%;border-right:solid 1px black">Notes</td>
+										<td colspan="2" class="text5" style="">{{notes}}</td>
+									</tr>
+									<tr>
+										<td colspan="4" class="text5" style="border-bottom:solid 1px black"></td>
+									<tr>
+										<td colspan="4" class="header12 text5" style="text-align:center;padding:5px">DETAILS</td>
+									</tr>
+									<!-- detail -->
+									<tr>
+										<td colspan="4">
+											<table border="1" cellspacing="0" cellpadding="4"  style="width:100%">
+												<thead>
+													<tr>
+														<th><span class="header14 text5">Sr No</span></th>
+														<th><span class="header14 text5">Invoice</span></th>
+														<th><span class="header14 text5">Transport</span></th>
+														<th><span class="header14 text5">Destination</span></th>
+														<th class="header14 text5 number;border-right:none">Bale</th>
+														<th class="header14 text5 number;border-right:none">Gross Weight</th>
+														<th class="header14 text5 number;border-right:none">Freight</th>
+													</tr>
+												</thead>
+											<tbody>
+											{% for lineitem in lineitems %}
+												<tr>
+													<td class="text5" style="text-align:right">{{lineitem.sequence}}</td>
+													<td class="text5">{{lineitem.invoice_number}}</td>
+													<td class="text5 number">{{lineitem.transporter_name}}</td>
+													<td class="text5 number" style="width:5px">{{lineitem.destination}}</td>
+													<td class="text5 number" style="width:5px">{{lineitem.qty}}</td>
+													<td class="text5 number" style="width:5px">{{lineitem.gross_weight}}</td>
+													<td class="text5 number" style="width:5px">{{lineitem.freight}}</td>
+												</tr>
+											{% endfor %}
+											</tbody>
+											</table>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="4" class="header12 text5" style="text-align:center;padding:5px">SUMMARY</td>
+									</tr>
+									<tr>
+										<td colspan="4">
+											<table border="1" cellspacing="0" cellpadding="4"  style="width:100%">
+												<thead>
+													<tr>
+														<th class="header14 text5 number">Total Bale</th>
+														<th class="header14 text5 number">Gross Weight</th>
+														<th class="header14 text5 number">Freight</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td class="text5 number">{{summary.total_qty }}</span></td>
+														<td class="text5 number">{{summary.total_gw}}</td>
+														<td class="text5 number">{{summary.total_freight}}</td>
+													</tr>
+												</tbody>
+											</table>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="4" class="header12 text5" style="text-align:center;padding:5px">SIGNATURES</td>
+									</tr>
+									<tr>
+										<td colspan="4">
+											<table border="1" cellspacing="0" cellpadding="4"  style="width:100%">
+												<thead>
+													<tr>
+														<th class="header14 text5">ACCOUNT</th>
+														<th class="header14 text5">DELIVERY</th>
+														<th class="header14 text5">DRIVER</th>
+														<th class="header14 text5">SECURITY</th>
+													</tr>
+												</thead>
+												<tbody >
+													<tr style="height:50px">
+														<td class="text5"></td>
+														<td class="text5"></td>
+														<td class="text5"></td>
+														<td class="text5"></td>
+													</tr>
+												</tbody>
+											</table>
+										</td>
+									</tr>
+								
+								</table>
+							</td>
+						</tr>
+					</table>
+				</section>
+			</div>
+		</div>
+	</body>
+</html>

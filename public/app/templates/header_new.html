@@ -1,0 +1,714 @@
+<!--
+
+<style>
+.navbar-nav>li>a {
+ padding-right: 5px;
+ padding-left: 5px;
+}
+</style>
+
+<nav class="navbar navbar-inverse" data-ng-controller="menucontroller">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">SimplyTextile</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Page 1-1</a></li>
+          <li><a href="#">Page 1-2</a></li>
+          <li><a href="#">Page 1-3</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Page 2</a></li>
+      <li><a href="#">Page 3</a></li>
+    </ul>
+  </div>
+</nav>
+-->
+  <!--
+<div class="container">
+  <h3>Navbar With Dropdown</h3>
+  <p>This example adds a dropdown menu for the "Page 1" button in the navigation bar.</p>
+</div>
+
+</body>
+</html> -->
+ <section class="full-width hidden-print">
+ <header class="header white-bg" data-ng-controller="menucontroller">
+
+<!--
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Page 1-1</a></li>
+            <li><a href="#">Page 1-2</a></li>
+            <li><a href="#">Page 1-3</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Page 2</a></li>
+        <li><a href="#">Page 3</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+-->
+<!--
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">WebSiteName</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Page 1-1</a></li>
+          <li><a href="#">Page 1-2</a></li>
+          <li><a href="#">Page 1-3</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Page 2</a></li>
+      <li><a href="#">Page 3</a></li>
+    </ul>
+  </div>
+</nav>
+-->
+
+
+ 
+ <!-- new menu -->
+ <div class="wsmenucontainer">
+
+
+  <!-- Mobile Header -->
+  <div class="wsmobileheader clearfix">
+    <a id="wsnavtoggle" class="wsanimated-arrow"><span></span></a>
+    <span class="smllogo"><img src="app/assets/images/logo_simplytextile.png" width="80" alt=""></span>
+    <div class="wssearch clearfix">
+      <i class="fas fa-search"></i>
+      <i class="fas fa-times"></i>
+      <div class="wssearchform clearfix">
+        <form>
+          <input type="text" placeholder="Search Here">
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Mobile Header -->
+
+<!--
+
+  <div class="headtoppart clearfix">
+    <div class="headerwp clearfix">
+      <div class="headertopleft clearfix">
+        <div class="address clearfix"><span><i class="fas fa-map-marker" aria-hidden="true"></i> 3982 Aspen Court, Boston, MA 02114 </span> <a href=""><i class="fas fa-phone" aria-hidden="true"></i> 123-456-7890</a></div>
+      </div>
+      <div class="headertopright clearfix">
+        <a class="facebookicon" title="Facebook" href="#"><i aria-hidden="true" class="fas fa-facebook"></i> <span class="mobiletext02">Facebook</span></a>
+        <a class="twittericon" title="Twitter" href="#"><i aria-hidden="true" class="fas fa-twitter"></i> <span class="mobiletext02">Twitter</span></a>
+        <a class="linkedinicon" title="Linkedin" href="#"><i aria-hidden="true" class="fas fa-linkedin"></i> <span class="mobiletext02">Linkedin</span></a>
+        <a class="googleicon" title="Google" href="#"><i aria-hidden="true" class="fas fa-google"></i> <span class="mobiletext02">Google</span></a>
+      </div>
+    </div>
+  </div>
+-->
+  <div class="headerfull" data-ng-controller="categorycontroller" data-ng-init="loadCategoryTree()">
+    <div class="wsmain clearfix">
+      <div class="smllogo"><a href="#"><img src="app/assets/images/logo_simplytextile.png" alt=""></a></div>
+      <nav class="wsmenu clearfix"><div class="overlapblackbg"></div>
+        <ul class="wsmenu-list">
+          <li aria-haspopup="true"><span class="wsmenu-click"><i class="wsmenu-arrow fa fa-angle-down"></i></span><a href="#" class="navtext"><span>&nbsp;</span> <span>Catalog</span></a>
+            <div class="wsshoptabing wtsdepartmentmenu clearfix">
+              <div class="wsshopwp clearfix" style="height: 400px;">
+                <ul class="wstabitem clearfix">
+                  <li class="wsshoplink-active"><span class="wsmenu-click02"><i class="wsmenu-arrow fa fa-angle-down"></i></span><a href="#"> 01 Fabric Cotton Printed 5208</a>
+                    <div class="wstitemright clearfix wstitemrightactive" style="height: auto;">
+                      <div class="container-fluid">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-12 clearfix">
+                            <div class="wstheading clearfix">01 Fabric Cotton Printed 5208</div>
+                            <ul class="wstliststy01 clearfix">
+                              <li><a href="#">Camry</a></li>
+                              <li><a href="#">Civic<span class="wstmenutag greentag">New</span></a></li>
+                              <li><a href="#">DAMAS90</a></li>
+                              <li><a href="#">Dasada </a></li>
+                              <li><a href="#">Disha</a></li>
+                              <li><a href="#">Durg</a></li>
+                              <li><a href="#">Globe 108</a></li>
+                              <li><a href="#">Grace 48/108 Mft</a> <span class="wstmenutag redtag">Sale</span></li>
+                              <li><a href="#">Kalikund</a></li>
+                              <li><a href="#">Malad <span class="wstmenutag bluetag">Trending</span></a></li>
+                              <li><a href="#">Matar </a></li>
+                              <li><a href="#">Nirya</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-4 col-md-12 clearfix">
+                            <div class="wstbootslider clearfix">
+                              <div id="demo" class="carousel slide" data-ride="carousel">
+
+                                <!-- The slideshow -->
+                <!--
+                                <div class="carousel-inner">
+                                  <div class="carousel-item active"><img src="app/assets/images/woman-ad-img.jpg" alt="">
+                                    <div class="carousel-caption">
+                                      <h3>Slider Caption 11</h3>
+                                    </div>
+                                  </div>
+                 
+                                  <div class="carousel-item"><img src="app/assets/images/woman-ad-img02.jpg" alt="">
+                                    <div class="carousel-caption">
+                                      <h3>Slider Caption 22</h3>
+                                    </div>
+                                  </div>
+                  
+                                </div>
+                -->
+                                <!-- Left and right controls -->
+                                <a class="carousel-control-prev" href="#demo" data-slide="prev"> <span class="carousel-control-prev-icon"></span> </a> <a class="carousel-control-next" href="#demo" data-slide="next"> <span class="carousel-control-next-icon"></span> </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li><span class="wsmenu-click02"><i class="wsmenu-arrow fa fa-angle-down"></i></span><a href="#">  02 Fabric Cotton Dyed 5208</a>
+                    <div class="wstitemright clearfix" style="height: auto;">
+                      <div class="container-fluid">
+                        <div class="row">
+                          <div class="col-lg-8 col-md-12 clearfix">
+                            <div class="wstheading clearfix">02 Fabric Cotton Dyed 5208</div>
+                            <ul class="wstliststy01 clearfix">
+                              <li><a href="#">Cambric Dyed <span class="wstmenutag greentag">new</span></a></li>
+                              <li><a href="#">Daisy 60 Dyed. </a></li>
+                              <li><a href="#">Dobby Checks</a></li>
+                              <li><a href="#">Dobby Jeq White</a></li>
+                              <li><a href="#">Femina 300 TC</a></li>
+                              <li><a href="#">FLORA 60 DYED FABRICS</a></li>
+                              <li><a href="#">GLACIOUR 90 DYED FABRICS</a></li>
+                              <li><a href="#">GLACIOUR 90 SPECIAL DYED FABRIC</a> </li>
+                              <li><a href="#">Glaciour 90 SPL Dyed Fabric Sec</a></li>
+                              <li><a href="#">Globe 108 Fabrics</span></a></li>
+                              <li><a href="#">Globe White</a></li>
+                              <li><a href="#">Satin 108 Plain <span class="wstmenutag bluetag">Trending</span></a></li>
+                            </ul>
+                            <div class="wstheading clearfix">02 Fabric Cotton Dyed 5208</div>
+                            <ul class="wstliststy01 clearfix">
+                              <li><a href="#">Satin Dobby White</a> </li>
+                              <li><a href="#">Satin Patti 60 Light</a> <span class="wstmenutag orangetag">Exclusive</span></li>
+                              <li><a href="#">SATIN PATTI 108 DARK</a> </li>
+                              <li><a href="#">SATIN PATTI 108 LIGHT</a> </li>
+                              <li><a href="#">Satin Patti 108 White 300 TC</a> </li>
+                              <li><a href="#">SATIN PATTI 108 WHITE NEW</a> </li>
+                              <li><a href="#">Satin Patti 114</a> </li>
+                              <li><a href="#">Satin Patti 60 White</a> </li>
+                              <li><a href="#">SATIN PLAIN 300 TC</a> </li>
+                            </ul>
+                            <div class="wstheading clearfix">02 Fabric Cotton Dyed 5208</div>
+                            <ul class="wstliststy01 clearfix">
+                              <li><a href="#">Silky White 60</a> </li>
+                              <li><a href="#">SOLITARE108</a> </li>
+                              <li><a href="#">Sonnet90white</a> </li>
+                              <li><a href="#">Sparkle Dyed</a> </li>
+                              <li><a href="#">Splendor Dyed 108</a> </li>
+                              <li><a href="#">STENZA DYED 108</a> </li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-4 col-md-12 clearfix">
+              <!--
+              <a href="#" class="wstmegamenucolr"><img src="app/assets/images/man-ad-img.jpg" alt=""></a>
+                -->
+              </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+          <li aria-haspopup="true"><span class="wsmenu-click"><i class="wsmenu-arrow fa fa-angle-down"></i></span><a href="#" class="navtext"><span>&nbsp;</span> <span>Brand Name</span></a>
+            <div class="wsshoptabing wtsbrandmenu clearfix">
+              <div class="wsshoptabingwp clearfix">
+                <ul class="wstabitem02 clearfix">
+                  <li class="wsshoplink-active"><span class="wsmenu-click03"><i class="wsmenu-arrow fa fa-angle-down"></i></span><a href="#"><i class="fas fa-apple brandcolor01" aria-hidden="true"></i>Apple</a>
+                    <div class="wsshoptab-active wstbrandbottom clearfix">
+                      <div class="container-fluid">
+                        <div class="row">
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Apple Products </li>
+                              <li><a href="#">List Products 01 </a> <span class="wstmenutag redtag">Popular</span></li>
+                              <li><a href="#">List Products 02</a></li>
+                              <li><a href="#">List Products 03</a></li>
+                              <li><a href="#">List Products 04</a> </li>
+                              <li><a href="#">List Products 05</a> </li>
+                              <li><a href="#">List Products 06</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Apple More Products</li>
+                              <li><a href="#">List Products 07 </a></li>
+                              <li><a href="#">List Products 08</a></li>
+                              <li><a href="#">List Products 09</a></li>
+                              <li><a href="#">List Products 10</a> </li>
+                              <li><a href="#">List Products 11 </a></li>
+                              <li><a href="#">List Products 12</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Apple More Products</li>
+                              <li><a href="#">List Products 13 </a> <span class="wstmenutag orangetag">20% off</span></li>
+                              <li><a href="#">List Products 14</a></li>
+                              <li><a href="#">List Products 15</a></li>
+                              <li><a href="#">List Products 16</a> </li>
+                              <li><a href="#">List Products 17</a></li>
+                              <li><a href="#">List Products 18</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Apple More Products</li>
+                              <li><a href="#">List Products 19 </a> <span class="wstmenutag bluetag">Winter Offer</span></li>
+                              <li><a href="#">List Products 20</a></li>
+                              <li><a href="#">List Products 21</a></li>
+                              <li><a href="#">List Products 22</a> </li>
+                              <li><a href="#">List Products 23</a></li>
+                              <li><a href="#">List Products 24</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li><span class="wsmenu-click03"><i class="wsmenu-arrow fa fa-angle-down"></i></span><a href="#"><i class="fas fa-windows brandcolor02" aria-hidden="true"></i> Windows</a>
+                    <div class="wstbrandbottom clearfix">
+                      <div class="container-fluid">
+                        <div class="row">
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Windows Products </li>
+                              <li><a href="#">List Products 25 <span class="wstmenutag bluetag">Popular</span></a></li>
+                              <li><a href="#">List Products 26</a></li>
+                              <li><a href="#">List Products 27</a> <span class="wstmenutag greentag">20% off</span></li>
+                              <li><a href="#">List Products 28</a> </li>
+                              <li><a href="#">List Products 29</a></li>
+                              <li><a href="#">List Products 30</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Windows More Products</li>
+                              <li><a href="#">List Products 31 </a></li>
+                              <li><a href="#">List Products 32</a></li>
+                              <li><a href="#">List Products 33</a></li>
+                              <li><a href="#">List Products 34</a> </li>
+                              <li><a href="#">List Products 35 </a></li>
+                              <li><a href="#">List Products 36</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Windows More Products</li>
+                              <li><a href="#">List Products 37 </a></li>
+                              <li><a href="#">List Products 38</a></li>
+                              <li><a href="#">List Products 39</a></li>
+                              <li><a href="#">List Products 40</a> </li>
+                              <li><a href="#">List Products 41</a></li>
+                              <li><a href="#">List Products 42</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Windows More Products</li>
+                              <li><a href="#">List Products 43 </a></li>
+                              <li><a href="#">List Products 44</a></li>
+                              <li><a href="#">List Products 45</a></li>
+                              <li><a href="#">List Products 46</a> </li>
+                              <li><a href="#">List Products 47</a></li>
+                              <li><a href="#">List Products 48</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li><span class="wsmenu-click03"><i class="wsmenu-arrow fa fa-angle-down"></i></span><a href="#"><i class="fas fa-skype brandcolor03" aria-hidden="true"></i> Skype</a>
+                    <div class="wstbrandbottom clearfix">
+                      <div class="container-fluid">
+                        <div class="row">
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Skype Products </li>
+                              <li><a href="#">List Products 49 </a></li>
+                              <li><a href="#">List Products 50</a> <span class="wstmenutag redtag">Popular</span></li>
+                              <li><a href="#">List Products 51</a></li>
+                              <li><a href="#">List Products 52</a> </li>
+                              <li><a href="#">List Products 53</a></li>
+                              <li><a href="#">List Products 54</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Skype More Products</li>
+                              <li><a href="#">List Products 55 </a></li>
+                              <li><a href="#">List Products 56</a></li>
+                              <li><a href="#">List Products 57</a></li>
+                              <li><a href="#">List Products 58</a> </li>
+                              <li><a href="#">List Products 59 </a></li>
+                              <li><a href="#">List Products 60</a> <span class="wstmenutag orangetag">20% off</span></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Skype More Products</li>
+                              <li><a href="#">List Products 61 </a></li>
+                              <li><a href="#">List Products 62</a></li>
+                              <li><a href="#">List Products 63</a></li>
+                              <li><a href="#">List Products 64</a> </li>
+                              <li><a href="#">List Products 65</a></li>
+                              <li><a href="#">List Products 66</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Skype More Products</li>
+                              <li><a href="#">List Products 67 </a> <span class="wstmenutag bluetag">Winter Offer</span></li>
+                              <li><a href="#">List Products 68</a></li>
+                              <li><a href="#">List Products 69</a></li>
+                              <li><a href="#">List Products 70</a> </li>
+                              <li><a href="#">List Products 71</a></li>
+                              <li><a href="#">List Products 72</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li><span class="wsmenu-click03"><i class="wsmenu-arrow fa fa-angle-down"></i></span><a href="#"><i class="fas fa-paypal brandcolor04" aria-hidden="true"></i>Paypal</a>
+                    <div class="wstbrandbottom clearfix">
+                      <div class="container-fluid">
+                        <div class="row">
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Paypal Products </li>
+                              <li><a href="#">List Products 73 <span class="wstmenutag bluetag">Popular</span></a></li>
+                              <li><a href="#">List Products 74</a></li>
+                              <li><a href="#">List Products 75</a></li>
+                              <li><a href="#">List Products 76</a> </li>
+                              <li><a href="#">List Products 77</a></li>
+                              <li><a href="#">List Products 78</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Paypal More Products</li>
+                              <li><a href="#">List Products 79 </a></li>
+                              <li><a href="#">List Products 80</a></li>
+                              <li><a href="#">List Products 81</a></li>
+                              <li><a href="#">List Products 82</a> </li>
+                              <li><a href="#">List Products 83 <span class="wstmenutag greentag">20% off</span></a></li>
+                              <li><a href="#">List Products 84</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Paypal More Products</li>
+                              <li><a href="#">List Products 85 </a></li>
+                              <li><a href="#">List Products 86</a></li>
+                              <li><a href="#">List Products 87</a></li>
+                              <li><a href="#">List Products 89</a> </li>
+                              <li><a href="#">List Products 90</a></li>
+                              <li><a href="#">List Products 91</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Paypal More Products</li>
+                              <li><a href="#">List Products 92 </a></li>
+                              <li><a href="#">List Products 93</a></li>
+                              <li><a href="#">List Products 94</a></li>
+                              <li><a href="#">List Products 95</a> </li>
+                              <li><a href="#">List Products 96</a></li>
+                              <li><a href="#">List Products 97</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li><span class="wsmenu-click03"><i class="wsmenu-arrow fa fa-angle-down"></i></span><a href="#"><i class="fas fa-quora brandcolor05" aria-hidden="true"></i>Quora</a>
+                    <div class="wstbrandbottom clearfix">
+                      <div class="container-fluid">
+                        <div class="row">
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Amazon Products </li>
+                              <li><a href="#">List Products 98 </a></li>
+                              <li><a href="#">List Products 99</a></li>
+                              <li><a href="#">List Products 00</a></li>
+                              <li><a href="#">List Products 01</a> </li>
+                              <li><a href="#">List Products 02</a> <span class="wstmenutag redtag">Popular</span></li>
+                              <li><a href="#">List Products 03</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Amazon More Products</li>
+                              <li><a href="#">List Products 04 <span class="wstmenutag orangetag">20% off</span></a></li>
+                              <li><a href="#">List Products 05</a></li>
+                              <li><a href="#">List Products 06</a></li>
+                              <li><a href="#">List Products 07</a> </li>
+                              <li><a href="#">List Products 08 </a></li>
+                              <li><a href="#">List Products 09</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Amazon More Products</li>
+                              <li><a href="#">List Products 10 </a></li>
+                              <li><a href="#">List Products 11</a></li>
+                              <li><a href="#">List Products 12</a></li>
+                              <li><a href="#">List Products 13</a> </li>
+                              <li><a href="#">List Products 14</a></li>
+                              <li><a href="#">List Products 15</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Amazon More Products</li>
+                              <li><a href="#">List Products 16 </a> <span class="wstmenutag bluetag">Winter Offer</span></li>
+                              <li><a href="#">List Products 17</a></li>
+                              <li><a href="#">List Products 18</a></li>
+                              <li><a href="#">List Products 19</a> </li>
+                              <li><a href="#">List Products 20</a></li>
+                              <li><a href="#">List Products 21</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li><span class="wsmenu-click03"><i class="wsmenu-arrow fa fa-angle-down"></i></span><a href="#"><i class="fas fa-soundcloud brandcolor06"></i>Sound Cloud</a>
+                    <div class="wstbrandbottom clearfix">
+                      <div class="container-fluid">
+                        <div class="row">
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">SoundCloud Products </li>
+                              <li><a href="#">List Products 01 <span class="wstmenutag bluetag">Popular</span></a></li>
+                              <li><a href="#">List Products 01</a></li>
+                              <li><a href="#">List Products 01</a></li>
+                              <li><a href="#">List Products 01</a> </li>
+                              <li><a href="#">List Products 01</a></li>
+                              <li><a href="#">List Products 01</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">SoundCloud More Products</li>
+                              <li><a href="#">List Products 07 </a></li>
+                              <li><a href="#">List Products 08</a></li>
+                              <li><a href="#">List Products 09</a></li>
+                              <li><a href="#">List Products 10</a> </li>
+                              <li><a href="#">List Products 11 <span class="wstmenutag greentag">20% off</span></a></li>
+                              <li><a href="#">List Products 12</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">SoundCloud More Products</li>
+                              <li><a href="#">List Products 13 </a></li>
+                              <li><a href="#">List Products 14</a></li>
+                              <li><a href="#">List Products 15</a></li>
+                              <li><a href="#">List Products 16</a> </li>
+                              <li><a href="#">List Products 17</a></li>
+                              <li><a href="#">List Products 18</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">SoundCloud More Products</li>
+                              <li><a href="#">List Products 19 </a></li>
+                              <li><a href="#">List Products 20</a></li>
+                              <li><a href="#">List Products 21</a></li>
+                              <li><a href="#">List Products 22</a> </li>
+                              <li><a href="#">List Products 23</a></li>
+                              <li><a href="#">List Products 24</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li><span class="wsmenu-click03"><i class="wsmenu-arrow fa fa-angle-down"></i></span><a href="#"><i class="fas fa-houzz brandcolor07"></i>Houzz</a>
+                    <div class="wstbrandbottom clearfix">
+                      <div class="container-fluid">
+                        <div class="row">
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Houzz Products </li>
+                              <li><a href="#">List Products 01 </a></li>
+                              <li><a href="#">List Products 01</a></li>
+                              <li><a href="#">List Products 01</a></li>
+                              <li><a href="#">List Products 01</a> </li>
+                              <li><a href="#">List Products 01</a> <span class="wstmenutag redtag">Popular</span></li>
+                              <li><a href="#">List Products 01</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Houzz More Products</li>
+                              <li><a href="#">List Products 07 <span class="wstmenutag orangetag">20% off</span></a></li>
+                              <li><a href="#">List Products 08</a></li>
+                              <li><a href="#">List Products 09</a></li>
+                              <li><a href="#">List Products 10</a> </li>
+                              <li><a href="#">List Products 11 </a></li>
+                              <li><a href="#">List Products 12</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Houzz More Products</li>
+                              <li><a href="#">List Products 13 </a></li>
+                              <li><a href="#">List Products 14</a></li>
+                              <li><a href="#">List Products 15</a></li>
+                              <li><a href="#">List Products 16</a> </li>
+                              <li><a href="#">List Products 17</a></li>
+                              <li><a href="#">List Products 18</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Houzz More Products</li>
+                              <li><a href="#">List Products 19 </a> <span class="wstmenutag bluetag">Winter Offer</span></li>
+                              <li><a href="#">List Products 20</a></li>
+                              <li><a href="#">List Products 21</a></li>
+                              <li><a href="#">List Products 22</a> </li>
+                              <li><a href="#">List Products 23</a></li>
+                              <li><a href="#">List Products 24</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li><span class="wsmenu-click03"><i class="wsmenu-arrow fa fa-angle-down"></i></span><a href="#"><i class="fas fa-get-pocket brandcolor08"></i>Get Pocket</a>
+                    <div class="wstbrandbottom clearfix">
+                      <div class="container-fluid">
+                        <div class="row">
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Get Pocket Products </li>
+                              <li><a href="#">List Products 01 <span class="wstmenutag bluetag">Popular</span></a></li>
+                              <li><a href="#">List Products 01</a></li>
+                              <li><a href="#">List Products 01</a></li>
+                              <li><a href="#">List Products 01</a> </li>
+                              <li><a href="#">List Products 01</a></li>
+                              <li><a href="#">List Products 01</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Get Pocket More Products</li>
+                              <li><a href="#">List Products 07 </a></li>
+                              <li><a href="#">List Products 08</a></li>
+                              <li><a href="#">List Products 09</a></li>
+                              <li><a href="#">List Products 10</a> </li>
+                              <li><a href="#">List Products 11 <span class="wstmenutag greentag">20% off</span></a></li>
+                              <li><a href="#">List Products 12</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Get Pocket More Products</li>
+                              <li><a href="#">List Products 13 </a></li>
+                              <li><a href="#">List Products 14</a></li>
+                              <li><a href="#">List Products 15</a></li>
+                              <li><a href="#">List Products 16</a> </li>
+                              <li><a href="#">List Products 17</a></li>
+                              <li><a href="#">List Products 18</a></li>
+                            </ul>
+                          </div>
+                          <div class="col-lg-3 col-md-12">
+                            <ul class="wstliststy02 clearfix">
+                              <li class="wstheading clearfix">Get Pocket More Products</li>
+                              <li><a href="#">List Products 19 </a></li>
+                              <li><a href="#">List Products 20</a></li>
+                              <li><a href="#">List Products 21</a></li>
+                              <li><a href="#">List Products 22</a> </li>
+                              <li><a href="#">List Products 23</a></li>
+                              <li><a href="#">List Products 24</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+
+
+          <li class="wssearchbar clearfix">
+            <form class="topmenusearch">
+              <input placeholder="Search Product By Name, Category...">
+              <button class="btnstyle"><i class="searchicon fa fa-search" aria-hidden="true"></i></button>
+            </form>
+          </li>
+
+          <li class="wscarticon clearfix">
+            <a href="#"><i class="fas fa-shopping-basket"></i> <em class="roundpoint">8</em><span class="hidetxt">Shopping Cart</span></a>
+          </li>
+
+
+          <li aria-haspopup="true" class="wsshopmyaccount"><span class="wsmenu-click"><i class="wsmenu-arrow fa fa-angle-down"></i></span><a href="#"><i class="fas fa-align-justify"></i>My&nbsp;Account</a>
+            <ul class="sub-menu">
+              <li><a href="#"><i class="fas fa-black-tie"></i>View Profile</a></li>
+              <li><a href="#"><i class="fas fa-heart"></i>My Wishlist</a></li>
+              <li><a href="#"><i class="fas fa-bell"></i>Notification</a></li>
+              <li><a href="#"><i class="fas fa-question-circle"></i>Help Center</a></li>
+              <li><a href="#"><i class="fas fa-sign-out"></i>Logout</a></li>
+            </ul>
+          </li>
+
+
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+ </div>
+ </section>
+
+<!-- as AngularJS loads this page later in the DOM, we need to add menu JS after menu is loaded -->
+<!-- menu js -->
+<script type="text/javascript" src="app/assets/js/webslidemenu.js"></script>
+
+ 

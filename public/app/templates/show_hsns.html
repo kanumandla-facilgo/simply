@@ -1,0 +1,91 @@
+<style>
+	.red {
+		color:red;
+	}
+	.green {
+		color:green;
+	}
+</style>
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+<section id="main-content">
+	<section class="wrapper site-min-height">
+
+		<div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                    <div class="mat-form card">
+                        <div class="card-header card-header-primary listPagePrimaryCardHeader">
+                            <h4 class="card-title">{{title}}</h4>
+							<div class="filterButtons">
+								<span class="filterButtonIcons" >
+									<span class="dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-ellipsis-v"></i>
+									</span>
+									<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<a class="dropdown-item" data-ng-if="true" data-ng-click="showAddHsnForm()"><i class="fas fa-plus"></i>&nbsp;Add HSN</a>
+									</div>
+								</span>
+							</div>
+                        </div>
+						<div class="card-body">
+							<div class="listPageFiltersWrapperDiv">
+								<div class="listPageTableForMobile">
+									<div class="listPageTableForMobileHeader">
+										<div class="listPageTableForMobileRow">
+											<div class="listPageTableForMobileRow1">
+												<div class="mobileTableEachColumn mobileTablePrimaryFullWidth">
+													<div class="mobilePrimaryFirstRow">
+														<p style="width:80px">Code</p>
+														<p>Name</p>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="listPageTableForMobileRow" data-ng-repeat="x in hsnlist | filter:searchText">
+											<div class="listPageTableForMobileRow1">
+												<div class="mobileTableEachColumn mobileTablePrimaryFullWidth">
+													<div class="mobilePrimaryFirstRow">
+														<p style="width:80px">{{x.code}}</p>
+														<p>{{x.name}}</p>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="listTableDiv">
+									<div class="adv-table editable-table">
+										<div class="space15"></div>
+										<table  class="table table-striped table-hover " id="editable-sample">
+											<thead>
+											<tr>
+												<th class="sortable-header">CODE</th>
+												<th class="sortable-header">NAME</th>
+												<th class="sortable-header">DESCRIPTION</th>
+                                                <th>ACTION</th>												
+											</tr>
+											</thead>
+											<tbody>
+											<tr class="listPageTableRow" data-ng-repeat="x in hsnlist" class="active" data-ng-click="showEditHsnForm(x.id);$event.stopPropagation();">
+												<td><a data-ng-click="showEditHsnForm(x.id);$event.stopPropagation();">{{x.code}}</a></td>
+												<td><a data-ng-click="showEditHsnForm(x.id);$event.stopPropagation();">{{x.name}}</a></td>
+												<td>{{x.description}}</td>
+                                                <td>
+                                                	<span id="btne{{$index}}" class="listPageActionIcons listPageActionGreen" data-ng-click="showEditHsnForm(x.id);$event.stopPropagation(); "><i class="fas fa-edit"></i></span>&nbsp;<span id="btnd{{$index}}" class="listPageActionIcons listPageActionIconsRed" data-ng-click="deleteHsn(x.id);$event.stopPropagation(); "><i class="fas fa-trash"></i></span> 
+                                                </td>												
+											</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+                </div>
+            </div>
+		</div>
+		<!-- page end-->
+	</section>
+</section>
+<!--main content end-->

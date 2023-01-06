@@ -1,0 +1,120 @@
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+<section id="main-content">
+    <section class="wrapper site-min-height">
+        <div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                    <div class="mat-form card">
+                        <div class="card-header card-header-primary listPagePrimaryCardHeader">
+                            <h4 class="card-title">{{title}} {{(product ? " - " + product.name : "")}}</h4>
+                            <div class="filterButtons">
+                                <span class="filterButtonIcons" >
+                                    <span class="dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v"></i>
+                                    </span>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" id="btnAddUser" data-ng-show="isAddPaymentTermAllowed()" data-ng-click="showAddPaymentTermForm()"><i class="fa fa-plus"></i>&nbsp; Add Payment Term</a>
+                                    </div>
+                                </span> 
+                                <div class="filterInputInHeaderWrapper filterInputForDesktop">
+                                    <input type="text" class="filterInputInHeaderElement" placeholder="Search" data-ng-model="searchText">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row p-0 m-0">
+                                <div class="col-12 col-md-12">
+                                    <div class="filterInputInHeaderWrapper filterInputForMobile filterInputInHeaderWrapperSearch" >
+                                        <input type="text" class="filterInputInHeaderElement" placeholder="Search" data-ng-model="searchText">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="listPageTableForMobile">
+                                <div class="listPageTableForMobileHeader">
+                                    <div class="listPageTableForMobileRow">
+                                        <div class="listPageTableForMobileRow1">
+                                            <div class="mobileTableEachColumn mobileTablePrimary">
+                                                <div class="mobilePrimaryFirstRow">
+                                                    <p>Code</p>
+                                                    <p>Description</p>
+                                                </div>
+                                                <div class="mobilePrimarySecondRow">
+                                                    <p>Status</p>
+                                                    <p>Days</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="listPageTableForMobileRow" data-ng-repeat="x in paymenttermlist | filter:searchText">
+                                        <div class="listPageTableForMobileRow1">
+                                            <div class="mobileTableEachColumn mobileTablePrimary">
+                                                <div class="mobilePrimaryFirstRow">
+                                                    <p data-ng-show="isEditPaymentTermAllowed()"><span class="text-decoration-underline-mobile"   data-ng-click="paymentTermRowClick(x.id);$event.stopPropagation();">{{x.code}}</span></p>
+                                                    <p data-ng-show="!isEditPaymentTermAllowed()">{{x.code}}</p>
+                                                    <p>{{x.description}}</p> 
+                                                </div>
+                                                <div class="mobilePrimarySecondRow">
+                                                    <p>{{x.status_id == "4600" ? "Active" : "Disabled"}}</p>
+                                                    <p>{{x.days}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mobileTableEachColumn mobileTableButtons">
+                                            <div class="mobileTableButtonWrapper">
+                                                <span class="mobileTableButton">
+                                                    <span class="dropdown-toggle" id="navbarDropdown_{{$index}}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fa fa-ellipsis-h"></i>
+                                                    </span>
+                                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown_{{$index}}">
+                                                        <a class="dropdown-item listPageActionGreen" id="btn{{$index}}" data-ng-show="isEditPaymentTermAllowed()" data-ng-click="paymentTermRowClick(x.id);$event.stopPropagation();"><i class="fas fa-edit"></i> Edit Payment Term</a>
+                                                        <a class="dropdown-item listPageActionIconsRed" id="btnd{{$index}}" data-ng-show="isDeletePaymentTermAllowed()" data-ng-click="deletePaymentTerm(x);$event.stopPropagation();"><i class="fas fa-trash"></i> Delete Payment Term</a>
+                                                    </div>
+                                                </span>
+                                                <span data-ng-show="isEditPaymentTermAllowed()" data-ng-click="paymentTermRowClick(x.id);$event.stopPropagation();" class="mobileTableButton">
+                                                    <i class="fas fa-angle-right"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>                                                                              
+                                </div>
+                            </div>
+                            <div class="listPageFiltersWrapperDiv">                             
+                                <div class="listTableDiv">
+                                    <div class="adv-table editable-table">
+                                        <div class="space15"></div>
+                                        <table  class="table table-striped table-hover " id="editable-sample">
+                                            <thead>
+                                            <tr>
+                                             	<th class="sortable-header" data-ng-click="setPaymentTermSortParameters('code');getPaymentTerms()">CODE
+														<span class="sort-icons" ng-class="getIcon('code')"/>
+												<th class="sortable-header" data-ng-click="setPaymentTermSortParameters('description');getPaymentTerms()">DESCRIPTION
+														<span class="sort-icons" ng-class="getIcon('description')"/>
+													</th>
+												<th class="sortable-header" data-ng-click="setPaymentTermSortParameters('status');getPaymentTerms()">STATUS
+												<th class="sortable-header" data-ng-click="setPaymentTermSortParameters('days');getPaymentTerms()">DAYS
+														<span class="sort-icons" ng-class="getIcon('days')"/>
+													</th>
+												<th>ACTIONS</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr class="" data-ng-repeat="x in paymenttermlist | filter:searchText" class="active" data-ng-click="paymentTermRowClick(x.id);$event.stopPropagation();">
+                                                <td><a data-ng-show="isEditPaymentTermAllowed()" data-ng-click="paymentTermRowClick(x.id);$event.stopPropagation();">{{x.code}}</a><span data-ng-show="!isEditPaymentTermAllowed()">{{x.code}}</span></td>
+												<td>{{x.description}}</td>
+												<td>{{x.status_id == "4600" ? "Active" : "Disabled"}}</td>
+												<td>{{x.days}}</td>
+												<td><span id="btn{{$index}}" class="listPageActionIcons listPageActionGreen" data-ng-show="isEditPaymentTermAllowed()" data-ng-click="showEditPaymentTermForm(x.id);$event.stopPropagation();"><i class="fas fa-edit"></i></span>
+                                                <span id="btnd{{$index}}" class="listPageActionIcons listPageActionIconsRed" data-ng-show="isDeletePaymentTermAllowed()" data-ng-click="deletePaymentTerm(x);$event.stopPropagation();"><i class="fas fa-trash"></i></span></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>

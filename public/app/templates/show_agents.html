@@ -1,0 +1,149 @@
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+<section id="main-content">
+    <section class="wrapper site-min-height">
+        <div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                    <div class="mat-form card">
+                        <div class="card-header card-header-primary listPagePrimaryCardHeader">
+                            <h4 class="card-title">{{title}} {{(product ? " - " + product.name : "")}}</h4>
+                            <div class="filterButtons">
+                                <span class="filterButtonIcons" >
+                                    <span class="dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v"></i>
+                                    </span>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" id="btnAddUser" data-ng-show="isAddAgentAllowed()" data-ng-click="showAddAgentForm()"><i class="fa fa-plus"></i>&nbsp; Add Agent</a>
+                                        <a class="dropdown-item" data-ng-click="exportAgentsToExcel()"><i class="fas fa-file-export"></i>&nbsp;Export Agents</a>
+                                        <a class="dropdown-item" data-ng-if="!isMobileApp()" data-ng-show="isAddAgentAllowed()" data-ng-click="uploadAgents()"><i class="fas fa-upload"></i>&nbsp;Upload Agents</a>
+                                    </div>
+                                </span> 
+                                <div class="filterInputInHeaderWrapper filterInputForDesktop">
+                                    <input type="text" class="filterInputInHeaderElement" placeholder="Search" data-ng-model="searchText">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row p-0 m-0">
+                                <div class="col-12 col-md-12">
+                                    <div class="filterInputInHeaderWrapper filterInputForMobile filterInputInHeaderWrapperSearch" >
+                                        <input type="text" class="filterInputInHeaderElement" placeholder="Search" data-ng-model="searchText">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="listPageTableForMobile">
+                                <div class="listPageTableForMobileHeader">
+                                    <div class="listPageTableForMobileRow">
+                                        <div class="listPageTableForMobileRow1">
+                                            <div class="mobileTableEachColumn mobileTablePrimary">
+                                                <div class="mobilePrimaryFirstRow">
+                                                    <p>Name</p>
+                                                    <p>Sales Person</p>
+                                                </div>
+                                                <div class="mobilePrimarySecondRow">
+                                                    <p>City</p>
+                                                    <p>Phone</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="listPageTableForMobileRow" data-ng-repeat="x in agentlist | filter:searchText">
+                                        <input type="checkbox" id="table_input_{{$index}}" style="display:none" />
+                                        <label for="table_input_{{$index}}">
+                                            <div class="listPageTableForMobileRow1">
+                                                <div class="mobileTableEachColumn mobileTablePrimary">
+                                                    <div class="mobilePrimaryFirstRow">
+                                                        <p><span class="text-decoration-underline-mobile" data-ng-show="isEditAgentAllowed()" data-ng-click="agentRowClick(x.id)">{{x.name}}</span></p> 
+                                                        <p data-ng-show="!isEditAgentAllowed()">{{x.name}}</p> 
+                                                        <p>{{x.sales_person.first_name + " " + x.sales_person.last_name}}</p>
+                                                    </div>
+                                                    <div class="mobilePrimarySecondRow">
+                                                        <p>{{x.address.city}}</p>
+                                                        <p>{{x.address.phone1}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mobileTableEachColumn mobileTableButtons">
+                                                <div class="mobileTableButtonWrapper">
+                                                    <span class="mobileTableButton">
+                                                        <span class="dropdown-toggle" id="navbarDropdown_{{$index}}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class="fa fa-ellipsis-h"></i>
+                                                        </span>
+                                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown_{{$index}}">
+                                                            <a class="dropdown-item listPageActionGreen" id="btn{{$index}}" data-ng-show="isEditAgentAllowed()" data-ng-click="showEditAgentForm(x.id)"><i class="fas fa-edit"></i> Edit Agent</a>
+                                                            <a class="dropdown-item listPageActionIconsRed" data-ng-show="isDeleteAgentAllowed()" data-ng-click="deleteAgent(x);$event.stopPropagation();"><i class="fas fa-trash"></i> Delete Agent</a>
+                                                        </div>
+                                                    </span>
+                                                    <span data-ng-show="isEditAgentAllowed()" data-ng-click="showEditAgentForm(x.id);" class="mobileTableButton">
+                                                        <i class="fas fa-angle-right"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </label>
+                                        <div class="listPageTableForMobileRow2">
+                                            <div class="listPageSecondRowEachColumn">
+                                                <p class="listPageSecondRowLabel">Status</p>
+                                                <p class="listPageSecondRowValue">{{x.status_id == "4600" ? "Active" : "Disabled"}}</p>
+                                            </div>
+                                            <div class="listPageSecondRowEachColumn">
+                                                <p class="listPageSecondRowLabel">Email</p>
+                                                <p class="listPageSecondRowValue">{{x.address.email1}}</p>
+                                            </div>
+                                        </div>
+                                    </div>                                                                              
+                                </div>
+                            </div>
+                            <dciv class="listPageFiltersWrapperDiv">                             
+                                <div class="listTableDiv">
+                                    <div class="adv-table editable-table">
+                                        <div class="space15"></div>
+                                        <table  class="table table-striped table-hover " id="editable-sample">
+                                            <thead>
+                                            <tr>
+                                                <th class="sortable-header" data-ng-click="getAgents(undefined, undefined, 'name');">
+                                                    NAME<span class="sort-icons" ng-class="getIcon('name')"/>
+                                                </th>
+                                                <th class="sortable-header" data-ng-click="getAgents(undefined, undefined, 'city')">
+                                                    CITY<span class="sort-icons" ng-class="getIcon('city')"/>
+                                                </th>
+                                                <th class="sortable-header" data-ng-click="getAgents(undefined, undefined, 'phone1')">
+                                                    PHONE<span class="sort-icons" ng-class="getIcon('phone1')"/>
+                                                </th>
+                                                <th class="sortable-header" data-ng-click="getAgents(undefined, undefined, 'email1')">
+                                                    EMAIL<span class="sort-icons" ng-class="getIcon('email1')"/>
+                                                </th>
+                                                <th class="sortable-header" data-ng-click="getAgents(undefined, undefined, 'status')">
+                                                    STATUS<span class="sort-icons" ng-class="getIcon('status')"/>                              
+                                                </th>
+                                                <th class="sortable-header" data-ng-click="getAgents(undefined, undefined, 'sales_person_name')">
+                                                    SALES PERSON<span class="sort-icons" ng-class="getIcon('sales_person_name')"/>
+                                                </th>
+                                                <th>ACTION</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr class="" data-ng-repeat="x in agentlist | filter:searchText" class="active" data-ng-click="agentRowClick(x.id)">
+                                                <td data-ng-show="isEditAgentAllowed()"><a  data-ng-click="agentRowClick(x.id)">{{x.name}}</a></td>
+                                                <td data-ng-show="!isEditAgentAllowed()"><span >{{x.name}}</span></td>
+                                                <td>{{x.address.city}}</td>
+                                                <td>{{x.address.phone1}}</td>
+                                                <td>{{x.address.email1}}</td>
+                                                <td>{{x.status_id == "4600" ? "Active" : "Disabled"}}</td>
+                                                <td>{{x.sales_person.first_name + " " + x.sales_person.last_name}}</td>
+                                                <td>
+                                                	<span id="btn{{$index}}" class="listPageActionIcons listPageActionGreen" data-ng-show="isEditAgentAllowed()" data-ng-click="showEditAgentForm(x.id);$event.stopPropagation(); "><i class="fas fa-edit"></i></span>
+                                                    <span class="listPageActionIcons listPageActionIconsRed" data-ng-show="isDeleteAgentAllowed()" data-ng-click="deleteAgent(x);$event.stopPropagation();"><i class="fas fa-trash"></i></span> 
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>

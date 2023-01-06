@@ -1,0 +1,298 @@
+<!--<div><span><a href="#/users">Users</a></span> <span><a href="#/customers">Customers</a></span> <span><a href="#/categories">Catalog</a></span></div>-->
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+
+<!--main content start-->
+<section id="main-content" >
+	<section class="wrapper site-min-height">
+
+		<div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                    <div class="mat-form card">
+                        <div class="card-header card-header-primary listPagePrimaryCardHeader">
+                            <h4 class="card-title">{{title}}</h4>
+							<div class="filterButtons">
+								<span class="filterButtonIcons" >
+									<span class="dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-ellipsis-v"></i>
+									</span>
+									<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<a class="dropdown-item" data-ng-click="exportOrdersToExcel()"><i class="fas fa-file-export"></i>&nbsp;Export Orders</a>
+										<a class="dropdown-item" data-ng-if="isDirectInvoiceModuleOn()" href="#/AddDirectInvoice/" ><i class="fas fa-plus"></i>&nbsp;Add Direct Invoice</a>
+									</div>
+								</span>
+								<span class="filterButtonIcons" id="btnShowParameterForm" data-ng-show="displayParameterFormFlag == false || !displayParameterFormFlag" data-ng-click="displayParameterFormFlag = true"><i class="fas fa-filter"></i></span>
+								<span class="filterButtonIcons" id="btnShowParameterForm" data-ng-show="displayParameterFormFlag" data-ng-click="displayParameterFormFlag = false; currentPage = 1;"><i class="fas fa-times"></i></span>
+							</div>
+                        </div>
+
+						<div class="card-body">
+							<div class="listPageFiltersWrapperDiv">								
+								<div class="listPageFiltersDiv" data-ng-show="displayParameterFormFlag">
+									<div class="container">
+										<div class="row">
+											<div class="col-12 col-md-4 eachFilterItemColumn">
+												<div class="eachFilterItemDiv" data-ng-controller="mastercontroller">
+													<label class="eachFilterLabel" for="txt_customer_name1">Name</label>
+													<input class="eachFilterElement" type="text" name="txt_customer_name1" id="txt_customer_name1" data-ng-model="search_section.customer" autocomplete="off" placeholder="Enter customer name" data-ng-blur="onBlurCustomer(search_section.customer, 'customer_filter')" typeahead-min-length="2" typeahead-wait-ms="200"  ng-Enter="search_orders()" typeahead-select-on-blur=true typeahead-editable=false uib-typeahead="suggestion as suggestion.name for suggestion in getCustomerListViaPromise($viewValue, 0, sessionid)" data-ng-disabled="isUserACustomer()"/>			
+												</div>
+												<div class="eachFilterItemDiv"  data-ng-controller="mastercontroller">
+													<label class="eachFilterLabel">Agent</label>
+													<input ng-Enter="search_deliverynotes()" class="eachFilterElement" type="text" name="txt_agent_name1" id="txt_agent_name1" data-ng-model="search_section.agent" autocomplete="off" ng-Enter="search_deliverynotes()" placeholder="Enter agent name" typeahead-min-length="2" typeahead-wait-ms="200"  typeahead-select-on-blur=true typeahead-editable=false uib-typeahead="suggestion as suggestion.name for suggestion in getAgentListViaPromise($viewValue, 0, sessionid)" data-ng-show="isAgentFilterVisible()"/>
+												</div>
+												<div class="eachFilterItemDiv" data-ng-controller="productcontroller">
+													<label class="eachFilterLabel" >Product</label>
+													<input ng-Enter="search_orders()" class="eachFilterElement input-sm" autocomplete="off" type="text" name="txt_product_name" id="txt_product_name" data-ng-model="search_section.product" placeholder="SKU / Name" typeahead-min-length="2" typeahead-wait-ms="200" typeahead-select-on-blur=true typeahead-editable=false uib-typeahead="suggestion as suggestion.name for suggestion in getProductListViaPromiseNoCustomer($viewValue, 0, 0, sessionid)"/>
+												</div>
+												<div class="eachFilterItemDiv">
+													<label class="eachFilterLabel" >Order #</label>
+													<input ng-Enter="search_orders()"  type="text" class="eachFilterElement" data-ng-model="search_section.doc_number"/>
+												</div>
+											</div>
+											<div class="col-12 col-md-4 eachFilterItemColumn">
+												<div class="eachFilterItemDiv">
+													<label class="eachFilterLabel" >From Date</label>
+													<input type="date" class="eachFilterElement" data-ng-model="search_section.fromdate"/>
+												</div>
+												<div class="eachFilterItemDiv">
+													<label class="eachFilterLabel" >To Date</label>
+													<input type="date" class="eachFilterElement" data-ng-model="search_section.todate"/>
+												</div>
+											</div>
+											<div class="col-12 col-md-4 eachFilterItemColumn">
+												<div class="eachFilterItemDiv">
+													<label class="eachFilterLabel" for="txt_customer_name1">Status</label>
+													<select class="eachFilterElement" data-ng-model="search_section.statusid">
+														<option value="">All</option>
+														<option value="4203">Pending Approval</option>
+														<option value="4204">Rejected</option>
+														<option value="4201">In Packing</option>
+														<option value="4202">Completed</option>
+														<option value="4205">Cancelled</option>
+													</select>
+												</div>
+												<div class="eachFilterItemDiv">
+													<label class="eachFilterLabel" >Delivery Status</label>
+													<select class="eachFilterElement" data-ng-model="search_section.deliverystatusid">
+														<option value="">All</option>
+														<option value="5700">Pending</option>
+														<option value="5701">Partially Delivered</option>
+														<option value="5702">Delivered</option>
+														<option value="5703">Cancelled</option>
+													</select>
+												</div>
+												
+											</div>
+										</div>
+									</div>
+									<div class="container">
+										<div class="row">
+											<div class="col-12">
+												<div  class="col-12 col-md-4 p-0 m-0" style="float:right">
+													<div class="filterSearchButton" >
+														<button class="btn primarySubmitButton mobileSubmitButton" data-ng-click="displayParameterFormFlag = false; currentPage = 1; search_orders()">Search</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="container">
+										<div class="row">
+											<div class="col-12  filterNameWrapper" >
+												<div class="row">
+													<div class="col-12 col-md-4">
+														<div class="eachFilterItemDiv">
+															<div class="filterNameDiv">
+																<label class="eachFilterLabel" >Filter Name</label>
+																<input type="text"  data-ng-model="search_section.custom_filter_name" class="eachFilterElement"/> 
+																<div class="listpageCheckboxWrapperDiv" >
+																	<input type="checkbox" id="showInDashboard" name="showInDashboard" data-ng-true-value="1" data-ng-false-value="0"  data-ng-model="search_section.custom_filter_show_in_dashboard"/><label for="showInDashboard">Add to Dashboard</label>
+																</div>
+															</div>
+															
+														</div>
+													</div>
+													<div class="col-12 col-md-4 p-0 m-0">
+														<div class="filterSaveButtons">
+															<button class="btn btn-success" id="btnSaveAsFilter" data-ng-show="search_section.custom_filter_id > 0" data-ng-click="displayParameterFormFlag=false; search_section.custom_filter_id=0; search_orders()">Save As</button>
+															<button class="btn btn-danger" id="btnDeleteFilter" data-ng-show="search_section.custom_filter_id > 0" data-ng-click="deleteFilter(1001)">Delete</i></button>
+															<button class="btn btn-info" id="btnDeleteFilter" data-ng-show="search_section.custom_filter_id > 0" data-ng-click="clearFilter()">Clear</i></button>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="container p-0 m-0">
+									<div class="row">
+										<div class="col-12">
+											<div class="eachSavedFilter" data-ng-repeat="x in customfilterlist | filter:searchText">
+												<div data-ng-click="getOrdersByCustomFilter(x, 'Orders')" > 
+													<span class="savedFilterText">{{x.name}}</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="listPageTableForMobile">
+									<div class="listPageTableForMobileHeader">
+										<div class="listPageTableForMobileRow">
+											<div class="listPageTableForMobileRow1">
+												<div class="mobileTableEachColumn mobileTablePrimary">
+													<div class="mobilePrimaryFirstRow">
+														<p data-ng-click="setOrderSortParameters('onumber');search_orders()">Order #</p>
+														<p data-ng-click="setOrderSortParameters('total');search_orders()">Total</p>
+													</div>
+													<div class="mobilePrimarySecondRow">
+														<p data-ng-click="setOrderSortParameters('cname');search_orders()">Customer</p>
+														<p data-ng-click="setOrderSortParameters('date');search_orders()">Created</p>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="listPageTableForMobileRow" data-ng-repeat="x in orderlist | filter:searchText">
+											<input type="checkbox" id="table_input_{{$index}}" style="display:none" />
+											<label for="table_input_{{$index}}">
+											<div class="listPageTableForMobileRow1">
+												<div class="mobileTableEachColumn mobileTablePrimary">
+													<div class="mobilePrimaryFirstRow">
+														<p><span data-ng-if="x.sysorderstatuses_id!=4201" ng-class="getOrderStatusCssClass(x.sysorderstatuses_id)" class="mobileListpageStatusIcon"></span><span class="text-decoration-underline-mobile"  data-ng-click="showEditOrderForm(x.id);$event.stopPropagation();"> {{x.order_number}}</span></p>
+														<p >{{x.sub_total + x.ship_total + x.tax_total - x.discount_total | number:2}}</p>
+													</div>
+													<div class="mobilePrimarySecondRow">
+														<p class="text-decoration-underline-mobile"><a href="#/AddCustomer/{{x.customers_id}}">{{x.customer_name}}</a></p>
+														<p>{{x.order_date| date:'dd-MMM-yyyy'}}</p>
+													</div>
+												</div>
+												<div class="mobileTableEachColumn mobileTableButtons">
+													<div class="mobileTableButtonWrapper">
+														<span class="mobileTableButton">
+															<span class="dropdown-toggle" id="navbarDropdown_{{$index}}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+																<i class="fa fa-ellipsis-h"></i>
+															</span>
+															<div class="dropdown-menu" aria-labelledby="navbarDropdown_{{$index}}">
+																<a class="dropdown-item listPageActionIconsBlue" id="btn{{$index}}" data-ng-show="isEditProductAllowed" data-ng-click="showEditOrderForm(x.id);$event.stopPropagation();"><i class="fas fa-eye"></i> View Order</a>
+																<a class="dropdown-item listPageActionGreen" ng-if="canApproveOrder(x)"  data-ng-disabled="isDisabled" data-ng-click='approveOrder(x);$event.stopPropagation();'><i class="fas fa-check"></i> Approve Order</a>
+																<a class="dropdown-item listPageActionIconsRed" ng-if="canApproveOrder(x)"  data-ng-disabled="isDisabled" data-ng-click='rejectOrder(x);$event.stopPropagation();'><i class="fas fa-ban"></i> Reject Order</a>
+															</div>
+														</span>
+														<span data-ng-click="showEditOrderForm(x.id);$event.stopPropagation();" class="mobileTableButton">
+															<i class="fas fa-angle-right"></i>
+														</span>
+													</div>
+												</div>
+											</div>
+											</label>
+											<div class="listPageTableForMobileRow2">
+												<div class="listPageSecondRowEachColumn">
+													<p class="listPageSecondRowLabel">Status</p>
+													<p class="listPageSecondRowValue">{{x.status_name}}</p>
+												</div>
+												<div class="listPageSecondRowEachColumn">
+													<p class="listPageSecondRowLabel">Approver Type</p>
+													<p class="listPageSecondRowValue">{{x.pending_approval_rolename}}</p>
+												</div>
+												<div class="listPageSecondRowEachColumn">
+													<p class="listPageSecondRowLabel">Delivery Status</p>
+													<p class="listPageSecondRowValue">{{x.delivery_status_name}}</p>
+												</div>
+												<div class="listPageSecondRowEachColumn">
+													<p class="listPageSecondRowLabel">Creator</p>
+													<p class="listPageSecondRowValue">{{x.creator}}</p>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="paginationListWrapper">
+										<ul class="paginationList" uib-pagination boundary-links="true" total-items="totalrecords" items-per-page="itemsPerPage" ng-model="currentPage" ng-change="orderPageChanged()" max-size="max_pages_mobile" boundary-links="true" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+									</div>
+									<div class="proper-alignment-for-items-per-page-mobile">
+										<div class ="mobile-view-side">Items per page:</div>
+										<div 
+										class ="select-option-dropdown-size-pagination-mobile">
+										<select  class ="dropdown-items-per-page-mobile"  ng-model="itemsPerPage" ng-change="orderPageChanged()">
+											<option>10</option>
+											<option>20</option>
+											<option>50</option>
+											<option>100</option>
+										</select> 
+									</div>
+                                   </div>
+									
+								</div>
+
+								<div class="listTableDiv">
+									<div class="adv-table editable-table">
+										<div class="space15"></div>
+										<table  class="table table-striped table-hover " id="editable-sample">
+											<thead>
+											<tr>
+												<th class="sortable-header" data-ng-click="setOrderSortParameters('onumber');search_orders()">Order #
+													<span class="sort-icons" ng-class="getIcon('onumber')"/>
+												</th>
+												<th class="sortable-header" data-ng-click="setOrderSortParameters('cname');search_orders()">CUSTOMER
+													<span class="sort-icons" ng-class="getIcon('cname')"/>
+												</th>
+												<th class="sortable-header" data-ng-click="setOrderSortParameters('atype');search_orders()">APPROVER TYPE
+													<span class="sort-icons" ng-class="getIcon('atype')"/>
+												</th>
+												<th class="sortable-header" data-ng-click="setOrderSortParameters('dstatus');search_orders()">DELIVERY STATUS
+													<span class="sort-icons" ng-class="getIcon('dstatus')"/>
+												</th>
+												<th class="sortable-header" data-ng-click="setOrderSortParameters('creator');search_orders()">CREATOR
+													<span class="sort-icons" ng-class="getIcon('creator')"/>
+												</th>
+												<th class="sortable-header" data-ng-click="setOrderSortParameters('date');search_orders()">CREATED
+													<span class="sort-icons" ng-class="getIcon('date')"/>
+												</th>
+												<th align="right" class="text-right sortable-header" data-ng-click="setOrderSortParameters('total');search_orders()">TOTAL
+													<span class="sort-icons" ng-class="getIcon('total')"/>
+												</th>
+												<th >ACTION</th>
+											</tr>
+											</thead>
+											<tbody>
+											<tr class="listPageTableRow" data-ng-repeat="x in orderlist | filter:searchText" class="" data-ng-click="selectOrderRow();$event.stopPropagation();">
+												<td><span data-ng-attr-title="{{x.status_name}}" ng-class="getOrderStatusCssClass(x.sysorderstatuses_id)" class="mobileListpageStatusIcon"></span><a data-ng-click="showEditOrderForm(x.id);$event.stopPropagation();">{{x.order_number}}</a></td>
+												<td><a href="#/AddCustomer/{{x.customers_id}}">{{x.customer_name}}</a></td>
+												<td title="{{x.workflow_reason_string}}">{{x.pending_approval_rolename}}</td>
+												<td>{{x.delivery_status_name}}</td>
+												<td>{{x.creator}}</td>
+												<td>{{x.order_date| date:'dd-MMM-yyyy'}}</td>
+												<td align="right">{{x.sub_total + x.ship_total + x.tax_total - x.discount_total | number:2}}</td>
+												<td><span id="btn{{$index}}" class="listPageActionIcons listPageActionIconsBlue " data-ng-show="isEditProductAllowed" data-ng-click="showEditOrderForm(x.id);$event.stopPropagation();" title="View Order"><i class="fas fa-eye"></i></span> 
+												<span ng-if="canApproveOrder(x)" class="listPageActionIcons listPageActionGreen" type="button" data-ng-disabled="isDisabled" data-ng-click='approveOrder(x);$event.stopPropagation();' title="Approve Order"><i class="fas fa-check"></i></span>	
+												<span ng-if="canApproveOrder(x)" class="listPageActionIcons listPageActionIconsRed" type="button" data-ng-disabled="isDisabled" data-ng-click='rejectOrder(x);$event.stopPropagation();' title="Reject Order"><i class="fas fa-ban"></i></span>
+												</td>
+											</tr>
+											</tbody>
+										</table>
+										<div class = "border-id-web">
+									        <div class = "web-heading">
+												Items per page: 
+											</div>
+									        <div class = "web-scroll">
+										        <select class ="dropdown-items-per-page-website"  ng-model="itemsPerPage" ng-change="orderPageChanged()">
+											        <option>10</option>
+											        <option>20</option>
+											        <option>50</option>
+											        <option>100</option>
+										        </select> 
+									        </div>
+									    </div>	
+				                        <br>
+										<div class="paginationListWrapper">
+											<ul class="paginationList" uib-pagination boundary-links="true" total-items="totalrecords" items-per-page="itemsPerPage" ng-model="currentPage" ng-change="orderPageChanged()" max-size="max_pages" boundary-links="true" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+										</div>
+									</div>
+								</div>
+							</div>							
+						</div>
+					</div>
+                </div>
+            </div>
+		</div>
+	</section>
+</section>

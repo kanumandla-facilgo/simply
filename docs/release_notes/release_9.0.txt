@@ -1,0 +1,15 @@
+Release - 9.0
+
+New Enhancements
+- Agent sync along with customer sync for tally users
+
+Bug Fixes
+
+- Uploaded a few files for SEO stuff
+- Ability to share in main categories 
+- Restored link/unlink option in product create/update
+- Hiding Print option for cancel delivery notes
+- Implementation of Invoice dupe check 
+- Fixed print issue of non-bale items in delivery note (was crashing in production)
+- In sharing catalog popup disabling showing agent, added check of agent module is on
+- Showing blog in home pages

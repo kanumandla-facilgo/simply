@@ -1,0 +1,10 @@
+Line 25: Class MSComctlLib.StatusBar of control sbExport was not a loaded control class.
+Line 125: Class MSComDlg.CommonDialog of control cdlg was not a loaded control class.
+Line 32: The property name _ExtentX in sbExport is invalid.
+Line 33: The property name _ExtentY in sbExport is invalid.
+Line 34: The property name Style in sbExport is invalid.
+Line 35: The property name _Version in sbExport is invalid.
+Line 40: The property name Panels in sbExport is invalid.
+Line 128: The property name _ExtentX in cdlg is invalid.
+Line 129: The property name _ExtentY in cdlg is invalid.
+Line 130: The property name _Version in cdlg is invalid.

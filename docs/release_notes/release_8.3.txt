@@ -1,0 +1,13 @@
+New Enhancements
+
+- Implement Uploads
+- Provision to have default quantity for each product
+
+Bug fixes
+
+- Fixed stock batch issue in packing slip where its being available to use again
+- Allow only 0 or 1 in stock bucket list
+- Transport is not showing up for normal user even he has transport create permission
+- If agent is disabled, disallowing the users should not be able to login
+- Redirect to dashboard page when moved to login page
+- Increase session timeout 5 hours

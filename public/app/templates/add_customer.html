@@ -1,0 +1,654 @@
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+<style>
+    .btn-refresh{
+        background: none;
+    }
+</style>
+<!--main content start-->
+<section id="main-content">
+	<section class="wrapper">
+        <div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                    <div class="mat-form card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title">{{title}}</h4>
+                        </div>
+                        <div class="card-body">
+                            <form class="cmxform" id="signupForm" method="post" name="myform">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 eachCardWrapperDiv">
+                                      <div class="card">
+                                          <h5 class="card-header childcardheader ">Primary Information</h5>
+                                          <div class="card-body">
+                                             <div class="row">
+                                                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                      <input class="floating-input" type="text" name="code" id="code" data-ng-model="customer.code" required="true" placeholder="Enter code" style="text-transform:uppercase" data-ng-pattern="/^[a-zA-Z0-9]*$/" data-ng-if="customer_code_edit_flag" data-ng-required="customer_code_edit_flag" />
+                                                      <label data-ng-if="!customer_code_edit_flag">{{ (!isCustomerCodeRequired() && customer.id > 0 ? customer.code : "Customer Code Will be created")}} <i class="fas fa-edit" data-ng-click="enableCustomerCodeEdit()" data-ng-if="isCustomerCodeEditAllowed() && !customer_code_edit_flag" aria-hidden="true"></i></label>
+                                                      <label class="input-label" for="code">Code</label> 
+                                                       <span class="help-block" ng-show="(((myform.code.$dirty || submitted) && myform.code.$invalid)) || ((myform.code.$dirty || submitted) && myform.code.$error.required)">Please enter code</span>
+                                                  </div>
+                                                 </div>
+                                                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_CUSTOMER_FIRM) == '1'">
+                                                  <div class="form-group bmd-form-group floating-input-container">
+                                                      <input class="floating-input"   type="text" name="name" id="name" data-ng-model="customer.name" required="true" placeholder="Enter name" style="text-transform: capitalize;" data-ng-class="(((myform.name.$dirty || submitted) && myform.name.$invalid) || ((myform.name.$dirty || submitted) && myform.name.$error.required)) ? 'error' : ''"/>
+                                                      <label class="input-label" for="name">
+                                                          Firm Name
+                                                      </label>
+                                                      <span class="help-block errorText" ng-show="(((myform.code.$dirty || submitted) && myform.name.$invalid) || ((myform.name.$dirty || submitted) && myform.name.$error.required))">Please enter firm name</span>
+                                                  </div>
+                                              </div>
+                                              <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                  <div class="form-group bmd-form-group floating-input-container">
+                                                      <input class="floating-input"  name="first_name" id="first_name" data-ng-model="customer.address.first_name" placeholder="Enter first name" style="text-transform: capitalize;"/>
+                                                      <label class="input-label" for="first_name">
+                                                          Contact First Name
+                                                      </label>
+                                                  </div>
+                                              </div>
+                                              <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                  <div class="form-group bmd-form-group floating-input-container">
+                                                      <input class="floating-input" type="text" name="last_name" id="last_name" data-ng-model="customer.address.last_name"  placeholder="Enter last name" style="text-transform: capitalize;"/>
+                                                      <label class="input-label" for="last_name">
+                                                          Contact Last Name
+                                                      </label>
+                                                  </div>
+                                              </div>
+                                              <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_CUSTOMER_GST) == '1'">
+                                                  <div class="form-group bmd-form-group floating-input-container" style="padding-bottom: 0px;">
+                                                      <input class="floating-input"  type="text" name="accounting_name" id="accounting_name" data-ng-model="customer.invoicing_name" required="true" placeholder="Enter accounting name" style="text-transform: capitalize;" data-ng-class="((myform.accounting_name.$dirty || submitted) && myform.accounting_name.$invalid) || ((myform.accounting_name.$dirty || submitted) && myform.accounting_name.$error.required) ? 'error' : ''"/>
+                                                      <label class="input-label" for="accounting_name">
+                                                          Tax Name (Govt. Name)
+                                                      </label>
+                                                      <span class="help-block text-error" ng-show="((myform.accounting_name.$dirty || submitted) && myform.accounting_name.$invalid) || ((myform.accounting_name.$dirty || submitted) && myform.accounting_name.$error.required)">Please enter accounting name</span>
+                                                  </div>
+                                              </div>
+                                              <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"  type="email" name="email" id="email" data-ng-model="customer.address.email1"  placeholder="Enter email"/>
+                                                        <label class="input-label">
+                                                            Email
+                                                        </label>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input" type="text" name="phone" id="phone" data-ng-model="customer.address.phone1" placeholder="Enter Phone" data-ng-pattern="/^[6-9][0-9]{9}$/" maxlength="10" data-ng-class="(myform.phone.$dirty && myform.phone.$invalid) ? 'error' : ''"/>
+                                                        <label class="input-label">
+                                                            Phone (Mobile)
+                                                        </label>
+                                                        <span class="help-block" ng-show="!(myform.phone.$dirty && myform.phone.$invalid)">Only digits, no space</span>
+                                                        <span class="help-block errorText" ng-show="((myform.phone.$dirty || submitted) && myform.phone.$invalid)">Please enter valid phone number</span>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input" type="text" name="phone2" id="phone2" data-ng-model="customer.address.phone2" placeholder="Enter Phone" maxlength="10" data-ng-pattern="/^[1-9][0-9]{9}$/" data-ng-class="(myform.phone2.$dirty && myform.phone2.$invalid) ? 'error' : ''"/>
+                                                        <label class="input-label">
+                                                            Phone (Other)
+                                                        </label>
+                                                        <span class="help-block" ng-show="!((myform.phone2.$dirty || submitted) && myform.phone2.$invalid)">Only digits, no space</span>
+                                                        <span class="help-block errorText" ng-show="((myform.phone2.$dirty || submitted) && myform.phone2.$invalid)">Please enter valid phone number</span>
+                                                    </div>
+                                                   </div>
+                                             </div>
+                                          </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 eachCardWrapperDiv" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_CUSTOMER_ADDRESS) == '1'">
+                                        <div class="card">
+                                           <h5 class="card-header childcardheader">Contact Information</h5>
+                                           <div class="card-body">
+                                               <div class="row">
+                                                   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"   type="text" name="address1" id="address1" data-ng-model="customer.address.address1"  placeholder="Enter address line 1" style="text-transform: capitalize;"/>
+                                                        <label class="input-label" for="address1">
+                                                          Address Line 1
+                                                        </label>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"  type="text" name="address2" id="address2" data-ng-model="customer.address.address2" xxdata-ng-attr-required="false" placeholder="Enter address line 2" />
+                                                        <label class="input-label" for="address2">
+                                                            Address Line 2
+                                                        </label>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"  type="text" name="address3" id="address3" data-ng-model="customer.address.address3" xxdata-ng-attr-required="false" placeholder="Enter address line 3"/>
+                                                        <label class="input-label" for="address3">
+                                                            Address Line 3
+                                                        </label>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input" name="city" id="city" data-ng-model="customer.address.city" placeholder="Enter city" style="text-transform: capitalize;"/>
+                                                        <label class="input-label">
+                                                            City
+                                                        </label>
+                                                    </div>
+                                                   </div>                                                          
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                     <div class="form-group bmd-form-group floating-input-container" >
+                                                         <select  id="ddlb_state" name="ddlb_state" data-ng-model="customer.address.state" onclick="this.setAttribute('value', this.value);" data-ng-options="a as a for a in state_list track by a">
+                                                         </select>
+                                                         <label class="select-label">
+                                                             State
+                                                         </label>
+                                                     </div>
+                                                   </div>
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"  type="text" name="zip" id="zip" data-ng-model="customer.address.zip" data-ng-pattern="/^[1-9][0-9]{5}$/" placeholder="Enter zip"/>
+                                                        <label class="input-label">
+                                                            PIN
+                                                        </label>
+                                                       <span class="help-block errorText" ng-show="((myform.zip.$dirty || submitted) && myform.zip.$invalid)">Please enter valid PIN</span>
+                                                    </div>
+                                                   </div>                                                   
+                                               </div>
+                                           </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 eachCardWrapperDiv" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_CUSTOMER_SHIP_ADDRESS) == '1'">
+                                        <div class="card">
+                                           <h5 class="card-header childcardheader">Shipping Address</h5>
+                                           <div class="deliveryNotesFilterDiv">
+                                            <div class="deliveryNotesDiscount">
+                                                <span data-ng-model="copyShipAddress" data-ng-click="copyToShipToAddress(perc)">
+                                                    <i class="fa fa-copy" aria-hidden="true" title="Copy from Address"></i>
+                                                </span>
+                                            </div>
+                                          </div>
+                                           <div class="card-body">
+                                               <div class="row">
+                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input" type="text" name="ship_name" id="ship_name" data-ng-model="customer.ship_address.name" placeholder="Enter firm name" style="text-transform: capitalize;" />
+                                                        <label class="input-label" for="ship_name">
+                                                          Firm Name (enter only if sent to customer's party directly)
+                                                        </label>
+                                                    </div>
+                                                  </div>
+                                                  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"   type="text" name="ship_first_name" id="ship_first_name" data-ng-model="customer.ship_address.first_name"  placeholder="Enter first name" style="text-transform: capitalize;"/>
+                                                        <label class="input-label" for="ship_first_name">
+                                                          First Name
+                                                        </label>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"  type="text" name="ship_last_name" id="ship_last_name" data-ng-model="customer.ship_address.last_name" xxdata-ng-attr-required="false" placeholder="Enter last name" />
+                                                        <label class="input-label" for="ship_last_name">
+                                                            Last Name
+                                                        </label>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"   type="text" name="ship_address1" id="ship_address1" data-ng-model="customer.ship_address.address1"  placeholder="Enter address line 1" style="text-transform: capitalize;"/>
+                                                        <label class="input-label" for="ship_address1">
+                                                          Address Line 1
+                                                        </label>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"  type="text" name="ship_address2" id="ship_address2" data-ng-model="customer.ship_address.address2" xxdata-ng-attr-required="false" placeholder="Enter address line 2" />
+                                                        <label class="input-label" for="ship_address2">
+                                                            Address Line 2
+                                                        </label>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"  type="text" name="ship_address3" id="ship_address3" data-ng-model="customer.ship_address.address3" xxdata-ng-attr-required="false" placeholder="Enter address line 3"/>
+                                                        <label class="input-label" for="ship_address3">
+                                                            Address Line 3
+                                                        </label>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input" name="ship_city" id="ship_city" data-ng-model="customer.ship_address.city" placeholder="Enter city" style="text-transform: capitalize;"/>
+                                                        <label class="input-label">
+                                                            City
+                                                        </label>
+                                                    </div>
+                                                   </div>                                                          
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                     <div class="form-group bmd-form-group floating-input-container" >
+                                                         <select id="ddlb_ship_state" name="ddlb_ship_state" data-ng-model="customer.ship_address.state" onclick="this.setAttribute('value', this.value);" data-ng-options="a as a for a in state_list track by a">
+                                                         </select>
+                                                         <label class="select-label">
+                                                             State
+                                                         </label>
+                                                     </div>
+                                                   </div>
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"  type="text" name="ship_zip" id="ship_zip" data-ng-model="customer.ship_address.zip" data-ng-pattern="/^[1-9][0-9]{5}$/" placeholder="Enter zip"/>
+                                                        <label class="input-label">
+                                                            PIN
+                                                        </label>
+                                                       <span class="help-block errorText" ng-show="((myform.ship_zip.$dirty || submitted) && myform.ship_zip.$invalid)">Please enter valid PIN</span>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"  type="email" name="ship_email" id="ship_email" data-ng-model="customer.ship_address.email1"  placeholder="Enter email"/>
+                                                        <label class="input-label">
+                                                            Email
+                                                        </label>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input" type="text" name="ship_phone" id="ship_phone" data-ng-model="customer.ship_address.phone1" placeholder="Enter Phone" data-ng-pattern="/^[6-9][0-9]{9}$/" maxlength="10" data-ng-class="((myform.ship_phone.$dirty || submitted) && myform.ship_phone.$invalid) ? 'error' : ''" />
+                                                        <label class="input-label">
+                                                            Phone (Mobile)
+                                                        </label>
+                                                        <span class="help-block" ng-show="!(myform.ship_phone.$dirty && myform.ship_phone.$invalid)">Only digits, no space</span>
+                                                        <span class="help-block errorText" ng-show="((myform.ship_phone.$dirty || submitted) && myform.ship_phone.$invalid)">Please enter valid phone number</span>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input" type="text" name="ship_phone2" id="ship_phone2" data-ng-model="customer.ship_address.phone2" data-ng-pattern="/^[6-9][0-9]{9}$/" placeholder="Enter Phone" maxlength="10" data-ng-pattern="/^[6-9][0-9]{9}$/" data-ng-class="(myform.ship_phone2.$dirty && myform.ship_phone2.$invalid) ? 'error' : ''"/>
+                                                        <label class="input-label">
+                                                            Phone (Other)
+                                                        </label>
+                                                        <span class="help-block" ng-show="!((myform.ship_phone2.$dirty || submitted) && myform.ship_phone2.$invalid)">Only digits, no space</span>
+                                                        <span class="help-block errorText" ng-show="((myform.ship_phone2.$dirty || submitted) && myform.ship_phone2.$invalid)">Please enter valid phone number</span>
+                                                    </div>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 eachCardWrapperDiv" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_CUSTOMER_BILL_ADDRESS) == '1'">
+                                        <div class="card">
+                                           <h5 class="card-header childcardheader">Billing Address</h5>
+                                           <div class="deliveryNotesFilterDiv">
+                                            <div class="deliveryNotesDiscount">
+                                                <span data-ng-model="copyBillAddress" data-ng-click="copyToBillToAddress(perc)">
+                                                    <i class="fa fa-copy" aria-hidden="true" title="Copy from Address"></i>
+                                                </span>
+                                            </div>
+                                          </div>
+                                           <div class="card-body">
+                                               <div class="row">                                              
+                                                  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"   type="text" name="bill_first_name" id="bill_first_name" data-ng-model="customer.bill_address.first_name"  placeholder="Enter first name" style="text-transform: capitalize;"/>
+                                                        <label class="input-label" for="bill_first_name">
+                                                          First Name
+                                                        </label>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"  type="text" name="bill_last_name" id="bill_last_name" data-ng-model="customer.bill_address.last_name" xxdata-ng-attr-required="false" placeholder="Enter last name" />
+                                                        <label class="input-label" for="bill_last_name">
+                                                            Last Name
+                                                        </label>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"   type="text" name="bill_address1" id="bill_address1" data-ng-model="customer.bill_address.address1"  placeholder="Enter address line 1" style="text-transform: capitalize;"/>
+                                                        <label class="input-label" for="bill_address1">
+                                                          Address Line 1
+                                                        </label>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"  type="text" name="bill_address2" id="bill_address2" data-ng-model="customer.bill_address.address2" xxdata-ng-attr-required="false" placeholder="Enter address line 2" />
+                                                        <label class="input-label" for="bill_address2">
+                                                            Address Line 2
+                                                        </label>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"  type="text" name="bill_address3" id="bill_address3" data-ng-model="customer.bill_address.address3" xxdata-ng-attr-required="false" placeholder="Enter address line 3"/>
+                                                        <label class="input-label" for="bill_address3">
+                                                            Address Line 3
+                                                        </label>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input" name="bill_city" id="bill_city" data-ng-model="customer.bill_address.city" placeholder="Enter city" style="text-transform: capitalize;"/>
+                                                        <label class="input-label">
+                                                            City
+                                                        </label>
+                                                    </div>
+                                                   </div>                                                          
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                     <div class="form-group bmd-form-group floating-input-container" >
+                                                         <select  id="ddlb_bill_state" name="ddlb_bill_state" data-ng-model="customer.bill_address.state" onclick="this.setAttribute('value', this.value);" data-ng-options="a as a for a in state_list track by a">
+                                                         </select>
+                                                         <label class="select-label">
+                                                             State
+                                                         </label>
+                                                     </div>
+                                                   </div>
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"  type="text" name="bill_zip" id="bill_zip" data-ng-model="customer.bill_address.zip" data-ng-pattern="/^[1-9][0-9]{5}$/" placeholder="Enter zip"/>
+                                                        <label class="input-label">
+                                                            PIN
+                                                        </label>
+                                                       <span class="help-block errorText" ng-show="((myform.bill_zip.$dirty || submitted) && myform.bill_zip.$invalid)">Please enter valid PIN</span>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"  type="email" name="bill_email" id="bill_email" data-ng-model="customer.bill_address.email1"  placeholder="Enter email"/>
+                                                        <label class="input-label">
+                                                            Email
+                                                        </label>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input" type="text" name="bill_phone" id="bill_phone" data-ng-model="customer.bill_address.phone1" placeholder="Enter Phone" data-ng-pattern="/^[6-9][0-9]{9}$/" maxlength="10" data-ng-class="((myform.bill_phone.$dirty || submitted) && myform.bill_phone.$invalid) ? 'error' : ''" />
+                                                        <label class="input-label">
+                                                            Phone (Mobile)
+                                                        </label>
+                                                        <span class="help-block" ng-show="!(myform.bill_phone.$dirty && myform.bill_phone.$invalid)">Only digits, no space</span>
+                                                        <span class="help-block errorText" ng-show="((myform.bill_phone.$dirty || submitted) && myform.bill_phone.$invalid)">Please enter valid phone number</span>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input" type="text" name="bill_phone2" id="bill_phone2" data-ng-model="customer.bill_address.phone2" data-ng-pattern="/^[6-9][0-9]{9}$/" placeholder="Enter Phone" maxlength="10" data-ng-pattern="/^[6-9][0-9]{9}$/" data-ng-class="(myform.bill_phone2.$dirty && myform.bill_phone2.$invalid) ? 'error' : ''"/>
+                                                        <label class="input-label">
+                                                            Phone (Other)
+                                                        </label>
+                                                        <span class="help-block" ng-show="!((myform.bill_phone2.$dirty || submitted) && myform.bill_phone2.$invalid)">Only digits, no space</span>
+                                                        <span class="help-block errorText" ng-show="((myform.bill_phone2.$dirty || submitted) && myform.bill_phone2.$invalid)">Please enter valid phone number</span>
+                                                    </div>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 eachCardWrapperDiv" data-ng-if="utilService.getTemplateID() != 6302">
+                                      <div class="card">
+                                          <h5 class="card-header childcardheader">Other Information</h5>
+                                          <div class="card-body">
+                                             <div class="row">                                                  
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="isCustomerTypeChangeAllowed() == 1 && utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_MULTIPLE_RATE) == '1'">
+                                                    <div class="floating-cotainer-with-refresh">
+                                                     <div class="form-group bmd-form-group floating-input-container" >
+                                                         <select id="ctype_id" name="ctype_id" data-ng-model="customer.custom_type_id" required onclick="this.setAttribute('value', this.value);" data-ng-change="getCustomerTypeById(customer.custom_type_id)" data-ng-options="x.id as x.name for x in companytypelist">
+                                                         </select>
+                                                         <label class="select-label">
+                                                             Rate Category
+                                                         </label>
+                                                         <span class="help-block errorText" ng-show="((myform.ctype_id.$dirty || submitted) && myform.ctype_id.$invalid) || ((myform.ctype_id.$dirty || submitted) && myform.ctype_id.$error.required)">Please select rate category</span>
+                                                     </div>
+                                                      <div class = "floatContainerRefreshDiv" >
+                                                          <span class ="refreshButton" type="button" data-ng-click ="getCustomerTypes()"><i class="fas fa-sync"></i> </span>
+                                                      </div>
+                                                   </div>
+                                                   </div>
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_AGENT) == '1'">
+                                                    <div class="form-group bmd-form-group floating-input-container">                                                    	
+                                                       <select id="agent_id" name="agent_id" data-ng-model="customer.agent" required data-ng-change="customer.sales_person = customer.agent.sales_person" data-ng-options="a as a.name for a in agentlist track by a.id">
+											                                </select>
+                                                      <label class="select-label">
+                                                          Agent
+                                                      </label>
+                                                      <span class="help-block errorText" ng-show="((myform.agent_id.$dirty || submitted) && myform.agent_id.$invalid) || ((myform.agent_id.$dirty || submitted) && myform.agent_id.$error.required)">Please select salesperson</span>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_PAYMENT_TERM) == '1'">
+                                                    <div class="floating-cotainer-with-refresh">
+                                                      <div class="form-group bmd-form-group floating-input-container">                                                            	
+                                                          <select id="payment_term_id" name="payment_term_id" data-ng-model="customer.payment_term.id" required="true" ng-options="x.id as x.description for x in paymenttermlist">						
+                                                          </select>
+                                                          <label class="select-label">
+                                                              Payment Term
+                                                          </label>  
+                                                          <span class="help-block errorText" ng-show="((myform.payment_term_id.$dirty || submitted) && myform.payment_term_id.$invalid) || ((myform.payment_term_id.$dirty || submitted) && myform.ctype_id.$error.required)">Please select payment term</span>
+                                                       </div>
+                                                       <div class = "floatContainerRefreshDiv" >
+                                                            <span class ="refreshButton" type="button" data-ng-click ="getPaymentTerms(true)"><i class="fas fa-sync"></i> </span>
+                                                        </div>
+                                                     </div>
+                                                   </div>
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_TRANSPORTER) == '1'">
+                                                     <div class="floating-cotainer-with-refresh">
+                                                      <div class="form-group bmd-form-group floating-input-container">
+                                                        <select id="" name="transporter_id" data-ng-model="customer.transporter.id" required="true" data-ng-options="x.id as x.name for x in transporterlist">
+  											                                </select>
+                                                        <label class="select-label">
+                                                              Transporter
+                                                        </label>
+                                                        <span class="help-block errorText" ng-show="((myform.transporter_id.$dirty || submitted) && myform.transporter_id.$invalid) || ((myform.transporter_id.$dirty || submitted) && myform.transporter_id.$error.required)">Please select transporter</span>
+                                                      </div>
+                                                      <div class = "floatContainerRefreshDiv" >
+                                                            <span class ="refreshButton" type="button" data-ng-click ="getTransporters(true)()"><i class="fas fa-sync"></i> </span>
+                                                        </div>
+                                                    </div>
+                                             		   </div>
+                                             		   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_CUSTOMER_GST) == '1'">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input" name="gst_number" id="gst_number" data-ng-model="customer.gst_number" placeholder="Enter gst number" style="text-transform: uppercase"/>
+                                                        <label class="input-label" for="gst_number">
+                                                            GST Number
+                                                        </label>
+                                                    </div>
+                                             		   </div>
+                                             		   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_CUSTOMER_GST) == '1'">
+                                                    <div class="form-group bmd-form-group floating-input-container">                                                          
+                                                          <select id="ddlbGstType" name="ddlbGstType" data-ng-model="customer.gst_registration_type" required="true">
+                                                          	<option value="Regular" ng-selected="customer.gst_registration_type == 'Regular'">Regular</option>
+                        																		<option value="Unregistered" ng-selected="customer.gst_registration_type == 'Unregistered'">Unregistered</option>
+                        																		<option value="Consumer" ng-selected="customer.gst_registration_type == 'Consumer'">Consumer</option>
+                        																		<option value="Composition" ng-selected="customer.gst_registration_type == 'Composition'">Composition</option>
+                        																		<option value="Unknown" ng-selected="customer.gst_registration_type == 'Unknown'">Unknown</option>
+                      																   </select>
+                                                         <label class="select-label">
+                                                            GST Type
+                                                          </label>
+                                                          <span class="help-block errorText" ng-show="((myform.ddlbGstType.$dirty || submitted) && myform.ddlbGstType.$invalid) || ((myform.ddlbGstType.$dirty || submitted) && myform.ddlbGstType.$error.required)">Please select gst type</span>
+                                                    </div>
+                                             		   </div>
+                                             		   <div id="creditlimit" class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_APPROVAL_CREDIT_LIMIT) == '1'">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"  name="allowed_balance" id="allowed_balance" data-ng-model="customer.allowed_balance"  data-ng-attr-required="isUpdateCustomerBalanceAllowed()" placeholder="Enter allowed balance"/>
+                                                        <label class="input-label" for="allowed_balance">
+                                                            Credit Limit
+                                                        </label>
+                                                    </div>
+                                             		   </div>
+                                             		   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_APPROVAL_CREDIT_LIMIT) == '1'">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"  name="current_balance" id="current_balance" data-ng-model="customer.current_balance"  data-ng-attr-required="isUpdateCustomerBalanceAllowed()" placeholder="Enter current balance"/>
+                                                        <label class="input-label" for="current_balance">
+                                                            Current Balance
+                                                        </label>
+                                                    </div>
+                                             		   </div>  
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_APPROVAL_PAYMENT_DUE) == '1'">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input"  name="current_overdue" id="current_overdue" data-ng-model="customer.current_overdue"  data-ng-attr-required="isUpdateCustomerBalanceAllowed()" placeholder="Enter current overdue"/>
+                                                        <label class="input-label" for="current_overdue">
+                                                            Current Overdue
+                                                        </label>
+                                                    </div>
+                                                   </div>                                                      		
+                                             		   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="false">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input" name="pan_number" id="pan_number" data-ng-model="customer.pan_number" placeholder="Enter pan number"/>
+                                                        <label class="input-label" for="pan_number">
+                                                            PAN Number
+                                                        </label>
+                                                    </div>
+                                             		   </div>
+                                             		   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_INTEGRATION_CUSTOMER) == '1'">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                    	  <label class="input-label" for="do_not_sync">
+                                                            Do not sync?
+                                                      </label>
+                                                        <input class="floating-input" type="checkbox" name="do_not_sync" id="do_not_sync" data-ng-model="customer.sync_status_id" data-ng-true-value="4103" data-ng-false-value="4100" />
+                                                    </div>
+                                             		 </div>
+                                                 <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <textarea class="form-control" class="floating-input" name="notes" id="notes" data-ng-model="customer.notes"></textarea>
+                                                        <label class="input-label" for="notes">
+                                                            Notes
+                                                        </label>
+                                                    </div>
+                                             		</div>
+
+                                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 agentCheck" data-ng-if="editmode">
+                                                    <label class="input-label">
+                                                        Status
+                                                    </label>
+                                                    <div class="radio-group">
+                                                        <input type="radio" id="option-one" name="selector" data-ng-model="customer.status_id" required="true" value="4600">
+                                                        <label data-ng-class="customer.status_id==4600 ? 'radio-select' : ''" for="option-one" style="width:49%;">Active</label>
+                                                        <input type="radio"  id="option-two" name="selector" data-ng-model="customer.status_id" required="true" value="4601">
+                                                        <label data-ng-class="customer.status_id==4601 ? 'radio-select' : ''" for="option-two" style="width: 50%;
+                                                        margin-right: -3px;">Inactive</label>                                                            
+                                                  </div>
+                                          	    </div>                                                
+                                            </div>
+                                          </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 eachCardWrapperDiv" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_NOTIFICATION_SMS) == '1' || utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_NOTIFICATION_EMAIL) == '1'">
+                                           <div class="card MB0">
+                                             <h5 class="card-header childcardheader">Notification Settings</h5>
+                                             <div class="card-body">
+                                                <div class="row">
+                                                  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <div class="form-group floating-input-container" style="padding-bottom: 0px;">
+                                                        <input type="checkbox" name="isenabled" id="isenabled" data-ng-model="customer.payment_reminder_on" data-ng-true-value="1" data-ng-click="clearPRSettings()" data-ng-false-value="0" />
+                                                        <label class="" for="isenabled">Payment Reminder</label>
+                                                    </div>
+                                                  </div>
+                                                  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <textarea class="form-control" class="floating-input" name="payment_reminder_emails" data-ng-disabled="customer.payment_reminder_on == '0'" id="payment_reminder_emails" data-ng-model="customer.payment_reminder_emails"></textarea>
+                                                        <span class="help-block">Seperate email addresses by comma</span>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input" type="text" name="payment_reminder_phone" id="payment_reminder_phone" data-ng-model="customer.payment_reminder_phone" placeholder="Enter Phone" data-ng-pattern="/^[6-9][0-9]{9}$/" maxlength="10" data-ng-disabled="customer.payment_reminder_on == '0'" data-ng-class="(myform.payment_reminder_phone.$dirty && myform.payment_reminder_phone.$invalid) ? 'error' : ''"/>
+                                                        <label class="input-label">
+                                                            Phone (Mobile)
+                                                        </label>
+                                                        <span class="help-block" ng-show="!(myform.payment_reminder_phone.$dirty && myform.payment_reminder_phone.$invalid)">Only digits, no space</span>
+                                                        <span class="help-block errorText" ng-show="((myform.payment_reminder_phone.$dirty || submitted) && myform.payment_reminder_phone.$invalid)">Please enter valid phone number</span>
+                                                    </div>
+                                                   </div>
+                                                  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" data-ng-if="utilService.getTemplateID() != 6302">
+                                                    <div class="form-group floating-input-container" style="padding-bottom: 0px;">
+                                                        <input type="checkbox" name="isenabled" id="isenabled" data-ng-model="customer.order_notification_on" data-ng-click="clearOrderSettings()" data-ng-true-value="1" data-ng-false-value="0" />
+                                                        <label class="" for="isenabled">Order Notifications</label>
+                                                    </div>
+                                                  </div>
+                                                  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="utilService.getTemplateID() != 6302">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <textarea class="form-control" class="floating-input" name="order_notification_emails" data-ng-disabled="customer.order_notification_on == '0'"  id="order_notification_emails" data-ng-model="customer.order_notification_emails"></textarea>
+                                                        <span class="help-block">Seperate email addresses by comma</span>
+                                                    </div>
+                                                   </div>
+                                                   <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="utilService.getTemplateID() != 6302">
+                                                    <div class="form-group bmd-form-group floating-input-container">
+                                                        <input class="floating-input" type="text" name="order_notification_phone" data-ng-disabled="customer.order_notification_on == '0'" id="order_notification_phone" data-ng-model="customer.order_notification_phone" placeholder="Enter Phone" data-ng-pattern="/^[6-9][0-9]{9}$/" maxlength="10" data-ng-class="(myform.phone2.$dirty && myform.phone2.$invalid) ? 'error' : ''"/>
+                                                        <label class="input-label">
+                                                            Phone (Mobile)
+                                                        </label>
+                                                        <span class="help-block" ng-show="!(myform.order_notification_phone.$dirty && myform.order_notification_phone.$invalid)">Only digits, no space</span>
+                                                        <span class="help-block errorText" ng-show="((myform.order_notification_phone.$dirty || submitted) && myform.order_notification_phone.$invalid)">Please enter valid phone number</span>
+                                                    </div>
+                                                   </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 eachCardWrapperDiv" data-ng-if="utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_CUSTOMER_LOGIN) == '1'">
+                                       <div class="card MB0">
+                                         <h5 class="card-header childcardheader">User Information</h5>
+                                         <div class="card-body">
+                                            <div class="row">
+                                               <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                   <div class="form-group bmd-form-group floating-input-container">
+                                                      <label class="item-label">
+                                                          Name
+                                                      </label>
+                                                      <div class="item-content">{{customer.address.first_name + " " + customer.address.last_name}}</div>
+                                                   </div>
+                                               </div>
+                                               <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-if="customer.user.id>0">
+                                                   <div class="form-group bmd-form-group floating-input-container">
+                                                      <label class="item-label">
+                                                          Login Name
+                                                      </label>
+                                                      <div class="item-content">{{customer.user.login_name}}</div>
+                                                   </div>
+                                               </div>
+                                               <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-if="!(customer.user.id>0)">
+                                                   <div class="form-group bmd-form-group floating-input-container">
+                                                       <input class="floating-input" class="form-control " name="login_name" id="login_name" maxlength="16" data-ng-pattern="/^[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9]$/" data-ng-model="customer.user.login_name"  placeholder="Enter Login" data-ng-class="((myform.login_name.$dirty || submitted)  && !editmode && myform.login_name.$invalid) || ((myform.login_name.$dirty || submitted) && myform.login_name.$error.required) ? 'error' : ''" autocomplete="new-password"/>
+                                                       <label class="input-label">
+                                                           Login
+                                                       </label>
+                                                       <span class="help-block errorText" ng-show="((myform.login_name.$dirty || submitted) && !editmode && myform.login_name.$invalid) || ((myform.login_name.$dirty || submitted) && myform.login_name.$error.required)">Please enter login name  without spaces & special characters</span>
+                                                   </div>
+                                                   </div>
+                                                   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                       <div class="form-group bmd-form-group floating-input-container">
+                                                           <input class="floating-input" type="password" name="password" id="password" data-ng-minlength="6" data-ng-model="customer.user.password" placeholder="Enter Password"  data-ng-class="((myform.password.$dirty || submitted) && myform.password.$invalid) || ((myform.password.$dirty || submitted) && myform.password.$error.required) ? 'error' : ''" autocomplete="new-password"/>
+                                                           <label class="input-label">
+                                                               Password
+                                                           </label>
+                                                           <span class="help-block errorText" ng-show="(myform.password.$dirty && myform.password.$error.minlength)">Please enter atleast 6 characters</span>
+                                                           <span class="help-block errorText" ng-show="(((myform.password.$dirty || submitted) && myform.password.$invalid) || ((myform.password.$dirty || submitted) && myform.password.$error.required)) && (!(myform.password.$dirty && myform.password.$error.minlength))">Please enter password</span>
+                                                       </div>
+                                                   </div>
+                                                   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                       <div class="form-group bmd-form-group floating-input-container">
+                                                           <input class="floating-input" type="password" placeholder="Confirm Password"  name="confirmpassword" id="confirmpassword" data-ng-minlength="6" data-ng-model="customer.user.confirmpassword" autocomplete="new-password"   data-password-verify="customer.user.password" data-ng-class="((myform.confirmpassword.$dirty || submitted) && myform.confirmpassword.$invalid) || ((myform.confirmpassword.$dirty || submitted) && myform.confirmpassword.$error.required)  ? 'error' : ''"/>
+                                                           <label class="input-label">
+                                                               Confirm Password
+                                                           </label>
+                                                           <span class="help-block errorText" ng-show="((myform.confirmpassword.$dirty || submitted) && myform.confirmpassword.$invalid) || ((myform.confirmpassword.$dirty || submitted) && myform.confirmpassword.$error.required)">Passwords do not match (Minimum 6 chars required)</span>
+                                                       </div>
+                                                   </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                         </div>                                         
+                              </div>
+                              </form>
+                              <div class="form-group">
+                                <div class="row-centered">
+                                    <button class="btn primarySubmitButton mobileSubmitButton" type="button" data-ng-click='submitted=true;!myform.$invalid && saveCustomer();'>Save Customer</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+              </section>
+            </section>
+                                       

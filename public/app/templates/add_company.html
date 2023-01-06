@@ -1,0 +1,270 @@
+<!--main content start-->
+<div data-ng-include="'app/templates/header_latest.html'"></div>
+<section id="main-content"  style="font-family:'source_sans_pro_regular'">
+  <section class="wrapper">
+        <div class="container-fluid">
+            <div class="mat-form row row-centered">
+                <div class="mat-form col-md-12">
+                   <div class="mat-form card">
+                       <div class="card-header card-header-primary">
+                           <h4 class="card-title">{{title}}</h4>
+                       </div>
+                       <div class="card-body">
+                          <form class="cmxform" id="signupForm" method="post" name="myform">
+                               <div class="row">
+                                   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 eachCardWrapperDiv">
+                                      <div class="card MB0">
+                                           <h5 class="card-header childcardheader ">NOTE</h5>
+                                           <div class="card-body">
+                                              <div class="row">
+                                                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="form-group bmd-form-group floating-input-container" data-ng-if="company_template_id == 6300">
+                                                      Free <b>14</b> day trial. Contact sales@SimplyTextile.com for pricing.
+                                                    </div>
+                                                    <div class="form-group bmd-form-group floating-input-container" data-ng-if="company_template_id == 6302">
+                                                      Free <b>200</b> credits, Signup Today! Contact sales@simplytextile.com for pricing.
+                                                    </div>
+                                                  </div>
+                                              </div>
+                                            </div>
+                                      </div>
+                                    </div>
+                               </div>
+                               <div class="row">
+                                   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 eachCardWrapperDiv">
+                                      <div class="card MB0">
+                                           <h5 class="card-header childcardheader ">Primary Information</h5>
+                                           <div class="card-body">
+                                              <div class="row">
+                                                  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                     <div class="form-group bmd-form-group floating-input-container">
+                                                         <input class="floating-input"  name="first_name" id="first_name" data-ng-model="company.address.first_name" placeholder="Enter first name" style="text-transform: capitalize;" required="true" ng-class="((myform.first_name.$dirty && myform.first_name.$invalid) || ((myform.first_name.$dirty || submitted) && myform.first_name.$error.required)) ? 'error' : 'success'" />
+                                                         <label class="input-label" for="first_name">
+                                                             First Name
+                                                         </label>
+                                                         <span class="help-block errorText" ng-show="(myform.first_name.$dirty && myform.first_name.$invalid) || ((myform.first_name.$dirty || submitted) && myform.first_name.$error.required)">Please enter first name</span>
+                                                     </div>
+                                                 </div>
+                                                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                     <div class="form-group bmd-form-group floating-input-container">
+                                                         <input class="floating-input" type="text" name="last_name" id="last_name" ng-class="((myform.last_name.$dirty && myform.last_name.$invalid) || ((myform.last_name.$dirty || submitted) && myform.last_name.$error.required)) ? 'error' : 'success'" data-ng-model="company.address.last_name"  placeholder="Enter last name" style="text-transform: capitalize;" required="true" />
+                                                         <label class="input-label" for="last_name">
+                                                             Last Name
+                                                         </label>
+                                                         <span class="help-block errorText" ng-show="(myform.last_name.$dirty && myform.last_name.$invalid) || ((myform.last_name.$dirty || submitted) && myform.last_name.$error.required)">Please enter last name</span>
+                                                     </div>
+                                                 </div>                                                  
+                                               <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                 <div class="form-group bmd-form-group floating-input-container">
+                                                     <input class="floating-input" required="true"  type="email" name="email" id="email" data-ng-model="company.address.email1"  placeholder="Enter email" ng-class="(((myform.email.$dirty || submitted) && myform.email.$invalid)) ? 'error' : 'success'"/>
+                                                     <label class="input-label">
+                                                         Email
+                                                     </label>
+                                                     <span class="help-block errorText" ng-show="(myform.email.$dirty && myform.email.$invalid) || ((myform.email.$dirty || submitted) && myform.email.$error.required)">Please provide email</span>
+
+                                                 </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                 <div class="form-group bmd-form-group floating-input-container">
+                                                     <input class="floating-input" type="text" required="true"  name="phone" id="phone" data-ng-model="company.address.phone1" placeholder="Enter Phone" data-ng-pattern="/^[6-9][0-9]{9}$/" ng-class="(((myform.phone.$dirty || submitted) && myform.phone.$invalid)) ? 'error' : 'success'"/>
+                                                     <label class="input-label" for="phone">
+                                                         Phone (Mobile)
+                                                     </label>
+                                                     <span class="help-block" ng-show="!((myform.phone.$dirty || submitted) && myform.phone.$invalid)">Only digits, no space</span>
+                                                     <span class="help-block errorText" ng-show="((myform.phone.$dirty || submitted) && myform.phone.$invalid)">Please enter valid phone number</span>
+                                                 </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                 <div class="form-group bmd-form-group floating-input-container">
+                                                     <input class="floating-input" type="text" name="phone2" id="phone2" placeholder="Enter Phone" data-ng-model="company.address.phone2" data-ng-pattern="/^[6-9][0-9]{9}$/" ng-class="(((myform.phone2.$dirty || submitted) && myform.phone2.$invalid)) ? 'error' : 'success'"/>
+                                                     <label class="input-label" for="phone2">
+                                                         Phone (Other)
+                                                     </label>
+                                                     <span class="help-block" data-ng-show="!((myform.phone2.$dirty || submitted) && myform.phone2.$invalid)">Only digits, no space</span>
+                                                     <span class="help-block errorText" data-ng-show="((myform.phone2.$dirty || submitted) && myform.phone2.$invalid)">Please enter valid phone number</span>
+                                                 </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                   <div class="form-group bmd-form-group floating-input-container">
+                                                       <input class="floating-input"   type="text" name="name" id="name" data-ng-model="company.name" required="true" placeholder="Enter name" style="text-transform: capitalize;" data-ng-class="(((myform.code.$dirty || submitted) && myform.name.$invalid) || ((myform.name.$dirty || submitted) && myform.name.$error.required)) ? 'error' : ''"/>
+                                                       <label class="input-label" for="last_name">
+                                                           Firm Name
+                                                       </label>
+                                                       <span class="help-block errorText" ng-show="(myform.name.$dirty && myform.name.$invalid) || ((myform.name.$dirty || submitted) && myform.name.$error.required)">Please enter firm name</span>
+                                                   </div>
+                                               </div> 
+                                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                 <div class="form-group bmd-form-group floating-input-container">
+                                                     <select name="acct_system" id="acct_system" placeholder="Enter Phone" data-ng-model="company.acct_system">
+                                                      <option value="Tally">Tally</option>
+                                                      <option value="Miracle">Miracle</option>
+                                                      <option value="Universal">Universal</option>
+                                                      <option value="Other">Other</option>
+                                                    </select>
+                                                     <label class="input-label" for="acct_system">
+                                                         Accounting Software  
+                                                     </label>
+                                                 </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" data-ng-if="company_template_id != 6302" >
+                                                    <div class="form-group floating-input-container" style="padding-bottom: 0px;" >
+                                                        <input type="checkbox" name="isenabled" id="isenabled" data-ng-model="company.is_retail" data-ng-true-value="1" data-ng-false-value="0" />
+                                                        <label class="" for="isenabled">Retail</label>
+                                                    </div>
+                                                  </div>
+                                                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-ng-if="false">
+                                                 <div class="form-group bmd-form-group floating-input-container">
+                                                     <select id="ddlSubscriptionType" name="ddlSubscriptionType" data-ng-model="company.subscription_type" required="true" ng-class="(((myform.ddlSubscriptionType.$dirty || submitted) && myform.ddlSubscriptionType.$invalid)) ? 'error' : 'success'">
+                                                            <option value="Free">Free (50 credits)</option>
+                                                            <option value="Bud">Bud (200 credits)</option>
+                                                            <option value="Shrub">Shrub (555 credits)</option>
+                                                            <option value="Tree">Tree (1457 credits)</option>
+                                                            <option value="Orchard">Orchard (4666 credits)</option>
+                                                            <option value="Forest">Forest (7500 credits)</option>
+                                                         </select>
+                                                         <label class="select-label">
+                                                            Subscription Type
+                                                          </label>
+                                                          <span class="help-block errorText" ng-show="((myform.ddlSubscriptionType.$dirty || submitted) && myform.ddlSubscriptionType.$invalid) || ((myform.ddlSubscriptionType.$dirty || submitted) && myform.ddlSubscriptionType.$error.required)">Please select subscription type</span>
+                                                 </div>
+                                                </div>
+<!--                                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                     <div class="form-group bmd-form-group floating-input-container">
+                                                       <input class="floating-input"   type="text" ng-class="(((myform.code.$dirty || submitted) && myform.code.$invalid) || ((myform.code.$dirty || submitted) && myform.code.$error.required)) ? 'error' : 'success'" name="code" id="code" data-ng-model="company.code" required="true" placeholder="Enter code" style="text-transform:uppercase" data-ng-pattern="/^[a-zA-Z0-9]*$/" />                                                       
+                                                       <label class="input-label" for="code">
+                                                          Code
+                                                       </label>
+                                                       <span class="help-block errorText" ng-show="(myform.code.$dirty && myform.code.$invalid) || ((myform.code.$dirty || submitted) && myform.code.$error.required)">Please enter code</span>
+                                                   </div>
+                                               </div>   -->                                             
+                                              </div>
+                                           </div>
+                                      </div>
+                                   </div>
+                                   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 eachCardWrapperDiv">
+                                      <div class="card MB0">
+                                        <h5 class="card-header childcardheader">Contact Information</h5>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                 <div class="form-group bmd-form-group floating-input-container">
+                                                     <input class="floating-input"   type="text" name="address1" id="address1" data-ng-model="company.address.address1"  placeholder="Enter address line 1" style="text-transform: capitalize;"/>
+                                                     <label class="input-label" for="address1">
+                                                       Address Line 1
+                                                     </label>
+                                                 </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                 <div class="form-group bmd-form-group floating-input-container">
+                                                     <input class="floating-input"  type="text" name="address2" id="address2" data-ng-model="company.address.address2" xxdata-ng-attr-required="false" placeholder="Enter address line 2" />
+                                                     <label class="input-label" for="address2">
+                                                         Address Line 2
+                                                     </label>
+                                                 </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                 <div class="form-group bmd-form-group floating-input-container">
+                                                     <input class="floating-input"  type="text" name="address3" id="address3" data-ng-model="company.address.address3" xxdata-ng-attr-required="false" placeholder="Enter address line 3"/>
+                                                     <label class="input-label" for="address3">
+                                                         Address Line 3
+                                                     </label>
+                                                 </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                 <div class="form-group bmd-form-group floating-input-container">
+                                                     <input class="floating-input" name="city" id="city" data-ng-model="company.address.city" placeholder="Enter city" style="text-transform: capitalize;"/>
+                                                     <label class="input-label">
+                                                         City
+                                                     </label>
+                                                 </div>
+                                                </div>
+                                               
+                                                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                 <div class="form-group bmd-form-group floating-input-container" >
+                                                     <select  id="ddlb_state" name="ddlb_state" data-ng-model="company.address.state" onclick="this.setAttribute('value', this.value);" data-ng-options="a as a for a in state_list track by a">
+                                                     </select>
+                                                     <label class="select-label">
+                                                         State
+                                                     </label>
+                                                 </div>
+                                                </div>
+                                                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                                 <div class="form-group bmd-form-group floating-input-container">
+                                                     <input class="floating-input"  type="text" name="zip" id="zip" data-ng-model="company.address.zip" data-ng-pattern="/^[1-9][0-9]{5}$/" placeholder="Enter zip"/>
+                                                     <label class="input-label">  
+                                                         PIN
+                                                     </label>
+                                                 </div>
+                                                </div>                                                
+                                            </div>
+                                        </div>
+                                      </div>
+                                   </div>
+
+                                   <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 eachCardWrapperDiv">
+                                      <div class="card MB0">
+                                         <h5 class="card-header childcardheader">User Information</h5>
+                                         <div class="card-body">
+                                            <div class="row">
+                                               <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                   <div class="form-group bmd-form-group floating-input-container">
+                                                      <label class="item-label">
+                                                          Name
+                                                      </label>
+                                                      <div class="item-content">{{company.address.first_name + " " + company.address.last_name}}</div>
+                                                   </div>
+                                               </div>
+                                               <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-if="editmode">
+                                                   <div class="form-group bmd-form-group floating-input-container">
+                                                      <label class="item-label">
+                                                          Login 
+                                                      </label>
+                                                      <div class="item-content">{{company.user.login_name}}</div>
+                                                   </div>
+                                               </div>
+                                               <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" data-ng-if="!editmode">
+                                                   <div class="form-group bmd-form-group floating-input-container">
+                                                       <input class="floating-input" class="form-control " name="login_name" id="login_name" data-ng-pattern="/^[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9]$/" required="true" data-ng-model="company.user.login_name" placeholder="Enter Login" data-ng-class="((myform.login_name.$dirty || submitted)  && !editmode && myform.login_name.$invalid) || ((myform.login_name.$dirty || submitted) && myform.login_name.$error.required) ? 'error' : ''" autocomplete="new-password"/>
+                                                       <label class="input-label">
+                                                           Login
+                                                       </label>
+                                                       <span class="help-block errorText" ng-show="((myform.login_name.$dirty || submitted) && !editmode && myform.login_name.$invalid) || ((myform.login_name.$dirty || submitted) && myform.login_name.$error.required)">Please enter login name  without spaces & special characters</span>
+                                                   </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                   <div class="form-group bmd-form-group floating-input-container">
+                                                       <input class="floating-input" type="password" name="password" id="password" data-ng-minlength="6" data-ng-model="company.user.password" placeholder="Enter Password" data-ng-required="!editmode" data-ng-class="((myform.password.$dirty || submitted) && myform.password.$invalid) || ((myform.password.$dirty || submitted) && myform.password.$error.required) ? 'error' : ''" autocomplete="new-password"/>
+                                                       <label class="input-label">
+                                                           Password
+                                                       </label>
+                                                       <span class="help-block errorText" ng-show="(myform.password.$dirty && myform.password.$error.minlength)">Please enter atleast 6 characters</span>
+                                                       <span class="help-block errorText" ng-show="(((myform.password.$dirty || submitted) && myform.password.$invalid) || ((myform.password.$dirty || submitted) && myform.password.$error.required)) && (!(myform.password.$dirty && myform.password.$error.minlength))">Please enter password</span>
+                                                   </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                   <div class="form-group bmd-form-group floating-input-container">
+                                                       <input class="floating-input" type="password" placeholder="Confirm Password"  name="confirmpassword" id="confirmpassword" data-ng-minlength="6" data-ng-model="company.user.confirmpassword" autocomplete="new-password"   data-ng-required="!editmode" data-password-verify="company.user.password" data-ng-class="((myform.confirmpassword.$dirty || submitted) && myform.confirmpassword.$invalid) || ((myform.confirmpassword.$dirty || submitted) && myform.confirmpassword.$error.required)  ? 'error' : ''"/>
+                                                       <label class="input-label">
+                                                           Confirm Password
+                                                       </label>
+                                                       <span class="help-block errorText" ng-show="((myform.confirmpassword.$dirty || submitted) && myform.confirmpassword.$invalid) || ((myform.confirmpassword.$dirty || submitted) && myform.confirmpassword.$error.required)">Passwords do not match (Minimum 6 chars required)</span>
+                                                   </div>
+                                                </div>
+                                            </div>
+                                          </div>
+                                       </div>
+                                   </div>
+                               </div>
+                          </form>
+                          <div class="form-group">
+                              <div class="row-centered">
+                                  <button class="btn primarySubmitButton mobileSubmitButton" type="button" data-ng-click='submitted=true;!myform.$invalid && saveCompany();'><span>Sign Up</span></button>
+                              </div>
+                          </div>
+                      </div>                       
+                 </div>
+               </div>
+            </div>
+        </div>
+  </section>
+</section>

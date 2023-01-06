@@ -1,0 +1,244 @@
+<html>
+<style>
+ .mypushbutton {
+ 	padding-right:15px;
+ }
+.no-gutter > [class*='col-'] {
+    padding-right:0px;
+    padding-left:0px;
+}
+.text5 {font-family:helvetica;font-size:13px;}
+.header5 {font-size:16px;font-weight:bold}
+.header14 {font-size:14px;font-weight:bold}
+.header12 {font-size:12px;font-weight:bold}
+.number { text-align:right }
+table, tr, td, th, tbody, thead, tfoot {
+    page-break-inside: avoid !important;
+}
+</style>
+<body>
+<!-- print form start -->
+<div class="row" data-ng-show="printForm" >
+	<div class="col-xs-12">
+		<section class="panel">
+		<table border="0" cellpadding="2" cellspacing="0" style="width:690px">
+			<!-- header -->
+			<tr>
+				<td style="width:100%;">
+					<h2><center>ORDER</center></h2>
+				</td>
+			</tr>
+		</table>
+		
+		<table border="1" cellpadding="2" cellspacing="0" style="width:690px">
+		<tr>
+		<td>
+			<table border="0" cellpadding="2" cellspacing="0" style="width:100%">
+				<tr>
+					<td style="width:100%; float: left;">
+						<table style="width:100%;"  border="1" cellspacing="0" xcellpadding="5">
+						<tr>
+						<td style="valign:top" valign="top" width="60%">
+							<table style="width:100%; float: left;"  border="0" cellspacing="0" cellpadding="3">
+								<tr>
+									<td class="header5" xstyle="border-right:solid 1px black">{{company.name}}</td>
+								</tr>
+								<tr>
+									<td class="text5" style="border-top:dotted 1px black">{{company.address.address1 + '.'}} {% if company.address.address2 != "" and company.address.address2 != null %} {{ company.address.address2 + ','}} {%endif%} {{company.address.city}} - {{company.address.zip}}<br/><br/>
+										<span class="header14 text5">Bank: </span><span class="text5">{{configuration.bank_name}}. A/c No: {{configuration.bank_account_number}}, <br/>IFSC: {{configuration.bank_isfc}} </span><br/><span class="header14 text5">GST #:</span><span class="text5"> {{configuration.tax_gst_number}} </span>
+									</td>
+								</tr>
+								<tr>
+									<td class="header14" style="border-top:solid 1px black">Buyer</td>
+								</tr>
+								<tr>
+									<td class="text5" style="border-top:dotted 1px black">
+										{{customer.name}}<br/>
+										{{ customer.address.address1 }}
+											{{ customer.address.address2 }}
+											{{ customer.address.city }} {{ customer.address.zip }}{%if customer.address.phone1 != "" and customer.address.phone1 != null %}<br/><span class="header14 text5">Phone:</span> +{{customer.address.phone1}} {% endif %} {%if customer.address.email1 != "" and customer.address.email1 != null %}<span class="header14 text5">Email:</span> {{customer.address.email1}}  {% endif %}
+									</td>
+								</tr>
+								<tr>
+									<td><span class="header14 text5">GST #:</span> {{ customer.gst_number }}</td>
+								</tr>
+							</table>
+						</td>
+						<td style="valign:top;" valign="top" width="40%">
+							<table style="width:100%; float: left;"  border="0" cellspacing="0" cellpadding="0" xstyle="padding:5px">
+								<tr>
+									<td class="header12 text5" style="border-right:solid 1px black;padding:5px">Order #</td>
+									<td class="text5" style="padding:5px">{{ order_number }}</td>
+								</tr>
+								<tr>
+									<td class="header12 text5" style="border-top:solid 1px black;border-right:solid 1px black;padding:5px">Dated</td>
+									<td class="text5" style="border-top:solid 1px black;padding:5px">{{ order_date}}</td>
+								</tr>
+								<tr>
+									<td class="header12 text5" style="border-top:solid 1px black;border-right:solid 1px black;padding:5px">Status</td>
+									<td class="text5" style="border-top:solid 1px black;padding:5px">{{ status_name}}</td>
+								</tr>
+				                <tr>
+				                  <td class="header12 text5" style="border-top:solid 1px black;border-right:solid 1px black;padding:5px">PO #</td>
+				                  <td class="text5" style="border-top:solid 1px black;padding:5px">{{ customer_order_number }}</td>
+				                </tr>
+								<tr>
+									<td class="header12 text5" style="border-top:solid 1px black;border-right:solid 1px black;padding:5px">Ref.</td>
+									<td class="text5" style="border-top:solid 1px black;padding:5px">{{ customer.agent.name }}</td>
+								</tr>
+								<tr>
+									<td class="header12 text5" style="border-top:solid 1px black;border-right:solid 1px black;padding:5px">Terms</td>
+									<td class="text5" style="border-top:solid 1px black;padding:5px">{{ payment_term_name }}</td>
+								</tr>
+								<tr>
+									<td class="header12 text5" style="border-top:solid 1px black;border-right:solid 1px black;padding:5px">Transporter</td>
+									<td class="text5" style="border-top:solid 1px black;padding:5px">{{ transporter.name }}</td>
+								</tr>
+								<tr>
+									<td class="header12 text5" style="border-top:solid 1px black;border-right:solid 1px black;padding:5px">Destination</td>
+									<td class="text5" style="border-top:solid 1px black;padding:5px">{{ customer.ship_address.city }}</td>
+								</tr>
+							</table>
+						</td>
+						</tr>
+						</table>
+					</td>
+				</tr>
+				<!-- detail -->
+				{% set taxableamount = 0 %}
+				<tr>
+					<td style="width:100%">
+						<table style="width:100%" border="1" cellspacing="0" cellpadding="4">
+						<tbody>
+						<tr>
+						<td><span class="text5">#</span></td>
+						<td><span class="text5">Description</span></td>
+						<td class="text5 number">Qty</td>
+						<td class="text5 number">Rate</td>
+						<td class="text5">Per</td>
+						<td class="text5">Disc</td>
+						<td class="text5">Tax%</td>
+						<td class="text5 number">Amount</td>
+						</tr>
+						{% for lineitem in lineitems %}
+						<tr data-ng-repeat="lineitem in lineitems">
+						<td class="text5 number">{{loop.index}}</td>
+						{% if lineitem.entered_unit_of_measures_id != lineitem.unit_of_measures_id %}
+							<td class="text5">{{ lineitem.name }} ({{ lineitem.entered_quantity }} {{ lineitem.entered_uom_short_name }}) </span></td>
+						{% else %}
+							<td class="text5">{{ lineitem.name }}</span></td>
+						{% endif %}
+						<td class="text5 number">{{ lineitem.order_quantity }} {{ lineitem.uom_short_name }}</td>
+						<td class="text5 number">{{ lineitem.order_price }}</td>
+						<td class="text5">{{ lineitem.uom_short_name }}</td>
+						<td class="text5 number">{{ lineitem.discount }}</td>
+						<td class="text5 number">{{ ((lineitem.tax * 100) / (lineitem.extension - lineitem.discount))  | round(2)}}</td>
+						<td class="text5 number">{{ lineitem.extension }}</td>
+						</tr>
+			            {% if lineitem.notes != null and lineitem.notes != '' %}
+			            <tr>
+			              <td colspan="7">Notes: {{ lineitem.notes }}</td>
+			            </tr>
+			            {% endif %}
+						{% if lineitem.tax > 0 %}
+						{% set taxableamount = taxableamount - (lineitem.discount | round(2)) + (lineitem.extension | round(2)) %}
+						{% endif %}
+						{% endfor %}
+						<tr>
+							<td colspan="7" class="header12 text5 number">Sub Total</td>
+							<td class="text5 number">{{ sub_total }}</td>
+						</tr>
+						{% if tax_total != 0 %}
+						<tr>
+							<td colspan="7" class="header12 text5 number">Tax</td>
+							<td class="text5 number">{# <span style="float:left" class="fontsmall">({{ ((tax_total * 100)/ taxableamount ) | round(2) }}%)</span> #} <span style="float:right" class="text5 number">{{ tax_total }}</span></td>
+						</tr>
+						{% endif %} 
+						{% if ship_total != 0 %}
+						<tr>
+							<td colspan="7" class="header12 text5 number">Shipping</td>
+							<td class="text5 number">{{ ship_total }}</td>
+						</tr>
+						{% endif %} 
+						{% if discount_total != 0 %}
+						<tr>
+							<td colspan="7" class="header12 text5 number">Discount</td>
+							<td class="text5 number">{{ discount_total }}</td>
+						</tr>
+						{% endif %} 
+						<tr>
+							<td colspan="7" class="header12 text5 number">Total</td>
+							<td class="text5 number">{{ grand_total }}</td>
+						</tr>
+						</tbody>
+						</table>
+					</td>
+				</tr>
+				{% if notes != null and notes != '' %}
+				<tr>
+					<td style="width:100%" class="text5"><span class="header14 text5">Notes:</span>{{ notes }}</td>
+				</tr>
+				{% endif %} 
+				<tr>
+					<td>&nbsp;</td>
+				</tr>
+				{#
+				{% if customer.pan_number != '' or customer.cst_number != '' or customer.vat_number != '' or customer.excise_number != '' %}
+				<tr>
+					<td style="width:100%">
+						<table style="width:100%" border="0" cellspacing="0" cellpadding="2">
+							<tr>
+								<td class="header12 text5" style="padding:2px">Buyer Tax Information</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td style="width:100%">
+						<table style="width:100%" border="1" cellspacing="0" cellpadding="4">
+								<tr>
+									<td class="header12 text5" style="padding:3px;width:25%">PAN #:</td>
+									<td class="text5" style="padding:3px;width:25%">{{ customer.pan_number }}</td>
+									<td class="header12 text5" style="padding:3px;width:25%">CST #:</td>
+									<td class="text5" style="padding:3px;width:25%">{{ customer.cst_number }}</td>
+								</tr>
+								<tr>
+									<td class="header12 text5" style="padding:3px">VAT #:</td>
+									<td class="text5" style="padding:3px">{{ customer.vat_number }}</td>
+									<td class="header12 text5" style="padding:3px">Excise #:</td>
+									<td class="text5" style="padding:3px">{{ customer.excise_number }}</td>
+								</tr>
+							</table>
+						</td>
+				</tr>
+				{% endif %} 
+				#}
+				<tr>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td style="text-align:right" class="header12 text5">for {{company.name}}</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td style="text-align:right">Authorised Signatury</td>
+				</tr>
+			</table>
+		</td>
+		</tr>
+		</table>
+		<table border="0" cellpadding="2" cellspacing="0" style="width:710px">
+			<!-- header -->
+			<tr>
+				<td style="width:100%;">
+					<h6><center>SUBJECT TO AHMEDABAD JURISDICTION</center></h6>
+				</td>
+			</tr>
+		</table>
+		</section>
+	</div>
+</div>
+</body>
+</html>
