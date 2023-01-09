@@ -2,101 +2,262 @@
 
 <!--main content start-->
 <section id="main-content">
-    <section class="wrapper">
-        <div class="container-fluid">
-            <div class="mat-form row row-centered">
-                <div class="mat-form col-md-12">
-                            <div class="mat-form card">
-                                <div class="card-header card-header-primary">
-                                    <h4 class="card-title">{{title}}</h4>
-                                </div>
-                                <div class="card-body">
-                                    <form class="cmxform" id="signupForm" method="post" name="myform">
-                                        <div class="row">
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 eachCardWrapperDiv">
-                                                <div class="card">
-                                                   <h5 class="card-header childcardheader">Primary Information</h5>
-                                                   <div class="card-body">
-                                                       <div class="row">
-                                                            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                                                                <div class="form-group bmd-form-group floating-input-container">
-                                                                  <input class="floating-input" type="text" name="txt_customer_name" id="txt_customer_name" data-ng-model="bill.customer" autocomplete="off" required="true" placeholder="Enter customer name" typeahead-min-length="2" typeahead-wait-ms="200" typeahead-on-select="onSelectedCustomer($item, $model, $label, $event);" typeahead-select-on-blur=true typeahead-editable=false uib-typeahead="suggestion as suggestion.name for suggestion in getCustomerListViaPromise($viewValue, 1)" ng-class="((myform.txt_customer_name.$dirty && myform.txt_customer_name.$invalid) || ((myform.txt_customer_name.$dirty || submitted) && myform.txt_customer_name.$error.required)) ? 'error' : 'success'"/>
-                                                                  <label class="input-label" for="txt_customer_name">Enter Customer Name</label> 
-                                                                  <span class="help-block errorText" ng-show="(myform.txt_customer_name.$dirty && myform.txt_customer_name.$invalid) || ((myform.txt_customer_name.$dirty || submitted) && myform.txt_customer_name.$error.required)">Please enter customer name</span>
-                                                                </div>
-                                                             </div>
-                                                             <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                                                                <div class="form-group bmd-form-group floating-input-container">
-                                                                   <input class="floating-input" type="text" name="bill_no" id="bill_no" required="true" data-ng-model="bill.bill_number" placeholder="Enter Govt Code" ng-class="((myform.bill_no.$dirty && myform.bill_no.$invalid) || ((myform.bill_no.$dirty || submitted) && myform.bill_no.$error.required)) ? 'error' : 'success'"/>
-                                                                   <label class="input-label"  for="bill_ref_no">Bill Number</label>  
-                                                                   <span class="help-block errorText" ng-show="(myform.bill_no.$dirty && myform.bill_no.$invalid) || ((myform.bill_no.$dirty || submitted) && myform.bill_no.$error.required)">Please enter bill number</span>                             
-                                                               </div>
-                                                             </div>
-                                                             <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                                                                <div class="form-group bmd-form-group floating-input-container">
-                                                                   <input class="floating-input" type="text" name="bill_ref_no" id="bill_ref_no" data-ng-model="bill.bill_ref_number" placeholder="Enter Govt Code"/>
-                                                                   <label class="input-label"  for="bill_ref_no">Bill Reference Number</label>                               
-                                                               </div>
-                                                             </div>
-                                                             <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                                                                <div class="form-group bmd-form-group floating-input-container">
-                                                                    <input class="floating-input" type="date" name="bill_date" id="bill_date" required="true" data-ng-model="bill.bill_date" placeholder="Bill Date" ng-class="((myform.bill_date.$dirty && myform.bill_date.$invalid) || ((myform.bill_date.$dirty || submitted) && myform.bill_date.$error.required)) ? 'error' : 'success'"/>
-                                                                    <label class="input-label"  for="bill_date">Bill Date</label>
-                                                                    <span class="help-block errorText" ng-show="(myform.bill_date.$dirty && myform.bill_date.$invalid) || ((myform.bill_date.$dirty || submitted) && myform.bill_date.$error.required)">Please enter bill date</span>   
-                                                                 </div>
-                                                             </div>
-                                                             <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                                                                <div class="form-group bmd-form-group floating-input-container">
-                                                                   <input class="floating-input" type="date" name="due_date" id="due_date" data-ng-model="bill.due_date" placeholder="Due Date" />
-                                                                    <label class="input-label"  for="due_date">Due Date</label>
-                                                                 </div>
-                                                             </div>                                 
-                                                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                                <div class="form-group bmd-form-group floating-input-container">
-                                                                    <input class="floating-input" type="text" name="amount" id="amount" data-ng-model="bill.bill_amount" data-ng-change="updateBillBalanceAmount()" placeholder="Amount" required="true" ng-class="((myform.amount.$dirty && myform.amount.$invalid) || ((myform.amount.$dirty || submitted) && myform.amount.$error.required)) ? 'error' : 'success'"/>
-                                                                    <label class="input-label" required="true" for="amount">Bill Amount</label>
-                                                                    <span class="help-block errorText" ng-show="(myform.amount.$dirty && myform.amount.$invalid) || ((myform.amount.$dirty || submitted) && myform.amount.$error.required)">Please enter amount</span>
-                                                                 </div>
-                                                             </div>
-                                                             <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                                                                <div class="form-group bmd-form-group floating-input-container">
-                                                                   <input class="floating-input" type="date" name="paid_date" id="paid_date" data-ng-model="bill.paid_date"/>
-                                                                    <label class="input-label"  for="paid_date">Paid Date</label>
-                                                                 </div>
-                                                             </div>                                 
-                                                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                                <div class="form-group bmd-form-group floating-input-container">
-                                                                    <input class="floating-input" type="text" name="paid_amount" id="paid_amount" data-ng-model="bill.paid_amount" placeholder="Amount"  data-ng-change="updateBillBalanceAmount()"/>
-                                                                    <label class="input-label" required="true" for="amount">Paid Amount</label>
-                                                                 </div>
-                                                             </div>
-                                                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                                                <div class="form-group bmd-form-group floating-input-container">
-                                                                    <input class="floating-input" type="text" name="balance_amount" id="balance_amount" data-ng-model="bill.balance_amount" data-ng-change="updateBillPaidAmount()" placeholder="Amount" />
-                                                                    <label class="input-label" required="true" for="amount">Balance Amount</label>
-                                                                 </div>
-                                                             </div>
-                                                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                                                <div class="form-group floating-input-container" style="padding-bottom: 0px;">
-                                                                    <input type="checkbox" name="isenabled" id="isenabled" data-ng-model="bill.inactive" data-ng-true-value="1" data-ng-false-value="0" />
-                                                                    <label class="" for="isenabled">Inactive?</label>
-                                                                </div>
-                                                            </div>
-                                                       </div>
-                                                   </div>
-                                               </div>
-                                           </div>
-                                        </div>
-                                          <div class="form-group">
-                                            <div class="row-centered">
-                                                <button class="btn primarySubmitButton mobileSubmitButton" type="button" data-ng-click='submitted=true;!myform.$invalid && saveBill();'>Save Bill</button>
-                                            </div>
-                                          </div>
-                                    </form>
-                                </div>
+  <section class="wrapper">
+    <div class="container-fluid">
+      <div class="mat-form row row-centered">
+        <div class="mat-form col-md-12">
+          <div class="mat-form card">
+            <div class="card-header card-header-primary">
+              <h4 class="card-title">{{title}}</h4>
+            </div>
+            <div class="card-body">
+              <form class="cmxform" id="signupForm" method="post" name="myform">
+                <div class="row">
+                  <div
+                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12 eachCardWrapperDiv"
+                  >
+                    <div class="card">
+                      <h5 class="card-header childcardheader">
+                        Primary Information
+                      </h5>
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                            <div
+                              class="form-group bmd-form-group floating-input-container"
+                            >
+                              <input
+                                class="floating-input"
+                                type="text"
+                                name="txt_customer_name"
+                                id="txt_customer_name"
+                                data-ng-model="bill.customer"
+                                autocomplete="off"
+                                required="true"
+                                placeholder="Enter customer name"
+                                typeahead-min-length="2"
+                                typeahead-wait-ms="200"
+                                typeahead-on-select="onSelectedCustomer($item, $model, $label, $event);"
+                                typeahead-select-on-blur="true"
+                                typeahead-editable="false"
+                                uib-typeahead="suggestion as suggestion.name for suggestion in getCustomerListViaPromise($viewValue, 1)"
+                                ng-class="((myform.txt_customer_name.$dirty && myform.txt_customer_name.$invalid) || ((myform.txt_customer_name.$dirty || submitted) && myform.txt_customer_name.$error.required)) ? 'error' : 'success'"
+                              />
+                              <label class="input-label" for="txt_customer_name"
+                                >Enter Customer Name</label
+                              >
+                              <span
+                                class="help-block errorText"
+                                ng-show="(myform.txt_customer_name.$dirty && myform.txt_customer_name.$invalid) || ((myform.txt_customer_name.$dirty || submitted) && myform.txt_customer_name.$error.required)"
+                                >Please enter customer name</span
+                              >
                             </div>
+                          </div>
+                          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                            <div
+                              class="form-group bmd-form-group floating-input-container"
+                            >
+                              <input
+                                class="floating-input"
+                                type="text"
+                                name="bill_no"
+                                id="bill_no"
+                                required="true"
+                                data-ng-model="bill.bill_number"
+                                placeholder="Enter Govt Code"
+                                ng-class="((myform.bill_no.$dirty && myform.bill_no.$invalid) || ((myform.bill_no.$dirty || submitted) && myform.bill_no.$error.required)) ? 'error' : 'success'"
+                              />
+                              <label class="input-label" for="bill_ref_no"
+                                >Bill Number</label
+                              >
+                              <span
+                                class="help-block errorText"
+                                ng-show="(myform.bill_no.$dirty && myform.bill_no.$invalid) || ((myform.bill_no.$dirty || submitted) && myform.bill_no.$error.required)"
+                                >Please enter bill number</span
+                              >
+                            </div>
+                          </div>
+                          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                            <div
+                              class="form-group bmd-form-group floating-input-container"
+                            >
+                              <input
+                                class="floating-input"
+                                type="text"
+                                name="bill_ref_no"
+                                id="bill_ref_no"
+                                data-ng-model="bill.bill_ref_number"
+                                placeholder="Enter Govt Code"
+                              />
+                              <label class="input-label" for="bill_ref_no"
+                                >Bill Reference Number</label
+                              >
+                            </div>
+                          </div>
+                          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                            <div
+                              class="form-group bmd-form-group floating-input-container"
+                            >
+                              <input
+                                class="floating-input"
+                                type="date"
+                                name="bill_date"
+                                id="bill_date"
+                                required="true"
+                                data-ng-model="bill.bill_date"
+                                placeholder="Bill Date"
+                                ng-class="((myform.bill_date.$dirty && myform.bill_date.$invalid) || ((myform.bill_date.$dirty || submitted) && myform.bill_date.$error.required)) ? 'error' : 'success'"
+                              />
+                              <label class="input-label" for="bill_date"
+                                >Bill Date</label
+                              >
+                              <span
+                                class="help-block errorText"
+                                ng-show="(myform.bill_date.$dirty && myform.bill_date.$invalid) || ((myform.bill_date.$dirty || submitted) && myform.bill_date.$error.required)"
+                                >Please enter bill date</span
+                              >
+                            </div>
+                          </div>
+                          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                            <div
+                              class="form-group bmd-form-group floating-input-container"
+                            >
+                              <input
+                                class="floating-input"
+                                type="date"
+                                name="due_date"
+                                id="due_date"
+                                data-ng-model="bill.due_date"
+                                placeholder="Due Date"
+                              />
+                              <label class="input-label" for="due_date"
+                                >Due Date</label
+                              >
+                            </div>
+                          </div>
+                          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <div
+                              class="form-group bmd-form-group floating-input-container"
+                            >
+                              <input
+                                class="floating-input"
+                                type="text"
+                                name="amount"
+                                id="amount"
+                                data-ng-model="bill.bill_amount"
+                                data-ng-change="updateBillBalanceAmount()"
+                                placeholder="Amount"
+                                required="true"
+                                ng-class="((myform.amount.$dirty && myform.amount.$invalid) || ((myform.amount.$dirty || submitted) && myform.amount.$error.required)) ? 'error' : 'success'"
+                              />
+                              <label
+                                class="input-label"
+                                required="true"
+                                for="amount"
+                                >Bill Amount</label
+                              >
+                              <span
+                                class="help-block errorText"
+                                ng-show="(myform.amount.$dirty && myform.amount.$invalid) || ((myform.amount.$dirty || submitted) && myform.amount.$error.required)"
+                                >Please enter amount</span
+                              >
+                            </div>
+                          </div>
+                          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                            <div
+                              class="form-group bmd-form-group floating-input-container"
+                            >
+                              <input
+                                class="floating-input"
+                                type="date"
+                                name="paid_date"
+                                id="paid_date"
+                                data-ng-model="bill.paid_date"
+                              />
+                              <label class="input-label" for="paid_date"
+                                >Paid Date</label
+                              >
+                            </div>
+                          </div>
+                          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <div
+                              class="form-group bmd-form-group floating-input-container"
+                            >
+                              <input
+                                class="floating-input"
+                                type="text"
+                                name="paid_amount"
+                                id="paid_amount"
+                                data-ng-model="bill.paid_amount"
+                                placeholder="Amount"
+                                data-ng-change="updateBillBalanceAmount()"
+                              />
+                              <label
+                                class="input-label"
+                                required="true"
+                                for="amount"
+                                >Paid Amount</label
+                              >
+                            </div>
+                          </div>
+                          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <div
+                              class="form-group bmd-form-group floating-input-container"
+                            >
+                              <input
+                                class="floating-input"
+                                type="text"
+                                name="balance_amount"
+                                id="balance_amount"
+                                data-ng-model="bill.balance_amount"
+                                data-ng-change="updateBillPaidAmount()"
+                                placeholder="Amount"
+                              />
+                              <label
+                                class="input-label"
+                                required="true"
+                                for="amount"
+                                >Balance Amount</label
+                              >
+                            </div>
+                          </div>
+                          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <div
+                              class="form-group floating-input-container"
+                              style="padding-bottom: 0px"
+                            >
+                              <input
+                                type="checkbox"
+                                name="isenabled"
+                                id="isenabled"
+                                data-ng-model="bill.inactive"
+                                data-ng-true-value="1"
+                                data-ng-false-value="0"
+                              />
+                              <label class="" for="isenabled">Inactive?</label>
+                            </div>
+                          </div>
                         </div>
+                      </div>
                     </div>
+                  </div>
                 </div>
-            </section>
-        </section>
+                <div class="form-group">
+                  <div class="row-centered">
+                    <button
+                      class="btn primarySubmitButton mobileSubmitButton"
+                      type="button"
+                      data-ng-click="submitted=true;!myform.$invalid && saveBill();"
+                    >
+                      Save Bill
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
