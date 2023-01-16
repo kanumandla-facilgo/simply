@@ -571,9 +571,9 @@ app.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpPro
     }).
     when('/Home', {
             title: "Home",
-            templateUrl: 'app/templates/categories.html',
+            templateUrl: 'app/templates/categories_new.html',
             controller: 'categorycontroller',
-            parameters: {enabled_flag:1, withproductsonly:1}
+            parameters: {enabled_flag:1, withproductsonly:1, "is_new_product_show_days":true, "is_hidden_no_stock":1}
     }).
     when('/workflowsetup/', {
         title: "Workflow Setup",

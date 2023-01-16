@@ -1,5 +1,5 @@
 app.controller('categorycontroller', function ($scope, $http, $location, $filter, categoryService, productService, utilService, masterService, $routeParams, $rootScope, $route, hotkeys, flash) {
-
+  console.log('You are in controller');
   $scope.utilService = utilService;
 
   //get categories
@@ -13,12 +13,17 @@ app.controller('categorycontroller', function ($scope, $http, $location, $filter
 		productid = product.id
 
 	categoryService.getCategories(parentid, productid, 0, 0, null, 0, function(response) {
+		console.log('You are in categoryService.getCategories');
 		if (response.statuscode == 0) {
 
 			if (response.data && response.data.categorylist) {
+				console.log(response.data);
+				console.log(response.data.categorylist);
 				$scope.categorylist     = response.data.categorylist;
 
 				if($scope.categorylist.length == 1)
+				console.log(response.data);
+				console.log(response.data.categorylist);
 					$location.path("/products/category/" + $scope.categorylist[0].id);
 			}
 
@@ -69,6 +74,7 @@ hotkeys.bindTo($scope).add({
 		if (response.statuscode == 0) {
 
 			if (response.data && response.data.categorylist) {
+				console.log('You are in categoryService.getCategories');
 				$scope.categorylist     = response.data.categorylist;
 			}
 
@@ -121,6 +127,7 @@ hotkeys.bindTo($scope).add({
 			if (callback) {
 				return callback(response.data.categorylist);
 			}
+			console.log('You are in getCategoriesByLineage');
 			$scope.categorylist  = response.data.categorylist;
 		}
 		else if (response.statuscode === -100)  {
@@ -404,21 +411,153 @@ hotkeys.bindTo($scope).add({
  };
 
 $scope.showSubItems1 = function (id) {
+	
 		$scope.getCategory(id, function (response) {
 			var withproductsonly = ($routeParams.withproductsonly? $routeParams.withproductsonly:0);
 			var orderid = ($routeParams.orderid ? $routeParams.orderid:"");
 			if (response.statuscode == 0 && response.data && response.data.category && $scope.category.is_leaf && $scope.category.children_count > 0) {
+				console.log('/products1/category/'+id);
+				// return;
 				$location.path("/products1/" + "category/" + id).search( {"customerid" : $scope.customerid, withproductsonly:withproductsonly, "orderid":orderid} );
 			}
 			else if (response.statuscode === -100)  {
+				console.log('showsubitems2')
 				$location.path("/Login/");
 			}
 			else {
-				$location.path("/categories1/" + id).search( {"customerid" : $scope.customerid, withproductsonly:withproductsonly, "orderid":orderid} );;
+				console.log('/categories1?parent_id='+id);
+				// return;
+				$location.path("/categories1/" + id).search( {"customerid" : $scope.customerid, withproductsonly:withproductsonly, "orderid":orderid} );
+				
 			}
-		});
+			console.log(response.data.category);
+		}); 
  };
+// Flag to switch between two views (i.e., subCategory view and product view from root element) in Home page of Catalog
+ $scope.subCategoryViewFlag = false;
+ $scope.subCategoryProducts={};
+ $scope.subCategoryProductsView = function(id){
+	console.log(id);
+	$scope.subCategoryViewFlag = true;
+	console.log(" This is subCategoryProductsView ")
+	$scope.showSubItems2(id);
+	console.log($scope.subCategoryProducts.size);
+	if($scope.subCategoryProducts.size > 3){
+		console.log($scope.productlist.slice(3));
+		$scope.subCategoryProducts = $scope.productlist.slice(3);
+		console.log($scope.subCategoryProducts[0]);
+		console.log("you are in ")
+	}
+	else{
+		$scope.subCategoryProducts[id] = $scope.productlist;
+		console.log($scope.subCategoryProducts[id]);
+    }
+	console.log($scope.productlist);
+ }
+ $scope.showSubItems2 = function (id) {
+	$scope.getCategory(id, function (response) {
+		var withproductsonly = ($routeParams.withproductsonly? $routeParams.withproductsonly:0);
+		var orderid = ($routeParams.orderid ? $routeParams.orderid:"");
+		if (response.statuscode == 0 && response.data && response.data.category && $scope.category.is_leaf && $scope.category.children_count > 0) {
+			console.log('/products1/category/'+id);
+			console.log($scope.subCategoryView);
+			// return;
+			var para = $rootScope.parameters;
+			var flag = (para && para.enabled_flag && para.enabled_flag == 1 ? 1 : 0);
+			$scope.active_only = flag;
+			var is_hidden_no_stock = (para && para.is_hidden_no_stock && para.is_hidden_no_stock == 1 ? 1 : 0);
+			var is_new_product_show_days = (para && para.is_new_product_show_days && para.is_new_product_show_days == true ? utilService.getNewProductShowXDays() : 0);
 
+			var options = {};
+			options.enabled_only = flag;
+			options.is_hidden_no_stock = is_hidden_no_stock;
+			options.is_new_product_show_days = is_new_product_show_days;
+			options.withproductsonly = $scope.withproductsonly;
+
+			productService.getProducts(id, $scope.customerid, options, function (response) {
+				if (response.statuscode == 0 && response.data && response.data.productlist) {
+					if($scope.subCategoryViewFlag){
+						$scope.subCategoryProducts.id = response.data.productlist;
+						console.log(response.data.productlist);
+					}
+					
+					else
+					$scope.productlist = response.data.productlist;
+					
+				
+					categoryService.getCategory(id, function (response) {
+						if (response.statuscode == 0 && response.data && response.data.category) {
+							$scope.category = response.data.category;
+							console.log("This is category "+$scope.category);
+							var arr = utilService.getLineage($scope.category);
+							$scope.lineagearray = arr;
+							console.log("This is lineagearray "+$scope.lineagearray);
+							console.log("This is response data" + response.data);
+							//	$scope.lineagearray = utilService.addElementToLineage (arr, $scope.category.id, $scope.category.name);
+						}
+					});
+				}
+				else if (response.statuscode === -100) {
+					$location.path("/Login/");
+				}
+				else {
+					flash.pop({ title: "", body: response.message, type: "error" });
+				}
+			});
+		}
+		else if (response.statuscode === -100)  {
+			console.log('showsubitems2')
+			$location.path("/Login/");
+		}
+		else {
+			console.log('/categories1?parent_id='+id);
+			// return;
+			$scope.subCategoryView= true;
+			console.log($scope.subCategoryView);
+			var para = $rootScope.parameters;
+			var flag = (para && para.enabled_flag && para.enabled_flag == 1 ? 1 : 0);
+			var parentid = id;
+			$scope.customerid = $routeParams.customerid;
+			$scope.orderid = $routeParams.orderid;
+			console.log(' parentid: ' + parentid + ' orderid: ');
+			var withproductsonly = $routeParams.withproductsonly? $routeParams.withproductsonly:0;
+			withproductsonly = 0; // when new category is created, it gets hidden from prev statement
+			categoryService.getCategories(parentid, null, withproductsonly, flag, null, 0, function(response) {
+				if (response.statuscode == 0) {
+
+					if (response.data && response.data.categorylist) {
+						$scope.subcategorylist     = response.data.categorylist;
+					}
+
+					if (parentid) {
+						$scope.getParentCategory(parentid, function () {
+							$scope.lineagearray = utilService.getLineage($scope.parentcategory);
+
+							//need to add parent element into array
+							//$scope.lineagearray = $scope.addElementToLineage (arr, $scope.parentcategory.id, $scope.parentcategory.name);
+						});
+					}
+
+				}
+				else if (response.statuscode === -100)  {
+					$location.path("/Login/");
+				}
+				else {
+					flash.pop({title: "", body: response.message, type: "error"});
+				}
+			});
+			
+		}
+		console.log(response.data.category);
+	});
+
+
+
+
+
+	console.log("This is new showSubItems function written for new Catalogue UI which updates the category list");
+	
+ };
 
  $scope.showAddProductForm = function () {
 		$location.path("/AddProduct/" + ($scope.categoryid ? $scope.categoryid : ""));
@@ -450,6 +589,7 @@ $scope.showSubItems1 = function (id) {
 	 $scope.getCategoriesByLineage(undefined, function(categoryList) {
 		let categoryHash = {};
 		let rootid;
+		console.log('You are in loadCategoryTree');
 		if (categoryList.length > 0) {
 			rootid = categoryList[0].parent_id;
 			categoryHash[categoryList[0].parent_id] = {"id": categoryList[0].parent_id, "name": "Root", "children": []};
@@ -523,13 +663,14 @@ $scope.showSubItems1 = function (id) {
  }
 
  if ($rootScope.title === "Categories" || $rootScope.title === "Sub Categories" || $rootScope.title === "Stock") {
-
+	console.log("===========================================");
 	var para = $rootScope.parameters;
 	var flag = (para && para.enabled_flag && para.enabled_flag == 1 ? 1 : 0);
 
 	var parentid = $routeParams.id;
 	$scope.customerid = $routeParams.customerid;
 	$scope.orderid = $routeParams.orderid;
+	console.log(' parentid: ' + parentid + ' orderid: ');
 	var withproductsonly = $routeParams.withproductsonly? $routeParams.withproductsonly:0;
 	withproductsonly = 0; // when new category is created, it gets hidden from prev statement
 	categoryService.getCategories(parentid, null, withproductsonly, flag, null, 0, function(response) {
@@ -558,7 +699,7 @@ $scope.showSubItems1 = function (id) {
 	});
 }
 else if ( $rootScope.title == "Home" ) {
-
+	console.log('*****************************************');
 	var para = $rootScope.parameters;
 	var flag = (para && para.enabled_flag && para.enabled_flag == 1 ? 1 : 0);
 
@@ -574,6 +715,7 @@ else if ( $rootScope.title == "Home" ) {
 
 			if (response.data && response.data.categorylist) {
 				$scope.categorylist     = response.data.categorylist;
+				$scope.showSubItems2($scope.categorylist[0].id);
 			}
 
 			if (parentid) {
@@ -612,4 +754,3 @@ else if ($rootScope.title == "Add Category") {
 });
 				 
 
- 

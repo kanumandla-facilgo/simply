@@ -117,6 +117,7 @@ app.service('categoryService', function($http, utilService) {
 							var object = new Object();
 							object.statuscode    = 0;
 							object.message       = "Success";
+							object.newMessage = response.data;
 							object.data          = response.data;
 						
 							callback(object);

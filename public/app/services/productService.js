@@ -102,7 +102,8 @@ app.service('productService', function($http, utilService) {
 							object.statuscode    = 0;
 							object.message       = "Success";
 							object.data          = response.data;
-						
+							console.log('From product service Response: ' + object.message);
+							console.log('From product service ResponseData: ' + object.statuscode);
 							callback(object);
 						}
 						else if((options.format) && (response.statuscode == undefined)) {
