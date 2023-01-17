@@ -75,71 +75,28 @@
                 <!-- Tabs -->
                 <!-- Tab content -->
                 <div class="tab-content" id="pills-tabContent">
-                  <div
-                    class="tab-pane fade show active"
-                    id="pills-{{x.code}}"
-                    role="tabpanel"
-                    aria-labelledby="pills-{{x.code}}-tab"
-                    data-ng-if="x.id === categorylist[0].id"
-                    data-ng-repeat="x in categorylist"
-                  >
+                  <div class="tab-pane fade show active" id="pills-{{x.code}}" role="tabpanel" aria-labelledby="pills-{{x.code}}-tab" data-ng-if="x.id === categorylist[0].id" data-ng-repeat="x in categorylist">
                     <!-- <div class="col-6 col-md-3" xclass="row product-list" data-ng-repeat="x in categorylist"> -->
 
                     <!-- Sub Category view -->
-                    <div
-                      data-ng-repeat="x in subcategorylist"
-                      style="display: flex; font-family: sans-serif"
-                    >
-                      <div
-                        style="
-                          height: 360px;
-                          width: 100vw;
-                          border: 4px solid rgb(116, 204, 231);
-                          box-shadow: 0 0 4px 1px #aaa;
-                          margin: 5px 0px;
-                          border-radius: 10px;
-                        "
-                      >
-                        <div
-                          style="
-                            display: flex;
-                            flex-direction: row;
-                            align-content: center;
-                            justify-content: space-between;
-                          "
-                        >
+                    <div data-ng-repeat="y in x.children" style="display: flex; font-family: sans-serif">
+                      <div style="height: 420px; width: 100vw; border: 4px solid rgb(116, 204, 231); box-shadow: 0 0 4px 1px #aaa; margin: 5px 0px; border-radius: 10px;">
+                        <div style="display: flex; flex-direction: row; align-content: center; justify-content: space-between">
                           <div style="margin: 2px">
-                            <a data-ng-click="showSubItems2(x.id)" class="pro-title" style="color: #6597d8"
-                              ><h3>{{x.code}}</h3></a
+                            <a data-ng-click="showSubItems2(y.id)" class="pro-title" style="color: #6597d8"
+                              ><h3><strong>{{y.code}}</strong></h3></a
                             >
                           </div>
                           <div style="margin: 7px">
-                            <button type="button" class="btn btn-success" data-ng-click="showSubItems1(x.id)">
-                              See More
-                            </button>
+                            <button type="button" class="btn btn-success" data-ng-click="showSubItems1(y.id)">See More</button>
                           </div>
                         </div>
                         <!-- Products view in sub categories -->
-                        <div style="display: block" >
-                          <div class="card-body" style="border: 1px solid yellow; padding: 0px 8px">
+                        <div style="height: 360px; width: 100%;overflow: auto;">
+                          <div class="card-body" style=" padding: 4px">
                             <div class="row" id="productlist">
-                              <div
-                                class="col-6 col-md-3"
-                                style="margin-top: 30px"
-                                data-ng-repeat="x in productlist"
-                                class="item1"
-                              >
-                                <form
-                                  class="form-inline"
-                                  style="
-                                    box-shadow: 0 0 4px 1px #aaa;
-                                    border-radius: 3px;
-                                    overflow: hidden;
-                                    padding: 5px;
-                                  "
-                                  id="myforms{{$index}}"
-                                  name="myforms{{$index}}"
-                                >
+                              <div class="col-6 col-md-3" style="margin-top: 30px; overflow: hidden" data-ng-repeat="x in subCatProductsMap[y.id]" class="item1">
+                                <form class="form-inline" style="box-shadow: 0 0 4px 1px #aaa; border-radius: 3px; overflow: hidden; padding: 5px" id="myforms{{$index}}" name="myforms{{$index}}">
                                   <div data-ng-if="x.image_url1 != ''" class="image-item">
                                     <a href=""
                                       ><img
@@ -152,31 +109,13 @@
                                   </div>
 
                                   <div data-ng-if="x.image_url1 == ''">
-                                    <a href=""
-                                      ><img
-                                        loading="lazy"
-                                        data-ng-src="app/assets/images/no-image-found.jpg"
-                                        style="width: 100%; height: 180px; border: dotted 1px black"
-                                    /></a>
+                                    <a href=""><img loading="lazy" data-ng-src="app/assets/images/no-image-found.jpg" style="width: 100%; height: 180px; border: dotted 1px black" /></a>
                                   </div>
 
                                   <div style="width: 100%">
-                                    <span class="text-primary" style="font-weight: 600; font-size: 14px"
-                                      >{{x.name}}</span
-                                    >
-                                    <span
-                                      data-ng-if="isNewProduct(x)"
-                                      style="color: red; font-weight: bolder"
-                                      title="New Product"
-                                      >NEW</span
-                                    >
-                                    <a
-                                      class="pull-right"
-                                      data-ng-if="x.image_url1 != ''"
-                                      data-ng-click="downloadProductImage(x.id)"
-                                      title="Download image"
-                                      ><i class="fas fa-download"></i
-                                    ></a>
+                                    <span class="text-primary" style="font-weight: 600; font-size: 14px">{{x.name}}</span>
+                                    <span data-ng-if="isNewProduct(x)" style="color: red; font-weight: bolder" title="New Product">NEW</span>
+                                    <a class="pull-right" data-ng-if="x.image_url1 != ''" data-ng-click="downloadProductImage(x.id)" title="Download image"><i class="fas fa-download"></i></a>
                                     <a
                                       style="padding: 6px"
                                       id="btncs{{$index}}"
@@ -188,27 +127,9 @@
                                     </a>
                                     <div class="row" style="width: 100%; margin: 10px 0">
                                       <div class="col-12 col-md-5" style="margin: 0 0 10px 0; padding: 0">
-                                        <span data-ng-if="false" style="float: right"
-                                          >{{x.selectedQuote UOM.unit_price}} / {{x.selectedQuoteUOM.name}}</span
-                                        >
-                                        <span style="width: 22px; display: inline-block; text-align: right"
-                                          ><i class="fas fa-rupee-sign"></i
-                                        ></span>
-                                        <input
-                                          type="number"
-                                          class="input-sm"
-                                          step="any"
-                                          size="3"
-                                          min="1"
-                                          data-ng-model="x.order_price"
-                                          style="
-                                            width: 35px;
-                                            padding: 0px;
-                                            text-align: right;
-                                            border: 1px solid #d1d3d4;
-                                          "
-                                          required="true"
-                                        />
+                                        <span data-ng-if="false" style="float: right">{{x.selectedQuote UOM.unit_price}} / {{x.selectedQuoteUOM.name}}</span>
+                                        <span style="width: 22px; display: inline-block; text-align: right"><i class="fas fa-rupee-sign"></i></span>
+                                        <input type="number" class="input-sm" step="any" size="3" min="1" data-ng-model="x.order_price" style="width: 35px; padding: 0px; text-align: right; border: 1px solid #d1d3d4" required="true" />
                                         /
                                         <select
                                           style="font-size: 12px"
@@ -218,9 +139,7 @@
                                           data-ng-change="updateQuotePrice(x)"
                                           data-ng-hide="x.is_quote_uom_restricted"
                                         ></select>
-                                        <span ng-show="x.is_quote_uom_restricted" style="font-size: 12px"
-                                          >{{x.selectedQuoteUOM.name}}
-                                        </span>
+                                        <span ng-show="x.is_quote_uom_restricted" style="font-size: 12px">{{x.selectedQuoteUOM.name}} </span>
                                       </div>
                                       <div class="col-12 col-md-7" style="margin: 0 0 10px 0; padding: 0">
                                         <span style="width: 35px; padding-left: 5px; font-size: 12px">Qty</span>
@@ -232,37 +151,15 @@
                                           size="5"
                                           data-ng-model="x.orderqty"
                                           data-ng-init="x.orderqty=x.default_sell_qty"
-                                          style="
-                                            width: 35px;
-                                            padding: 0px;
-                                            text-align: right;
-                                            border: 1px solid #d1d3d4;
-                                          "
+                                          style="width: 35px; padding: 0px; text-align: right; border: 1px solid #d1d3d4"
                                           required="true"
                                         />
                                         /
-                                        <select
-                                          style="font-size: 128x; border: 1px solid #d1d3d4"
-                                          ng-options="uom as uom.name for uom in x.uomlist track by uom.id"
-                                          ng-model="x.selectedUOM"
-                                          ng-hide="x.is_qty_uom_restricted"
-                                        ></select>
-                                        <span ng-show="x.is_qty_uom_restricted" style="font-size: 12px"
-                                          >{{x.selectedUOM.name}}
-                                        </span>
+                                        <select style="font-size: 128x; border: 1px solid #d1d3d4" ng-options="uom as uom.name for uom in x.uomlist track by uom.id" ng-model="x.selectedUOM" ng-hide="x.is_qty_uom_restricted"></select>
+                                        <span ng-show="x.is_qty_uom_restricted" style="font-size: 12px">{{x.selectedUOM.name}} </span>
 
-                                        <span
-                                          class="listPageActionIcons listPageActionGreen"
-                                          data-ng-click="product_to_order(customerid, x)"
-                                          data-ng-disabled="myforms{{$index}}.$invalid"
-                                          ><i class="fas fa-plus"></i
-                                        ></span>
-                                        <span
-                                          class="listPageActionIcons listPageActionIconsRed"
-                                          data-ng-click="removeProductFromCart(x)"
-                                          data-ng-if="x.added_flag == 1"
-                                          ><i class="fas fa-trash"></i
-                                        ></span>
+                                        <span class="listPageActionIcons listPageActionGreen" data-ng-click="product_to_order(customerid, x)" data-ng-disabled="myforms{{$index}}.$invalid"><i class="fas fa-plus"></i></span>
+                                        <span class="listPageActionIcons listPageActionIconsRed" data-ng-click="removeProductFromCart(x)" data-ng-if="x.added_flag == 1"><i class="fas fa-trash"></i></span>
                                       </div>
                                     </div>
                                   </div>
@@ -278,18 +175,8 @@
                     <!-- Products View -->
                     <div class="card-body" style="border: 1px solid yellow; padding: 0px 8px">
                       <div class="row" id="productlist">
-                        <div
-                          class="col-6 col-md-3"
-                          style="margin-top: 30px"
-                          data-ng-repeat="x in productlist"
-                          class="item1"
-                        >
-                          <form
-                            class="form-inline"
-                            style="box-shadow: 0 0 4px 1px #aaa; border-radius: 3px; overflow: hidden; padding: 5px"
-                            id="myforms{{$index}}"
-                            name="myforms{{$index}}"
-                          >
+                        <div class="col-6 col-md-3" style="margin-top: 30px" data-ng-repeat="x in productlist" class="item1">
+                          <form class="form-inline" style="box-shadow: 0 0 4px 1px #aaa; border-radius: 3px; overflow: hidden; padding: 5px" id="myforms{{$index}}" name="myforms{{$index}}">
                             <div data-ng-if="x.image_url1 != ''" class="image-item">
                               <a href=""
                                 ><img
@@ -302,56 +189,21 @@
                             </div>
 
                             <div data-ng-if="x.image_url1 == ''">
-                              <a href=""
-                                ><img
-                                  loading="lazy"
-                                  data-ng-src="app/assets/images/no-image-found.jpg"
-                                  style="width: 100%; height: 180px; border: dotted 1px black"
-                              /></a>
+                              <a href=""><img loading="lazy" data-ng-src="app/assets/images/no-image-found.jpg" style="width: 100%; height: 180px; border: dotted 1px black" /></a>
                             </div>
 
                             <div style="width: 100%">
                               <span class="text-primary" style="font-weight: 600; font-size: 14px">{{x.name}}</span>
-                              <span
-                                data-ng-if="isNewProduct(x)"
-                                style="color: red; font-weight: bolder"
-                                title="New Product"
-                                >NEW</span
-                              >
-                              <a
-                                class="pull-right"
-                                data-ng-if="x.image_url1 != ''"
-                                data-ng-click="downloadProductImage(x.id)"
-                                title="Download image"
-                                ><i class="fas fa-download"></i
-                              ></a>
-                              <a
-                                style="padding: 6px"
-                                id="btncs{{$index}}"
-                                data-ng-if="utilService.isMobileApp()"
-                                data-ng-click="shareCatalog(x)"
-                                data-ng-if="(utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_CATALOG_SHARE) == '1')"
-                              >
+                              <span data-ng-if="isNewProduct(x)" style="color: red; font-weight: bolder" title="New Product">NEW</span>
+                              <a class="pull-right" data-ng-if="x.image_url1 != ''" data-ng-click="downloadProductImage(x.id)" title="Download image"><i class="fas fa-download"></i></a>
+                              <a style="padding: 6px" id="btncs{{$index}}" data-ng-if="utilService.isMobileApp()" data-ng-click="shareCatalog(x)" data-ng-if="(utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_CATALOG_SHARE) == '1')">
                                 <i class="fas fa-share"></i>
                               </a>
                               <div class="row" style="width: 100%; margin: 10px 0">
                                 <div class="col-12 col-md-5" style="margin: 0 0 10px 0; padding: 0">
-                                  <span data-ng-if="false" style="float: right"
-                                    >{{x.selectedQuote UOM.unit_price}} / {{x.selectedQuoteUOM.name}}</span
-                                  >
-                                  <span style="width: 22px; display: inline-block; text-align: right"
-                                    ><i class="fas fa-rupee-sign"></i
-                                  ></span>
-                                  <input
-                                    type="number"
-                                    class="input-sm"
-                                    step="any"
-                                    size="3"
-                                    min="1"
-                                    data-ng-model="x.order_price"
-                                    style="width: 35px; padding: 0px; text-align: right; border: 1px solid #d1d3d4"
-                                    required="true"
-                                  />
+                                  <span data-ng-if="false" style="float: right">{{x.selectedQuote UOM.unit_price}} / {{x.selectedQuoteUOM.name}}</span>
+                                  <span style="width: 22px; display: inline-block; text-align: right"><i class="fas fa-rupee-sign"></i></span>
+                                  <input type="number" class="input-sm" step="any" size="3" min="1" data-ng-model="x.order_price" style="width: 35px; padding: 0px; text-align: right; border: 1px solid #d1d3d4" required="true" />
                                   /
                                   <select
                                     style="font-size: 12px"
@@ -361,9 +213,7 @@
                                     data-ng-change="updateQuotePrice(x)"
                                     data-ng-hide="x.is_quote_uom_restricted"
                                   ></select>
-                                  <span ng-show="x.is_quote_uom_restricted" style="font-size: 12px"
-                                    >{{x.selectedQuoteUOM.name}}
-                                  </span>
+                                  <span ng-show="x.is_quote_uom_restricted" style="font-size: 12px">{{x.selectedQuoteUOM.name}} </span>
                                 </div>
                                 <div class="col-12 col-md-7" style="margin: 0 0 10px 0; padding: 0">
                                   <span style="width: 35px; padding-left: 5px; font-size: 12px">Qty</span>
@@ -379,28 +229,11 @@
                                     required="true"
                                   />
                                   /
-                                  <select
-                                    style="font-size: 128x; border: 1px solid #d1d3d4"
-                                    ng-options="uom as uom.name for uom in x.uomlist track by uom.id"
-                                    ng-model="x.selectedUOM"
-                                    ng-hide="x.is_qty_uom_restricted"
-                                  ></select>
-                                  <span ng-show="x.is_qty_uom_restricted" style="font-size: 12px"
-                                    >{{x.selectedUOM.name}}
-                                  </span>
+                                  <select style="font-size: 128x; border: 1px solid #d1d3d4" ng-options="uom as uom.name for uom in x.uomlist track by uom.id" ng-model="x.selectedUOM" ng-hide="x.is_qty_uom_restricted"></select>
+                                  <span ng-show="x.is_qty_uom_restricted" style="font-size: 12px">{{x.selectedUOM.name}} </span>
 
-                                  <span
-                                    class="listPageActionIcons listPageActionGreen"
-                                    data-ng-click="product_to_order(customerid, x)"
-                                    data-ng-disabled="myforms{{$index}}.$invalid"
-                                    ><i class="fas fa-plus"></i
-                                  ></span>
-                                  <span
-                                    class="listPageActionIcons listPageActionIconsRed"
-                                    data-ng-click="removeProductFromCart(x)"
-                                    data-ng-if="x.added_flag == 1"
-                                    ><i class="fas fa-trash"></i
-                                  ></span>
+                                  <span class="listPageActionIcons listPageActionGreen" data-ng-click="product_to_order(customerid, x)" data-ng-disabled="myforms{{$index}}.$invalid"><i class="fas fa-plus"></i></span>
+                                  <span class="listPageActionIcons listPageActionIconsRed" data-ng-click="removeProductFromCart(x)" data-ng-if="x.added_flag == 1"><i class="fas fa-trash"></i></span>
                                 </div>
                               </div>
                             </div>
@@ -412,66 +245,33 @@
 
                     <!-- </div> -->
                   </div>
-                  <div
-                    class="tab-pane fade"
-                    id="pills-{{x.code}}"
-                    role="tabpanel"
-                    aria-labelledby="pills-{{x.code}}-tab"
-                    data-ng-repeat="x in categorylist"
-                    data-ng-if="x.id!=categorylist[0].id"
-                  >
+                  <div class="tab-pane fade" id="pills-{{x.code}}" role="tabpanel" aria-labelledby="pills-{{x.code}}-tab" data-ng-repeat="x in categorylist" data-ng-if="x.id!=categorylist[0].id">
                     <!-- Sub Category view -->
-                    <div
-                      data-ng-repeat="x in subcategorylist"
-                      style="display: flex; font-family: sans-serif;"
-                    >
+                    <div data-ng-repeat="y in x.children" style="display: flex; font-family: sans-serif">
                       <!-- Start -->
-                      <div
-                        style="
-                          height: 360px;
-                          width: 100vw;
-                          border: 4px solid rgb(116, 204, 231);
-                          box-shadow: 0 0 4px 1px rgb(165, 161, 161);
-                          margin: 5px 0px;
-                          border-radius: 10px;
-                        "
-                      >
-                        <div
-                          style="
-                            display: flex;
-                            flex-direction: row;
-                            align-content: center;
-                            justify-content: space-between;
-                          "
-                        >
+                      <div style="height: 420px; width: 100vw; border: 4px solid rgb(116, 204, 231); box-shadow: 0 0 4px 1px rgb(165, 161, 161); margin: 5px 0px; border-radius: 10px; ">
+                        <div style="display: flex; flex-direction: row; align-content: center; justify-content: space-between">
                           <div style="margin: 2px">
-                            <a data-ng-click="showSubItems2(x.id)" class="pro-title" style="color: #6597d8"
-                              ><h3>{{x.code}}</h3></a
+                            <a data-ng-click="showSubItems2(y.id)" class="pro-title" style="color: #6597d8"
+                              ><h3><strong>{{y.code}}</strong></h3></a
                             >
                           </div>
                           <div style="margin: 7px">
-                            <button type="button" class="btn btn-success" data-ng-click="showSubItems1(x.id)">
-                              See More
-                            </button>
+                            <button type="button" class="btn btn-success" data-ng-click="showSubItems1(y.id)">See More</button>
                           </div>
                         </div>
 
                         <!-- Products view in sub categories -->
-                        <div style="display: block" >
-                          <div class="card-body" style="border: 1px solid yellow; padding: 0px 8px">
+                        <div style="height: 360px; width: 100%;overflow: auto;">
+                          <div class="card-body" style="padding: 4px;">
                             <div class="row" id="productlist">
-                              <div
-                                class="col-6 col-md-3"
-                                style="margin-top: 30px"
-                                data-ng-repeat="x in productlist"
-                                class="item1"
-                              >
+                              <div class="col-6 col-md-3" style="margin-top: 30px" data-ng-repeat="x in subCatProductsMap[y.id]" class="item1">
                                 <form
                                   class="form-inline"
                                   style="
                                     box-shadow: 0 0 4px 1px #aaa;
                                     border-radius: 3px;
-                                    overflow: hidden;
+
                                     padding: 5px;
                                   "
                                   id="myforms{{$index}}"
@@ -489,31 +289,13 @@
                                   </div>
 
                                   <div data-ng-if="x.image_url1 == ''">
-                                    <a href=""
-                                      ><img
-                                        loading="lazy"
-                                        data-ng-src="app/assets/images/no-image-found.jpg"
-                                        style="width: 100%; height: 180px; border: dotted 1px black"
-                                    /></a>
+                                    <a href=""><img loading="lazy" data-ng-src="app/assets/images/no-image-found.jpg" style="width: 100%; height: 180px; border: dotted 1px black" /></a>
                                   </div>
 
                                   <div style="width: 100%">
-                                    <span class="text-primary" style="font-weight: 600; font-size: 14px"
-                                      >{{x.name}}</span
-                                    >
-                                    <span
-                                      data-ng-if="isNewProduct(x)"
-                                      style="color: red; font-weight: bolder"
-                                      title="New Product"
-                                      >NEW</span
-                                    >
-                                    <a
-                                      class="pull-right"
-                                      data-ng-if="x.image_url1 != ''"
-                                      data-ng-click="downloadProductImage(x.id)"
-                                      title="Download image"
-                                      ><i class="fas fa-download"></i
-                                    ></a>
+                                    <span class="text-primary" style="font-weight: 600; font-size: 14px">{{x.name}}</span>
+                                    <span data-ng-if="isNewProduct(x)" style="color: red; font-weight: bolder" title="New Product">NEW</span>
+                                    <a class="pull-right" data-ng-if="x.image_url1 != ''" data-ng-click="downloadProductImage(x.id)" title="Download image"><i class="fas fa-download"></i></a>
                                     <a
                                       style="padding: 6px"
                                       id="btncs{{$index}}"
@@ -525,27 +307,9 @@
                                     </a>
                                     <div class="row" style="width: 100%; margin: 10px 0">
                                       <div class="col-12 col-md-5" style="margin: 0 0 10px 0; padding: 0">
-                                        <span data-ng-if="false" style="float: right"
-                                          >{{x.selectedQuote UOM.unit_price}} / {{x.selectedQuoteUOM.name}}</span
-                                        >
-                                        <span style="width: 22px; display: inline-block; text-align: right"
-                                          ><i class="fas fa-rupee-sign"></i
-                                        ></span>
-                                        <input
-                                          type="number"
-                                          class="input-sm"
-                                          step="any"
-                                          size="3"
-                                          min="1"
-                                          data-ng-model="x.order_price"
-                                          style="
-                                            width: 35px;
-                                            padding: 0px;
-                                            text-align: right;
-                                            border: 1px solid #d1d3d4;
-                                          "
-                                          required="true"
-                                        />
+                                        <span data-ng-if="false" style="float: right">{{x.selectedQuote UOM.unit_price}} / {{x.selectedQuoteUOM.name}}</span>
+                                        <span style="width: 22px; display: inline-block; text-align: right"><i class="fas fa-rupee-sign"></i></span>
+                                        <input type="number" class="input-sm" step="any" size="3" min="1" data-ng-model="x.order_price" style="width: 35px; padding: 0px; text-align: right; border: 1px solid #d1d3d4" required="true" />
                                         /
                                         <select
                                           style="font-size: 12px"
@@ -555,9 +319,7 @@
                                           data-ng-change="updateQuotePrice(x)"
                                           data-ng-hide="x.is_quote_uom_restricted"
                                         ></select>
-                                        <span ng-show="x.is_quote_uom_restricted" style="font-size: 12px"
-                                          >{{x.selectedQuoteUOM.name}}
-                                        </span>
+                                        <span ng-show="x.is_quote_uom_restricted" style="font-size: 12px">{{x.selectedQuoteUOM.name}} </span>
                                       </div>
                                       <div class="col-12 col-md-7" style="margin: 0 0 10px 0; padding: 0">
                                         <span style="width: 35px; padding-left: 5px; font-size: 12px">Qty</span>
@@ -569,37 +331,15 @@
                                           size="5"
                                           data-ng-model="x.orderqty"
                                           data-ng-init="x.orderqty=x.default_sell_qty"
-                                          style="
-                                            width: 35px;
-                                            padding: 0px;
-                                            text-align: right;
-                                            border: 1px solid #d1d3d4;
-                                          "
+                                          style="width: 35px; padding: 0px; text-align: right; border: 1px solid #d1d3d4"
                                           required="true"
                                         />
                                         /
-                                        <select
-                                          style="font-size: 128x; border: 1px solid #d1d3d4"
-                                          ng-options="uom as uom.name for uom in x.uomlist track by uom.id"
-                                          ng-model="x.selectedUOM"
-                                          ng-hide="x.is_qty_uom_restricted"
-                                        ></select>
-                                        <span ng-show="x.is_qty_uom_restricted" style="font-size: 12px"
-                                          >{{x.selectedUOM.name}}
-                                        </span>
+                                        <select style="font-size: 128x; border: 1px solid #d1d3d4" ng-options="uom as uom.name for uom in x.uomlist track by uom.id" ng-model="x.selectedUOM" ng-hide="x.is_qty_uom_restricted"></select>
+                                        <span ng-show="x.is_qty_uom_restricted" style="font-size: 12px">{{x.selectedUOM.name}} </span>
 
-                                        <span
-                                          class="listPageActionIcons listPageActionGreen"
-                                          data-ng-click="product_to_order(customerid, x)"
-                                          data-ng-disabled="myforms{{$index}}.$invalid"
-                                          ><i class="fas fa-plus"></i
-                                        ></span>
-                                        <span
-                                          class="listPageActionIcons listPageActionIconsRed"
-                                          data-ng-click="removeProductFromCart(x)"
-                                          data-ng-if="x.added_flag == 1"
-                                          ><i class="fas fa-trash"></i
-                                        ></span>
+                                        <span class="listPageActionIcons listPageActionGreen" data-ng-click="product_to_order(customerid, x)" data-ng-disabled="myforms{{$index}}.$invalid"><i class="fas fa-plus"></i></span>
+                                        <span class="listPageActionIcons listPageActionIconsRed" data-ng-click="removeProductFromCart(x)" data-ng-if="x.added_flag == 1"><i class="fas fa-trash"></i></span>
                                       </div>
                                     </div>
                                   </div>
@@ -616,18 +356,8 @@
                     <!-- Products View -->
                     <div class="card-body" style="border: 1px solid yellow; padding: 0px 8px">
                       <div class="row" id="productlist">
-                        <div
-                          class="col-6 col-md-3"
-                          style="margin-top: 30px"
-                          data-ng-repeat="x in productlist"
-                          class="item1"
-                        >
-                          <form
-                            class="form-inline"
-                            style="box-shadow: 0 0 4px 1px #aaa; border-radius: 3px; overflow: hidden; padding: 5px"
-                            id="myforms{{$index}}"
-                            name="myforms{{$index}}"
-                          >
+                        <div class="col-6 col-md-3" style="margin-top: 30px" data-ng-repeat="x in productlist" class="item1">
+                          <form class="form-inline" style="box-shadow: 0 0 4px 1px #aaa; border-radius: 3px; overflow: hidden; padding: 5px" id="myforms{{$index}}" name="myforms{{$index}}">
                             <div data-ng-if="x.image_url1 != ''" class="image-item">
                               <a href=""
                                 ><img
@@ -640,56 +370,21 @@
                             </div>
 
                             <div data-ng-if="x.image_url1 == ''">
-                              <a href=""
-                                ><img
-                                  loading="lazy"
-                                  data-ng-src="app/assets/images/no-image-found.jpg"
-                                  style="width: 100%; height: 180px; border: dotted 1px black"
-                              /></a>
+                              <a href=""><img loading="lazy" data-ng-src="app/assets/images/no-image-found.jpg" style="width: 100%; height: 180px; border: dotted 1px black" /></a>
                             </div>
 
                             <div style="width: 100%">
                               <span class="text-primary" style="font-weight: 600; font-size: 14px">{{x.name}}</span>
-                              <span
-                                data-ng-if="isNewProduct(x)"
-                                style="color: red; font-weight: bolder"
-                                title="New Product"
-                                >NEW</span
-                              >
-                              <a
-                                class="pull-right"
-                                data-ng-if="x.image_url1 != ''"
-                                data-ng-click="downloadProductImage(x.id)"
-                                title="Download image"
-                                ><i class="fas fa-download"></i
-                              ></a>
-                              <a
-                                style="padding: 6px"
-                                id="btncs{{$index}}"
-                                data-ng-if="utilService.isMobileApp()"
-                                data-ng-click="shareCatalog(x)"
-                                data-ng-if="(utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_CATALOG_SHARE) == '1')"
-                              >
+                              <span data-ng-if="isNewProduct(x)" style="color: red; font-weight: bolder" title="New Product">NEW</span>
+                              <a class="pull-right" data-ng-if="x.image_url1 != ''" data-ng-click="downloadProductImage(x.id)" title="Download image"><i class="fas fa-download"></i></a>
+                              <a style="padding: 6px" id="btncs{{$index}}" data-ng-if="utilService.isMobileApp()" data-ng-click="shareCatalog(x)" data-ng-if="(utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_CATALOG_SHARE) == '1')">
                                 <i class="fas fa-share"></i>
                               </a>
                               <div class="row" style="width: 100%; margin: 10px 0">
                                 <div class="col-12 col-md-5" style="margin: 0 0 10px 0; padding: 0">
-                                  <span data-ng-if="false" style="float: right"
-                                    >{{x.selectedQuote UOM.unit_price}} / {{x.selectedQuoteUOM.name}}</span
-                                  >
-                                  <span style="width: 22px; display: inline-block; text-align: right"
-                                    ><i class="fas fa-rupee-sign"></i
-                                  ></span>
-                                  <input
-                                    type="number"
-                                    class="input-sm"
-                                    step="any"
-                                    size="3"
-                                    min="1"
-                                    data-ng-model="x.order_price"
-                                    style="width: 35px; padding: 0px; text-align: right; border: 1px solid #d1d3d4"
-                                    required="true"
-                                  />
+                                  <span data-ng-if="false" style="float: right">{{x.selectedQuote UOM.unit_price}} / {{x.selectedQuoteUOM.name}}</span>
+                                  <span style="width: 22px; display: inline-block; text-align: right"><i class="fas fa-rupee-sign"></i></span>
+                                  <input type="number" class="input-sm" step="any" size="3" min="1" data-ng-model="x.order_price" style="width: 35px; padding: 0px; text-align: right; border: 1px solid #d1d3d4" required="true" />
                                   /
                                   <select
                                     style="font-size: 12px"
@@ -699,9 +394,7 @@
                                     data-ng-change="updateQuotePrice(x)"
                                     data-ng-hide="x.is_quote_uom_restricted"
                                   ></select>
-                                  <span ng-show="x.is_quote_uom_restricted" style="font-size: 12px"
-                                    >{{x.selectedQuoteUOM.name}}
-                                  </span>
+                                  <span ng-show="x.is_quote_uom_restricted" style="font-size: 12px">{{x.selectedQuoteUOM.name}} </span>
                                 </div>
                                 <div class="col-12 col-md-7" style="margin: 0 0 10px 0; padding: 0">
                                   <span style="width: 35px; padding-left: 5px; font-size: 12px">Qty</span>
@@ -717,28 +410,11 @@
                                     required="true"
                                   />
                                   /
-                                  <select
-                                    style="font-size: 128x; border: 1px solid #d1d3d4"
-                                    ng-options="uom as uom.name for uom in x.uomlist track by uom.id"
-                                    ng-model="x.selectedUOM"
-                                    ng-hide="x.is_qty_uom_restricted"
-                                  ></select>
-                                  <span ng-show="x.is_qty_uom_restricted" style="font-size: 12px"
-                                    >{{x.selectedUOM.name}}
-                                  </span>
+                                  <select style="font-size: 128x; border: 1px solid #d1d3d4" ng-options="uom as uom.name for uom in x.uomlist track by uom.id" ng-model="x.selectedUOM" ng-hide="x.is_qty_uom_restricted"></select>
+                                  <span ng-show="x.is_qty_uom_restricted" style="font-size: 12px">{{x.selectedUOM.name}} </span>
 
-                                  <span
-                                    class="listPageActionIcons listPageActionGreen"
-                                    data-ng-click="product_to_order(customerid, x)"
-                                    data-ng-disabled="myforms{{$index}}.$invalid"
-                                    ><i class="fas fa-plus"></i
-                                  ></span>
-                                  <span
-                                    class="listPageActionIcons listPageActionIconsRed"
-                                    data-ng-click="removeProductFromCart(x)"
-                                    data-ng-if="x.added_flag == 1"
-                                    ><i class="fas fa-trash"></i
-                                  ></span>
+                                  <span class="listPageActionIcons listPageActionGreen" data-ng-click="product_to_order(customerid, x)" data-ng-disabled="myforms{{$index}}.$invalid"><i class="fas fa-plus"></i></span>
+                                  <span class="listPageActionIcons listPageActionIconsRed" data-ng-click="removeProductFromCart(x)" data-ng-if="x.added_flag == 1"><i class="fas fa-trash"></i></span>
                                 </div>
                               </div>
                             </div>
@@ -769,29 +445,14 @@
                 <div class="col-xs-3 col-sm-3" style="padding: 0px">{{title}}</div>
                 <div class="col-xs-9 col-sm-9 pull-right">
                   <div class="text-right col-xs-6 col-sm-6 col-md-3" data-ng-controller="ordercontroller">
-                    <button
-                      class="btn btn-primary"
-                      data-ng-click="displayQuickOrderForm()"
-                      data-ng-if="displayQuickOrderButton()"
-                    >
-                      Shop by Quick Order
-                    </button>
+                    <button class="btn btn-primary" data-ng-click="displayQuickOrderForm()" data-ng-if="displayQuickOrderButton()">Shop by Quick Order</button>
                   </div>
                   <div class="text-right hidden-xs hidden-sm col-xs-3 col-md-3">
-                    <input
-                      type="text"
-                      placeholder="Search"
-                      class="form-control"
-                      data-ng-model="searchText"
-                      ng-keypress="product_search($event,searchText)"
-                    />
+                    <input type="text" placeholder="Search" class="form-control" data-ng-model="searchText" ng-keypress="product_search($event,searchText)" />
                   </div>
                   <div class="col-xs-12 col-sm-12 col-md-6 pull-right" data-ng-controller="ordercontroller">
                     <a ng-click="checkoutForm()"
-                      ><img loading="lazy" src="app/assets/images/bag.png" alt="" style="width: 15px; height: 15px" />
-                      <span id="simpleCart_quantity" class="simpleCart_quantity"
-                        ><small>({{itemcount}})</small></span
-                      ></a
+                      ><img loading="lazy" src="app/assets/images/bag.png" alt="" style="width: 15px; height: 15px" /> <span id="simpleCart_quantity" class="simpleCart_quantity"><small>({{itemcount}})</small></span></a
                     >
                     <!--<a href="javascript:;" data-ng-click="emptyCart();" class="simpleCart_empty"><small>Empty</small></a>-->
                   </div>
@@ -804,14 +465,7 @@
         <section class="panel hidden-md hidden-lg">
           <div class="panel-body">
             <div class="col-sm-12 pull-left">
-              <input
-                type="text"
-                style="width: 100%"
-                placeholder="Search"
-                class="form-control"
-                data-ng-model="searchText"
-                ng-keypress="product_search($event, searchText)"
-              />
+              <input type="text" style="width: 100%" placeholder="Search" class="form-control" data-ng-model="searchText" ng-keypress="product_search($event, searchText)" />
             </div>
           </div>
         </section>
@@ -820,20 +474,9 @@
             <section class="panel">
               <div class="pro-img-box">
                 <a data-ng-click="showSubItems2(x.id)" data-ng-if="x.image_url == null || x.image_url == ''"
-                  ><img
-                    loading="lazy"
-                    class="img-responsive"
-                    style="width: 100%; height: 200px"
-                    data-ng-src="app/assets/images/no-image-found.jpg"
-                    alt=" "
+                  ><img loading="lazy" class="img-responsive" style="width: 100%; height: 200px" data-ng-src="app/assets/images/no-image-found.jpg" alt=" "
                 /></a>
-                <a data-ng-click="showSubItems2(x.id)" data-ng-if="x.image_url != null && x.image_url != ''"
-                  ><img
-                    loading="lazy"
-                    class="img-responsive"
-                    style="width: 100%; height: 200px"
-                    data-ng-src="{{x.image_url}}"
-                /></a>
+                <a data-ng-click="showSubItems2(x.id)" data-ng-if="x.image_url != null && x.image_url != ''"><img loading="lazy" class="img-responsive" style="width: 100%; height: 200px" data-ng-src="{{x.image_url}}" /></a>
                 <!--<a href="#" class="adtocart">-->
                 <!--<i class="fas fa-shopping-cart"></i>-->
                 <!--</a>-->

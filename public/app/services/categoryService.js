@@ -58,12 +58,37 @@ app.service('categoryService', function($http, utilService) {
                	
                	});
 	};
+	this.buildCategoryTreeFromList = function (categorylist) {
+		let temp_categoryList = [];
+		let temp_categoryHash = {};
+		for (let i = 0; i < categorylist.length; i++) {
 
-	this.getCategoriesByLineage = function(parentid, products_only, enabled_only, callback) {
+			categorylist[i].children = [];
 
+			temp_categoryHash[categorylist[i].id] = categorylist[i];
+
+//			if (categorylist[i].lineage.length - utilService.replaceAll(categorylist[i].lineage, "|", "").length == 2) {
+			if (!categorylist[i].parent_id) {
+				temp_categoryList.push(categorylist[i]);
+				continue;
+			}
+
+			if (categorylist[i].parent_id && categorylist[i].parent_id in temp_categoryHash) {
+				temp_categoryHash[categorylist[i].parent_id].children.push(categorylist[i]);
+				// console.log("Temp category list "+temp_categoryHash[categorylist[i].parent_id].children);
+			}
+		}
+		return temp_categoryList;
+
+	};
+
+	this.getCategoriesByLineage = function(parentid, products_only, enabled_only, level_count, callback) {
 				
 		let url = "";
 		url = "/api/categories/?lineage=" + (parentid ? parentid : "*");
+
+		if(level_count)
+			url = url + "&level_count=" + level_count;
 
 		if(products_only)
 			url = url + "&productsonly=1";
@@ -72,6 +97,7 @@ app.service('categoryService', function($http, utilService) {
 			url = url + "&enabled_only=1";
 
 		// call API
+
  		$http.get(utilService.getBaseURL() + url).success(
 					function (response, status, headers) {
 						if (status == 200 && response.statuscode == "0") {
@@ -104,6 +130,7 @@ app.service('categoryService', function($http, utilService) {
                	
                	});
 	};
+
 
 	this.getCategory = function(id,  callback) {
 
