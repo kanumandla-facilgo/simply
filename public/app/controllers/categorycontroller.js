@@ -1,7 +1,7 @@
 app.controller('categorycontroller', function ($scope, $http, $location, $filter, categoryService, productService, utilService, masterService, $routeParams, $rootScope, $route, hotkeys, flash) {
 
 	$scope.utilService = utilService;
-	vsubCatProductsMap = {};
+	
     //get products
 	var getProducts = function(categoryid) {
 
@@ -12,7 +12,7 @@ app.controller('categorycontroller', function ($scope, $http, $location, $filter
 	   $scope.subCatProductsMap = {}
 		 productService.getProducts(categoryid, undefined, options, function(response) {
 			 if (response.statuscode == 0 && response.data && response.data.productlist) {
-	
+	       
 				$scope.subCatProductsMap[categoryid] = response.data.productlist;
 		
 			 }
@@ -531,6 +531,18 @@ app.controller('categorycontroller', function ($scope, $http, $location, $filter
 		  else if (response.statuscode === -100)  {
 
 			  $location.path("/Login/");
+		  }else{
+			$scope.subCatProductsMap = {};
+			console.log("New code", JSON.stringify($scope.categorylist.length,null, '\t\t\t'));
+			for(let i=0; i<$scope.categorylist.length; i++){
+				if($scope.categorylist[i].id == id){
+					console.log("Outer for loop in Show cat ",$scope.categorylist[i].id);
+					for(let j= 0; i<$scope.categorylist[i].children.length; j++){
+						console.log("Inner loop in ShowsubCategories function", JSON.stringify($scope.categorylist[i].children[j].id,null,'\t\t\t'))
+						getProducts($scope.categorylist[i].children[j].id);
+					}			
+				}
+			}
 		  }
 
 	  });
@@ -691,13 +703,13 @@ app.controller('categorycontroller', function ($scope, $http, $location, $filter
 		// add the Root category into the tree manually
 		categorylist.unshift({id:parseInt(categorylist[0].parent_id), name:"Root"});
 		let temp_categoryList = categoryService.buildCategoryTreeFromList(categorylist);
-		for (let i = 0; i < temp_categoryList[0].children.length; i++) {
-			if (temp_categoryList[0].children[i].is_leaf == 0) {
-				for(let j = 0; j < temp_categoryList[0].children[i].children.length; j++){
-					getProducts(temp_categoryList[0].children[i].children[j].id);
-			}
-			}
-		}
+		// for (let i = 0; i < temp_categoryList[0].children.length; i++) {
+		// 	if (temp_categoryList[0].children[i].is_leaf == 0) {
+		// 		for(let j = 0; j < temp_categoryList[0].children[i].children.length; j++){
+		// 			getProducts(temp_categoryList[0].children[i].children[j].id);
+		// 	}
+		// 	}
+		// }
 
 		$scope.categorylist = temp_categoryList[0].children;
 		console.log("$scope.categorylist[0].is_leaf",$scope.categorylist[0].is_leaf);

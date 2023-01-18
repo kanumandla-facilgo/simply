@@ -92,10 +92,10 @@
                           </div>
                         </div>
                         <!-- Products view in sub categories -->
-                        <div style="height: 360px; width: 100%;overflow: auto;">
+                        <div style="height: 360px; overflow: auto; display:block">
                           <div class="card-body" style="padding: 0px 8px;margin-bottom: 5px;">
-                            <div class="row" id="productlist">
-                              <div class="col-6 col-md-3" style="margin-top: 20px;" data-ng-repeat="x in subCatProductsMap[y.id]" class="item1">
+                            <div class="row"  id="productlist">
+                              <div class="col-6 col-md-3" style="margin-top: 20px;display:block;" data-ng-repeat="x in subCatProductsMap[y.id]" class="item1">
                                 <form class="form-inline" style="height:300px;box-shadow: 0 0 4px 1px #aaa; border-radius: 3px; overflow: hidden; padding: 5px" id="myforms{{$index}}" name="myforms{{$index}}">
                                   <div data-ng-if="x.image_url1 != ''" class="image-item" style="height: 70%;overflow: hidden;">
                                     <a href=""
@@ -263,10 +263,10 @@
                         </div>
 
                         <!-- Products view in sub categories -->
-                        <div style="height: 360px; width: 100%;overflow-x: auto;">
+                        <div style="height: 360px; display:block; overflow-x: auto;">
                           <div class="card-body" style="padding: 0px 8px;margin-bottom: 5px;">
-                            <div class="row" id="productlist">
-                              <div class="col-6 col-md-3" style="margin-top: 20px; " data-ng-repeat="x in subCatProductsMap[y.id]" class="item1">
+                            <div class="row"  id="productlist">
+                              <div class="col-6 col-md-3" style="margin-top: 20px;display:block; " data-ng-repeat="x in subCatProductsMap[y.id]" class="item1">
                                 <form
                                   class="form-inline"
                                   style="
