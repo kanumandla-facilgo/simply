@@ -3,7 +3,7 @@ app.controller('categorycontroller', function ($scope, $http, $location, $filter
 	$scope.utilService = utilService;
 	vsubCatProductsMap = {};
     //get products
-	var getProducts = function(categoryid, category) {
+	var getProducts = function(categoryid) {
 
 		let options = {};
 	   options.enabled_only = 1;
@@ -20,7 +20,22 @@ app.controller('categorycontroller', function ($scope, $http, $location, $filter
 		 
 	 }
 
+	 var getProducts1 = function(categoryid) {
 
+		let options = {};
+	   options.enabled_only = 1;
+	   options.is_hidden_no_stock = 1;
+	   options.is_new_product_show_days = utilService.getNewProductShowXDays();
+	   $scope.subCatProductsMap = {}
+		 productService.getProducts(categoryid, undefined, options, function(response) {
+			 if (response.statuscode == 0 && response.data && response.data.productlist) {
+	
+				$scope.productlist = response.data.productlist;
+		
+			 }
+		 });
+		 
+	 }
 	//get categories
 	$scope.searchCategory = function() {
   
@@ -517,40 +532,14 @@ app.controller('categorycontroller', function ($scope, $http, $location, $filter
 
 			  $location.path("/Login/");
 		  }
-		  else {
-	
-			  var flag = (para && para.enabled_flag && para.enabled_flag == 1 ? 1 : 0);
-			  var parentid = id;
-			  $scope.customerid = $routeParams.customerid;
-			  $scope.orderid = $routeParams.orderid;
-	
-			  withproductsonly = 0; // when new category is created, it gets hidden from prev statement
-			  categoryService.getCategories(parentid, null, withproductsonly, flag, null, 0, function(response) {
-				  if (response.statuscode == 0) {
-  
-					  if (response.data && response.data.categorylist) {
-						  $scope.subcategorylist     = response.data.categorylist;
-	
-						  for(let i=0; i<$scope.subcategorylist.length;i++){
-							$scope.products($scope.subcategorylist[i].id);
-							$scope.subcategorylist[i].children=$scope.subCatProductslist;
-						  }
-					  }
-  
-				  }
-				  else if (response.statuscode === -100)  {
-					  $location.path("/Login/");
-				  }
-				  else {
-					  flash.pop({title: "", body: response.message, type: "error"});
-				  }
-			  });
-			  
-		  }
 
 	  });
 	  
    };
+
+   $scope.showSubCatOrProducts = function (id){
+	
+   }
   
    $scope.showAddProductForm = function () {
 		  $location.path("/AddProduct/" + ($scope.categoryid ? $scope.categoryid : ""));
@@ -705,12 +694,17 @@ app.controller('categorycontroller', function ($scope, $http, $location, $filter
 		for (let i = 0; i < temp_categoryList[0].children.length; i++) {
 			if (temp_categoryList[0].children[i].is_leaf == 0) {
 				for(let j = 0; j < temp_categoryList[0].children[i].children.length; j++){
-					getProducts(temp_categoryList[0].children[i].children[j].id, temp_categoryList[0].children[i].children[j]);
+					getProducts(temp_categoryList[0].children[i].children[j].id);
 			}
 			}
 		}
 
 		$scope.categorylist = temp_categoryList[0].children;
+		console.log("$scope.categorylist[0].is_leaf",$scope.categorylist[0].is_leaf);
+		console.log("$scope.categorylist[0].code",$scope.categorylist[0].code);
+		if($scope.categorylist[0].is_leaf)
+			getProducts1($scope.categorylist[0].id);
+
 	});
 }
   else if ($rootScope.title == "Home1") {
