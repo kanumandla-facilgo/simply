@@ -28,6 +28,7 @@
     "nodemailer": "^4.0.1",
     "nunjucks": "^3.2.2",
     "qrcode": "^1.5.0",
+    "slick-carousel": "^1.8.1",
     "socket.io": "^2.4.1",
     "underscore": "~1.8.3",
     "wkhtmltopdf": "^0.3.3",

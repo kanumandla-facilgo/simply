@@ -1,4 +1,4 @@
-var app = angular.module('shopApp',['ngRoute', 'ui.bootstrap', 'angularModalService', 'cfp.hotkeys', 'ngCookies']);
+var app = angular.module('shopApp',['ngRoute', 'ui.bootstrap', 'angularModalService', 'cfp.hotkeys', 'ngCookies', 'slickCarousel']);
 
 angular.element(document).ready(function () {
   if(window.cordova)
@@ -617,6 +617,11 @@ app.config(function(hotkeysProvider) {
   hotkeysProvider.includeCheatSheet = false;
 });
 
+app.config(['slickCarouselConfig', function (slickCarouselConfig) {
+  slickCarouselConfig.dots = true;
+  slickCarouselConfig.arrows= true;
+  slickCarouselConfig.autoplay = false;
+}]);
 
 app.run(['$location', '$rootScope', function($location, $rootScope) {
     $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {

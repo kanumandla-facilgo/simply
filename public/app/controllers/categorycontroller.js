@@ -12,9 +12,7 @@ app.controller('categorycontroller', function ($scope, $http, $location, $filter
 	   $scope.subCatProductsMap = {}
 		 productService.getProducts(categoryid, undefined, options, function(response) {
 			 if (response.statuscode == 0 && response.data && response.data.productlist) {
-	       
 				$scope.subCatProductsMap[categoryid] = response.data.productlist;
-		
 			 }
 		 });
 		 
@@ -540,7 +538,8 @@ app.controller('categorycontroller', function ($scope, $http, $location, $filter
 					for(let j= 0; i<$scope.categorylist[i].children.length; j++){
 						console.log("Inner loop in ShowsubCategories function", JSON.stringify($scope.categorylist[i].children[j].id,null,'\t\t\t'))
 						getProducts($scope.categorylist[i].children[j].id);
-					}			
+					}	
+					return		
 				}
 			}
 		  }
@@ -655,6 +654,136 @@ app.controller('categorycontroller', function ($scope, $http, $location, $filter
 	  }
   
    }
+
+$scope.slickConfig3Loaded = true;
+$scope.slickConfigCategory = {
+  method: {
+	
+  },
+  dots: true,
+//   prevArrow: '<button class="slide-arrow prev-arrow"></button>',
+//   nextArrow: '<button class="slide-arrow next-arrow"></button>',
+  infinite: false,
+  speed: 300,
+  slidesToShow: 8,
+  slidesToScroll: 8,
+  variableWidth: true,
+  responsive: [
+	{
+	  breakpoint: 2160,
+      settings: {
+		// prevArrow: '<button class="slide-arrow prev-arrow"></button>',
+  		// nextArrow: '<button class="slide-arrow next-arrow"></button>',
+		arrows: true,
+        slidesToShow: 4,
+        slidesToScroll: 4,
+        infinite: true,
+        dots: true,
+		variableWidth: true,
+      }
+	},
+    {
+      breakpoint: 1366,
+      settings: {
+		// prevArrow: '<button class="slide-arrow prev-arrow"></button>',
+  		// nextArrow: '<button class="slide-arrow next-arrow"></button>',
+		arrows: true,
+        slidesToShow: 4,
+        slidesToScroll: 4,
+        infinite: true,
+        dots: true,
+		variableWidth: true
+      }
+    },
+    {
+      breakpoint: 1024,
+      settings: {
+		// prevArrow: '<button class="slide-arrow prev-arrow"></button>',
+  		// nextArrow: '<button class="slide-arrow next-arrow"></button>',
+		arrows: true,
+        slidesToShow: 6,
+        slidesToScroll: 6,
+        infinite: true,
+        dots: true,
+		variableWidth: true
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+		// prevArrow: '<button class="slide-arrow prev-arrow"></button>',
+  		// nextArrow: '<button class="slide-arrow next-arrow"></button>',
+		arrows: true,
+        slidesToShow: 4,
+        slidesToScroll: 4,
+		variableWidth: true
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+		// prevArrow: '<button class="slide-arrow prev-arrow"></button>',
+  		// nextArrow: '<button class="slide-arrow next-arrow"></button>',
+        slidesToShow: 3,
+        slidesToScroll: 3,
+		variableWidth: true
+      }
+    }
+  ]
+};
+
+// angular.element(document).ready($scope.slickConfigCategory());
+$scope.number = [{label: 1}, {label: 2}, {label: 3}, {label: 4}, {label: 5}, {label: 6}, {label: 7}, {label: 8}];
+$scope.numberLoaded = true;
+$scope.numberUpdate = function(){
+	$scope.numberLoaded = false; // disable slick
+
+	//number update
+
+	$scope.numberLoaded = true; // enable slick
+};
+$scope.slickConfigProduct = {
+  method: {},
+  dots: true,
+  infinite: false,
+  speed: 300,
+  slidesToShow: 6,
+  slidesToScroll: 6,
+  responsive: [
+    {
+      breakpoint: 1366,
+      settings: {
+        slidesToShow: 4,
+        slidesToScroll: 4,
+        infinite: true,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 4,
+        slidesToScroll: 4,
+        infinite: true,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2
+      }
+    }
+  ]
+};
   
    if ($rootScope.title === "Categories" || $rootScope.title === "Sub Categories" || $rootScope.title === "Stock") {
 	  var para = $rootScope.parameters;
@@ -716,6 +845,8 @@ app.controller('categorycontroller', function ($scope, $http, $location, $filter
 		console.log("$scope.categorylist[0].code",$scope.categorylist[0].code);
 		if($scope.categorylist[0].is_leaf)
 			getProducts1($scope.categorylist[0].id);
+		else
+			$scope.showSubItems2($scope.categorylist[0].id);
 
 	});
 }
