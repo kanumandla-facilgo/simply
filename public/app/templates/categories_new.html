@@ -46,35 +46,35 @@
                 <slick settings="slickConfigCategory" style="width: 100%" data-ng-if="categorylist">
                   <div class="nav nav-pills mb-1 mt-1" role="tablist" aria-label="Basic radio toggle button group" id="pills-tab" data-ng-repeat="x in categorylist">
                     <span class="nav-item m-1" role="presentation">
-                      <button
-                        class="btn btn-outline-primary mr-2 active"
-                        id="pills-{{x.code}}-tab"
-                        data-bs-toggle="pill"
-                        data-bs-target="#pills-{{x.code}}"
-                        type="button"
-                        role="tab"
-                        aria-controls="pills-{{x.code}}"
-                        aria-selected="true"
-                        data-ng-if="x.id === categorylist[0].id"
-                        data-ng-click="showSubItems2(x.id)"
-                      >
-                        {{x.code}}
-                      </button>
-                      <button
-                        class="btn btn-outline-primary mr-2"
-                        id="pills-{{x.code}}-tab"
-                        data-bs-toggle="pill"
-                        data-bs-target="#pills-{{x.code}}"
-                        type="button"
-                        role="tab"
-                        aria-controls="pills-{{x.code}}"
-                        aria-selected="true"
-                        data-ng-if="x.id!=categorylist[0].id"
-                        data-ng-click="showSubItems2(x.id)"
-                      >
-                        {{x.code}}
-                      </button>
-                    </span>
+                    <button
+                      class="btn btn-outline-primary mr-2 active"
+                      id="pills-{{x.code}}-tab"
+                      data-bs-toggle="pill"
+                      data-bs-target="#pills-{{x.code}}"
+                      type="button"
+                      role="tab"
+                      aria-controls="pills-{{x.code}}"
+                      aria-selected="true"
+                      data-ng-if="x.id === categorylist[0].id"
+                      data-ng-click="showSubItems2(x.id)"
+                    >
+                      {{x.code}}
+                    </button>
+                    <button
+                      class="btn btn-outline-primary mr-2"
+                      id="pills-{{x.code}}-tab"
+                      data-bs-toggle="pill"
+                      data-bs-target="#pills-{{x.code}}"
+                      type="button"
+                      role="tab"
+                      aria-controls="pills-{{x.code}}"
+                      aria-selected="true"
+                      data-ng-if="x.id!=categorylist[0].id"
+                      data-ng-click="showSubItems2(x.id)"
+                    >
+                      {{x.code}}
+                    </button>
+                  </span>
                   </div>
                 </slick>
                 <!-- </li> -->
@@ -181,7 +181,7 @@
                     </div>
 
                     <!-- Products View -->
-                    <div class="card-body" style="padding: 0px 8px;" data-ng-init="getProducts1(x.id)">
+                    <div class="card-body" style="padding: 0px 8px" data-ng-init="getProducts1(x.id)">
                       <div class="row" id="productlist">
                         <div class="col-6 col-md-3" style="margin: 10px" data-ng-repeat="x in productlist" class="item1">
                           <form class="form-inline" style="box-shadow: 0 0 4px 1px #aaa; height: 300px; border-radius: 3px; overflow: hidden; padding: 5px" id="myforms{{$index}}" name="myforms{{$index}}">
