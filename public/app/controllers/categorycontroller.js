@@ -665,8 +665,8 @@ $scope.slickConfigCategory = {
 //   nextArrow: '<button class="slide-arrow next-arrow"></button>',
   infinite: false,
   speed: 300,
-  slidesToShow: 8,
-  slidesToScroll: 8,
+  slidesToShow: 6,
+  slidesToScroll: 6,
   variableWidth: true,
   responsive: [
 	{
@@ -744,11 +744,11 @@ $scope.numberUpdate = function(){
 };
 $scope.slickConfigProduct = {
   method: {},
-  dots: true,
+  dots: false,
   infinite: false,
   speed: 300,
-  slidesToShow: 6,
-  slidesToScroll: 6,
+  slidesToShow: 4,
+  slidesToScroll: 4,
   responsive: [
     {
       breakpoint: 1366,
@@ -756,7 +756,7 @@ $scope.slickConfigProduct = {
         slidesToShow: 4,
         slidesToScroll: 4,
         infinite: true,
-        dots: true
+        dots: false
       }
     },
     {
@@ -765,7 +765,7 @@ $scope.slickConfigProduct = {
         slidesToShow: 4,
         slidesToScroll: 4,
         infinite: true,
-        dots: true
+        dots: false
       }
     },
     {
@@ -778,8 +778,8 @@ $scope.slickConfigProduct = {
     {
       breakpoint: 480,
       settings: {
-        slidesToShow: 2,
-        slidesToScroll: 2
+        slidesToShow: 1,
+        slidesToScroll: 1
       }
     }
   ]

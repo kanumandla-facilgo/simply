@@ -6,6 +6,7 @@ const User               = require("../../bo/user");
 const ExcelReader        = require("../../utils/ExcelReader");
 const formidable         = require("formidable");
 const config             = require("../../config/config");
+const moment 			 = require("moment");
 var Excel = require('exceljs');
 const fs = require('fs')
 var JSZip = require("jszip");
@@ -477,27 +478,30 @@ function updateCustomerData (req, res, next) {
 }
 
 function findAllAgents (req, res, next) {
-
 	var sid = Util.readSID(req);
-
+	// console.log(moment());
+	
 	SessionController.validate(sid, function (err, response) {
-
+		
 		if (err)
-			return next(err);
-
+		return next(err);
+		
 		if (!(response.statuscode === 0 && response.data.session.company_id))
-			return res.json(response);
-
+		return res.json(response);
+		
 		var companyid = response.data.session.company_id;
-
+		
 		var options = {};
 		options.salespersonid    = req.query.salesperson_id;
 		options.statusid         = req.query.status_id;
 		options["search_text"] 	 = req.query.search_text;
 		options["sortby"]		= req.query.sort_by;
 		options["sortorder"]	= req.query.sort_direction;
-
+		
 		CompanyController.findAllAgents (companyid, options, response.data.session, function (err, response) {
+			// const start = Date.now();
+			// console.log("Hi");
+			// console.log('starting timer....');
 			if (err)
 				return next(err);
 			else if(req.query.format =="excel")
@@ -543,12 +547,14 @@ function findAllAgents (req, res, next) {
 									});
 				}
 
+				// console.log(moment());
 				res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 			    res.setHeader("Content-Disposition", "attachment; filename=" + "Agents.xlsx");
 			    workbook.xlsx.write(res)
 			        .then(function (data) {
 			            res.end();
 			        });
+					// console.log(Date.now() - start);
 
 			}
 			else if(req.query.format == "pdf")
@@ -558,6 +564,7 @@ function findAllAgents (req, res, next) {
 			else
 				return res.json(response);
 		});
+		
 	});
 
 }

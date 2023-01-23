@@ -82,13 +82,13 @@
                 <!-- </ul> -->
                 <!-- Tabs -->
                 <!-- Tab content -->
-                <div class="tab-content" id="pills-tabContent">
+                <div class="tab-content" id="pills-tabContent" style="margin-top:20px">
                   <div class="tab-pane fade show active" id="pills-{{x.code}}" role="tabpanel" aria-labelledby="pills-{{x.code}}-tab" data-ng-if="x.id === categorylist[0].id" data-ng-repeat="x in categorylist">
                     <!-- <div class="col-6 col-md-3" xclass="row product-list" data-ng-repeat="x in categorylist"> -->
 
                     <!-- Sub Category view -->
-                    <div data-ng-repeat="y in x.children" style="display: flex; font-family: sans-serif">
-                      <div style="height: 420px; width: 100vw; border: 4px solid rgb(116, 204, 231); box-shadow: 0 0 4px 1px #aaa; margin: 5px 0px; border-radius: 10px">
+                    <div data-ng-repeat="y in x.children" style="display: flex; font-family: sans-serif; width:100%">
+                      <div style="height: 420px; width: 100%; border: 4px solid rgb(116, 204, 231); box-shadow: 0 0 4px 1px #aaa; margin: 5px 0px; border-radius: 10px">
                         <div style="display: flex; flex-direction: row; align-content: center; justify-content: space-between">
                           <div style="margin: 2px">
                             <a data-ng-click="showSubItems2(y.id)" class="pro-title" style="color: #6597d8"
@@ -100,11 +100,12 @@
                           </div>
                         </div>
                         <!-- Products view in sub categories -->
-                        <div style="height: 360px; overflow: auto; display: block">
-                          <div class="card-body" style="padding: 0px 8px; margin-bottom: 5px">
-                            <div class="row" id="productlist">
-                              <div class="col-6 col-md-3" style="margin-top: 20px; display: block" data-ng-repeat="x in subCatProductsMap[y.id]" class="item1">
-                                <form class="form-inline" style="height: 300px; box-shadow: 0 0 4px 1px #aaa; border-radius: 3px; overflow: hidden; padding: 5px" id="myforms{{$index}}" name="myforms{{$index}}">
+                        <div style="height: 360px;width:100%; display: inline-block" >
+                          <div class="card-body" style="padding: 2px 8px; margin-bottom: 5px">
+                            <div id="productlist">
+                              <slick settings="slickConfigProduct" style="width: 100%;" data-ng-if="subCatProductsMap[y.id]">
+                              <div  style="margin-top: 20px;padding:2px; display: block"  data-ng-repeat="x in subCatProductsMap[y.id]" class="item1">
+                                <form class="form-inline" style="height: 300px;width: 280px; box-shadow: 0 0 4px 1px #aaa; border-radius: 3px; overflow: hidden; padding: 5px" id="myforms{{$index}}" name="myforms{{$index}}">
                                   <div data-ng-if="x.image_url1 != ''" class="image-item" style="height: 70%; overflow: hidden">
                                     <a href=""
                                       ><img
@@ -173,6 +174,7 @@
                                   </div>
                                 </form>
                               </div>
+                            </slick>
                             </div>
                           </div>
                         </div>
@@ -183,8 +185,8 @@
                     <!-- Products View -->
                     <div class="card-body" style="padding: 0px 8px" data-ng-init="getProducts1(x.id)">
                       <div class="row" id="productlist">
-                        <div class="col-6 col-md-3" style="margin: 10px" data-ng-repeat="x in productlist" class="item1">
-                          <form class="form-inline" style="box-shadow: 0 0 4px 1px #aaa; height: 300px; border-radius: 3px; overflow: hidden; padding: 5px" id="myforms{{$index}}" name="myforms{{$index}}">
+                        <div class="col-12 col-md-3" style="margin-top: 30px" data-ng-repeat="x in productlist" class="item1">
+                          <form class="form-inline" style="box-shadow: 0 0 4px 1px #aaa; border-radius: 3px; height: 300px; overflow: hidden; padding: 5px" id="myforms{{$index}}" name="myforms{{$index}}">
                             <div data-ng-if="x.image_url1 != ''" class="image-item" style="height: 70%">
                               <a href=""
                                 ><img
@@ -253,11 +255,11 @@
 
                     <!-- </div> -->
                   </div>
-                  <div class="tab-pane fade" id="pills-{{x.code}}" role="tabpanel" aria-labelledby="pills-{{x.code}}-tab" data-ng-repeat="x in categorylist" data-ng-if="x.id!=categorylist[0].id">
+                  <div class="tab-pane fade" id="pills-{{x.code}}" style="width:100%" role="tabpanel" aria-labelledby="pills-{{x.code}}-tab" data-ng-repeat="x in categorylist" data-ng-if="x.id!=categorylist[0].id">
                     <!-- Sub Category view -->
                     <div data-ng-repeat="y in x.children" style="display: flex; font-family: sans-serif">
                       <!-- Start -->
-                      <div style="height: 420px; width: 100vw; border: 4px solid rgb(116, 204, 231); box-shadow: 0 0 4px 1px rgb(165, 161, 161); margin: 5px 0px; border-radius: 10px">
+                      <div style="height: 420px; width: 100%; border: 4px solid rgb(116, 204, 231); box-shadow: 0 0 4px 1px rgb(165, 161, 161); margin: 5px 0px; border-radius: 10px">
                         <div style="display: flex; flex-direction: row; align-content: center; justify-content: space-between">
                           <div style="margin: 2px">
                             <a data-ng-click="showSubItems2(y.id)" class="pro-title" style="color: #6597d8"
@@ -270,11 +272,12 @@
                         </div>
 
                         <!-- Products view in sub categories -->
-                        <div style="height: 360px; display: block; overflow-x: auto">
-                          <div class="card-body" style="padding: 0px 8px; margin-bottom: 5px">
-                            <div class="row" id="productlist">
-                              <div class="col-6 col-md-3" style="margin-top: 20px; display: block" data-ng-repeat="x in subCatProductsMap[y.id]" class="item1">
-                                <form class="form-inline" style="box-shadow: 0 0 4px 1px #aaa; border-radius: 3px; height: 300px; padding: 5px; overflow: hidden" id="myforms{{$index}}" name="myforms{{$index}}">
+                        <div style="height: 360px ;width: 100%; display: inline-block;" data-ng-if="subCatProductsMap[y.id]">
+                          <div class="card-body" style="padding: 2px 8px; margin-bottom: 5px">
+                            <div  id="productlist">
+                              <slick settings="slickConfigProduct" style="width: 100%" data-ng-if="subCatProductsMap[y.id]">
+                              <div  style="margin-top: 20px;padding:2px; display: block"  data-ng-repeat="x in subCatProductsMap[y.id]" class="item1">
+                                <form class="form-inline" style="box-shadow: 0 0 4px 1px #aaa; border-radius: 3px; height: 300px;width: 290px; padding: 5px; overflow: hidden" id="myforms{{$index}}" name="myforms{{$index}}">
                                   <div data-ng-if="x.image_url1 != ''" class="image-item" style="height: 70%; overflow: hidden">
                                     <a href=""
                                       ><img
@@ -343,6 +346,7 @@
                                   </div>
                                 </form>
                               </div>
+                            </slick>
                             </div>
                           </div>
                         </div>
@@ -354,7 +358,7 @@
                     <!-- Products View -->
                     <div class="card-body" style="padding: 0px 8px">
                       <div class="row" id="productlist">
-                        <div class="col-6 col-md-3" style="margin-top: 30px" data-ng-repeat="x in productlist" class="item1">
+                        <div class="col-12 col-md-3" style="margin-top: 30px" data-ng-repeat="x in productlist" class="item1">
                           <form class="form-inline" style="box-shadow: 0 0 4px 1px #aaa; border-radius: 3px; height: 300px; overflow: hidden; padding: 5px" id="myforms{{$index}}" name="myforms{{$index}}">
                             <div data-ng-if="x.image_url1 != ''" class="image-item" style="height: 70%">
                               <a href=""

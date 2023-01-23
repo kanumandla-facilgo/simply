@@ -27,7 +27,6 @@ module.exports = function attachHandlers (router) {
 function listCategories (req, res, next) {
 
 		var sid = Util.readSID(req);
-		console.log(sid);
 
 		SessionController.validate(sid, function (err, response) {
 
