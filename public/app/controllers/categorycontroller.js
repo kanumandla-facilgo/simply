@@ -12,25 +12,12 @@ app.controller('categorycontroller', function ($scope, $http, $location, $filter
 	   $scope.subCatProductsMap = {}
 		 productService.getProducts(categoryid, undefined, options, function(response) {
 			 if (response.statuscode == 0 && response.data && response.data.productlist) {
-				console.log(categoryid, response.data.productlist);
+				// console.log(categoryid, response.data.productlist);
 				$scope.subCatProductsMap[categoryid] = response.data.productlist;
 			 }
 		 });
 		 
 	 }
-	 $scope.tabFunctionality = function(){
-		console.log('hi you are in tab functionality');
-		 angular.element(document.querySelector('button[data-bs-toggle="pill"]').addEventListener('hide.bs.pill',function(event){
-			event.preventDefault()
-			// tabTrigger.show()
-	 }));
-	 
-	 }
-
-	//  angular.element('button[data-bs-toggle="tab"]').addEventListener('shown.bs.tab',function(event){
-	// 	event.target
-	// 	event.relatedTarget
-	//  });
 
 	 var getProducts1 = function(categoryid) {
 
@@ -38,7 +25,6 @@ app.controller('categorycontroller', function ($scope, $http, $location, $filter
 	   options.enabled_only = 1;
 	   options.is_hidden_no_stock = 1;
 	   options.is_new_product_show_days = utilService.getNewProductShowXDays();
-	   $scope.subCatProductsMap = {}
 		 productService.getProducts(categoryid, undefined, options, function(response) {
 			 if (response.statuscode == 0 && response.data && response.data.productlist) {
 				
@@ -509,7 +495,6 @@ app.controller('categorycontroller', function ($scope, $http, $location, $filter
 
   
    $scope.showSubItems2 = function (id) {
-	$scope.tabFunctionality();
 	$scope.subcategorylist=[];
 	$scope.productlist=[];
 	  $scope.getCategory(id, function (response) {
@@ -526,20 +511,20 @@ app.controller('categorycontroller', function ($scope, $http, $location, $filter
 		options.is_new_product_show_days = is_new_product_show_days;
 		options.withproductsonly = $scope.withproductsonly;
 		  if (response.statuscode == 0 && response.data && response.data.category && $scope.category.is_leaf && $scope.category.children_count > 0) { 
-			 
+			getProducts1(id);
   
-			  productService.getProducts(id, $scope.customerid, options, function (response) {
-				  if (response.statuscode == 0 && response.data && response.data.productlist) {
-					  $scope.productlist = response.data.productlist;
+			//   productService.getProducts(id, $scope.customerid, options, function (response) {
+			// 	  if (response.statuscode == 0 && response.data && response.data.productlist) {
+			// 		  $scope.productlist = response.data.productlist;
 					
-				  }
-				  else if (response.statuscode === -100) {
-					  $location.path("/Login/");
-				  }
-				  else {
-					  flash.pop({ title: "", body: response.message, type: "error" });
-				  }
-			  });
+			// 	  }
+			// 	  else if (response.statuscode === -100) {
+			// 		  $location.path("/Login/");
+			// 	  }
+			// 	  else {
+			// 		  flash.pop({ title: "", body: response.message, type: "error" });
+			// 	  }
+			//   });
 		  }
 		  else if (response.statuscode === -100)  {
 
@@ -863,6 +848,7 @@ $scope.slickConfigProduct = {
 			getProducts1($scope.categorylist[0].id);
 		else
 			$scope.showSubItems2($scope.categorylist[0].id);
+			
 
 	});
 }
