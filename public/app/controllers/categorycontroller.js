@@ -511,20 +511,20 @@ app.controller('categorycontroller', function ($scope, $http, $location, $filter
 		options.is_new_product_show_days = is_new_product_show_days;
 		options.withproductsonly = $scope.withproductsonly;
 		  if (response.statuscode == 0 && response.data && response.data.category && $scope.category.is_leaf && $scope.category.children_count > 0) { 
-			getProducts1(id);
+			// getProducts1(id);
   
-			//   productService.getProducts(id, $scope.customerid, options, function (response) {
-			// 	  if (response.statuscode == 0 && response.data && response.data.productlist) {
-			// 		  $scope.productlist = response.data.productlist;
+			  productService.getProducts(id, $scope.customerid, options, function (response) {
+				  if (response.statuscode == 0 && response.data && response.data.productlist) {
+					  $scope.productlist = response.data.productlist;
 					
-			// 	  }
-			// 	  else if (response.statuscode === -100) {
-			// 		  $location.path("/Login/");
-			// 	  }
-			// 	  else {
-			// 		  flash.pop({ title: "", body: response.message, type: "error" });
-			// 	  }
-			//   });
+				  }
+				  else if (response.statuscode === -100) {
+					  $location.path("/Login/");
+				  }
+				  else {
+					  flash.pop({ title: "", body: response.message, type: "error" });
+				  }
+			  });
 		  }
 		  else if (response.statuscode === -100)  {
 
