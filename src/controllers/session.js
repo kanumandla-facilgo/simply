@@ -2,7 +2,7 @@ var SessionService   = require("../services/session");
 var Util             = require("../utils");
 var Err              = require("../bo/err");
 var mysql            = require("../utils/mysql");
-
+let moment = require("moment-timezone");
 var findById = function (id, callback) {
 
 	SessionService.findById(id, function (err, session) {
@@ -19,13 +19,13 @@ var findById = function (id, callback) {
 }
 		
 var validate = function (id, callback) {
-
+	console.log("mysql open connection in session controller",moment().format("MM-DD-YYYY hh:mm:ss SSS"));
 	mysql.openConnection (function (err, connection) {
 		
 		if (err) return callback (err);
 		
 		connection.beginTransaction(function () {
-
+			console.log("In mysql open connection session service is called",moment().format("MM-DD-YYYY hh:mm:ss SSS"));
 			SessionService.validate(id, 30*60, connection, function (err, session) {
 
 				if (err) {

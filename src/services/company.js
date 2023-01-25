@@ -2,6 +2,7 @@ var Map       = require("../utils/map");
 var Err       = require("../bo/err");
 var Util      = require("../utils");
 var async     = require("async");
+let moment = require("moment-timezone");
 var ConfigurationService  = require("./configuration");
 
 var findById = function (id, connection, callback) {
@@ -790,6 +791,7 @@ var findAllAgents = function (companyid, options, session, connection, callback)
 									agentList.push(Map.mapToBAgent(rows[0][i], "", session));
 								}
 							}
+							console.log("Data of all agents is sent from sp at:",moment().format("MM-DD-YYYY hh:mm:ss SSS"));
 							return callback(null, agentList);
 
 						}

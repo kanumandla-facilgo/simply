@@ -12,11 +12,25 @@ app.controller('categorycontroller', function ($scope, $http, $location, $filter
 	   $scope.subCatProductsMap = {}
 		 productService.getProducts(categoryid, undefined, options, function(response) {
 			 if (response.statuscode == 0 && response.data && response.data.productlist) {
+				console.log(categoryid, response.data.productlist);
 				$scope.subCatProductsMap[categoryid] = response.data.productlist;
 			 }
 		 });
 		 
 	 }
+	 $scope.tabFunctionality = function(){
+		console.log('hi you are in tab functionality');
+		 angular.element(document.querySelector('button[data-bs-toggle="pill"]').addEventListener('hide.bs.pill',function(event){
+			event.preventDefault()
+			// tabTrigger.show()
+	 }));
+	 
+	 }
+
+	//  angular.element('button[data-bs-toggle="tab"]').addEventListener('shown.bs.tab',function(event){
+	// 	event.target
+	// 	event.relatedTarget
+	//  });
 
 	 var getProducts1 = function(categoryid) {
 
@@ -27,7 +41,7 @@ app.controller('categorycontroller', function ($scope, $http, $location, $filter
 	   $scope.subCatProductsMap = {}
 		 productService.getProducts(categoryid, undefined, options, function(response) {
 			 if (response.statuscode == 0 && response.data && response.data.productlist) {
-	
+				
 				$scope.productlist = response.data.productlist;
 		
 			 }
@@ -495,6 +509,7 @@ app.controller('categorycontroller', function ($scope, $http, $location, $filter
 
   
    $scope.showSubItems2 = function (id) {
+	$scope.tabFunctionality();
 	$scope.subcategorylist=[];
 	$scope.productlist=[];
 	  $scope.getCategory(id, function (response) {
@@ -531,13 +546,14 @@ app.controller('categorycontroller', function ($scope, $http, $location, $filter
 			  $location.path("/Login/");
 		  }else{
 			$scope.subCatProductsMap = {};
-			console.log("New code", JSON.stringify($scope.categorylist.length,null, '\t\t\t'));
+			// console.log("New code", JSON.stringify($scope.categorylist.length,null, '\t\t\t'));
 			for(let i=0; i<$scope.categorylist.length; i++){
 				if($scope.categorylist[i].id == id){
-					console.log("Outer for loop in Show cat ",$scope.categorylist[i].id);
+					// console.log("Outer for loop in Show cat ",$scope.categorylist[i].id);
 					for(let j= 0; i<$scope.categorylist[i].children.length; j++){
-						console.log("Inner loop in ShowsubCategories function", JSON.stringify($scope.categorylist[i].children[j].id,null,'\t\t\t'))
-						getProducts($scope.categorylist[i].children[j].id);
+						// console.log("Inner loop in ShowsubCategories function", JSON.stringify($scope.categorylist[i].children[j].id,null,'\t\t\t'))
+						if($scope.categorylist[i].children[j].id!== undefined){getProducts($scope.categorylist[i].children[j].id);}
+						
 					}	
 					return		
 				}
@@ -762,8 +778,8 @@ $scope.slickConfigProduct = {
     {
       breakpoint: 1024,
       settings: {
-        slidesToShow: 4,
-        slidesToScroll: 4,
+        slidesToShow: 3,
+        slidesToScroll: 3,
         infinite: true,
         dots: false
       }

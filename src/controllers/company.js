@@ -6,6 +6,7 @@ var Customer          = require("../bo/customer");
 var User              = require("../bo/user");
 var Err               = require("../bo/err");
 var mysql             = require("../utils/mysql");
+let moment = require("moment-timezone");
 var Event     = require("../bo/event");
 var async = require('async');
 
@@ -1134,7 +1135,7 @@ var findAllAgents = function (companyid, options, session, callback) {
 		err.message = "Permission denied";
 		return callback(err);
 	}
-*/
+*/	console.log("You are in findAllAgents method in company controller",moment().format("MM-DD-YYYY hh:mm:ss SSS"))
 	if (Util.isEmptyString(companyid)) {
 
 		var err     = new Err();
@@ -1143,12 +1144,13 @@ var findAllAgents = function (companyid, options, session, callback) {
 		return callback(err);
 
 	}
-
+	console.log("mssql open connection",moment().format("MM-DD-YYYY hh:mm:ss SSS"));
 	mysql.openConnection (function (err, connection) {
 
 		if (err) return callback (err);
 
 		/*TODO: implement whole method */
+		console.log("ComapanyService is called",moment().format("MM-DD-YYYY hh:mm:ss SSS"));
 		CompanyService.findAllAgents(companyid, options, session, connection, function (err, vxAgentList) {
 
 			if (err) {
@@ -1164,6 +1166,7 @@ var findAllAgents = function (companyid, options, session, callback) {
 			} 
 			else {
 				mysql.closeConnection(connection);
+				console.log("mysql connection is closed and vxAgentlist is sent",moment().format("MM-DD-YYYY hh:mm:ss SSS"));
 				return callback(err, Util.setOKResponse(vxAgentList, "Agent"));
 			}  
 		});

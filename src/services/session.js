@@ -1,6 +1,6 @@
 var Map       = require("../utils/map");
 var Util             = require("../utils");
-
+let moment = require("moment-timezone");
 /*
 var createSession = function (user, callback) {
 
@@ -27,9 +27,9 @@ var createSession = function (user, callback) {
 */
 
 var validate = function(id, timeout, connection, callback) {
-
+     console.log("validate function in session service is called",moment().format("MM-DD-YYYY hh:mm:ss SSS"));
 	var cmd = "CALL spGetSession(@err,@msg,?, ?)";
-
+	console.log("ID and timeount :" + id + " Timeout :" + timeout);
 	connection.query(cmd, [
 							id, timeout
 						], function (err, rows) {
@@ -65,7 +65,7 @@ var validate = function(id, timeout, connection, callback) {
 
 								}
 
-
+								console.log("validate function in session service returns a value",moment().format("MM-DD-YYYY hh:mm:ss SSS"));
 								return callback(null, vxSession);
 							}
 							else
