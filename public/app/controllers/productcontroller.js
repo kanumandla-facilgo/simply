@@ -1513,6 +1513,7 @@ app.controller('productcontroller', function ($scope, $http, $location, productS
 		else if ($routeParams.categoryid) {
 
 			var para = $rootScope.parameters;
+			console.log(para);
 			var flag = (para && para.enabled_flag && para.enabled_flag == 1 ? 1 : 0);
 			$scope.active_only = flag;
 			var is_hidden_no_stock = (para && para.is_hidden_no_stock && para.is_hidden_no_stock == 1 ? 1 : 0);

@@ -27,6 +27,7 @@ module.exports = function attachHandlers (router) {
 function listCategories (req, res, next) {
 
 		var sid = Util.readSID(req);
+		console.log(sid);
 
 		SessionController.validate(sid, function (err, response) {
 
@@ -70,7 +71,7 @@ function listCategories (req, res, next) {
 			else if (req.query.lineage) {
 				let enabled_flag = req.query.enabled_only ? req.query.enabled_only :0;
 				let products_only = req.query.productsonly ? req.query.productsonly : 0;
-				CategoryController.findByLineage(req.query.lineage, companyid, enabled_only, products_only, response.data.session, function(err, response) {
+				CategoryController.findByLineage(req.query.lineage, companyid, enabled_flag, products_only, response.data.session, function(err, response) {
 						if (err)
 							return next(err);
 

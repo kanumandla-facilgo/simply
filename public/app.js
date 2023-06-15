@@ -1,4 +1,4 @@
-var app = angular.module('shopApp',['ngRoute', 'ui.bootstrap', 'angularModalService', 'cfp.hotkeys', 'ngCookies']);
+var app = angular.module('shopApp',['ngRoute', 'ui.bootstrap', 'angularModalService', 'cfp.hotkeys', 'ngCookies', 'slickCarousel']);
 
 angular.element(document).ready(function () {
   if(window.cordova)
@@ -571,9 +571,9 @@ app.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpPro
     }).
     when('/Home', {
             title: "Home",
-            templateUrl: 'app/templates/categories.html',
+            templateUrl: 'app/templates/categories_new.html',
             controller: 'categorycontroller',
-            parameters: {enabled_flag:1, withproductsonly:1}
+            parameters: {enabled_flag:1, withproductsonly:1, "is_new_product_show_days":true, "is_hidden_no_stock":1}
     }).
     when('/workflowsetup/', {
         title: "Workflow Setup",
@@ -617,6 +617,12 @@ app.config(function(hotkeysProvider) {
   hotkeysProvider.includeCheatSheet = false;
 });
 
+// Slick carousal plugin
+app.config(['slickCarouselConfig', function (slickCarouselConfig) {
+  slickCarouselConfig.dots = true;
+  slickCarouselConfig.arrows= true;
+  slickCarouselConfig.autoplay = false;
+}]);
 
 app.run(['$location', '$rootScope', function($location, $rootScope) {
     $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {

@@ -27,159 +27,261 @@
 
 <!--main content start-->
 <section id="main-content">
-
-<section class="wrapper site-min-height">
-		<div class="container-fluid">
-            <div class="mat-form row row-centered">
-                <div class="mat-form col-md-12">
-                    <div class="mat-form card">
-                        <div class="card-header card-header-primary listPagePrimaryCardHeader">
-                            <h4 class="card-title">{{title}}</h4>
-                        </div>
-                        <div class="card-body" style="min-height:400px;">
-							<div class="container" style="padding:20px;">
-								<div class="row">
-									<div class="col-12 col-md-3">
-										<div class="quickOrderInputWrapper" data-ng-if="!order.customer.id" ng-class="(myform.txt_customer_name.$dirty && myform.txt_customer_name.$invalid) || myform.txt_customer_name.$error.required ? 'has-error' : 'has-success'">
-											<div data-ng-controller="mastercontroller">
-												<input type="text" placeholder="Search" class="form-control" data-ng-model="searchText" ng-keypress="product_search($event, searchText)"/>
-											</div>
-										</div>
-									</div>
-									<div class="col-12 col-md-4" data-ng-controller="ordercontroller">
-										<span style="font-size:15px;" id="simpleCart_quantity" class="simpleCart_quantity"><small>({{itemcount}})</small></span>
-										<button class="btn btn-primary shopByCategoryButton" data-ng-click="displayQuickOrderForm()" data-ng-if="displayQuickOrderButton()">Shop by Quick Order</button>
-									</div>
-									<div class="col-12" style="margin-top:15px">
-										<div class="row">
-											<div class="col-6 col-md-3" data-ng-repeat="x in categorylist" style="margin-top:15px;">
-												<div class="panel" style="box-shadow:0 0 4px 1px #aaa; border-radius:3px;overflow:hidden;">
-													<div class="pro-img-box">
-														<a data-ng-click="showSubItems1(x.id)" data-ng-if="x.image_url == null || x.image_url == ''"><img loading="lazy" class="img-responsive" style="width:100%; height:200px" data-ng-src="app/assets/images/no-image-found.jpg" alt=" " /></a>
-														<a data-ng-click="showSubItems1(x.id)" data-ng-if="x.image_url != null && x.image_url != ''" ><img loading="lazy" class="img-responsive" style="width:100%; height:200px" data-ng-src="{{x.image_url}}"   /></a>
-														<!--<a href="#" class="adtocart">-->
-															<!--<i class="fas fa-shopping-cart"></i>-->
-														<!--</a>-->
-													</div>
-
-													<div class="panel-body text-center" style="width:100%;">
-														<h4>
-															<a data-ng-click="showSubItems1(x.id)" class="pro-title" >
-																{{x.name}}
-															</a>
-															<a style="padding:6px" id="btnc{{$index}}" data-ng-click="showCatalog(x)" data-ng-if="isCatalogShareModuleOn() && (x.is_leaf && x.children_count > 0)">
-															<i class="fas fa-share-alt" aria-hidden="true"></i>
-															</a>
-															<a style="padding:6px" data-ng-if="utilService.isMobileApp()" id="btncs{{$index}}" data-ng-click="shareCatalog(x)" data-ng-if="isCatalogShareModuleOn() && (x.is_leaf && x.children_count > 0)">
-							                                    <i class="fas fa-share" ></i>
-															</a>
-														</h4>
-													</div>
-												</div>
-											</div>
-										</div>
-										
-									</div>
-								</div>
-							</div>
-                        </div>
-                    </div>
-                </div>
+  <section class="wrapper site-min-height">
+    <div class="container">
+      <div class="mat-form row row-centered">
+        <div class="mat-form col-md-12">
+          <div class="mat-form card">
+            <div
+              class="card-header card-header-primary listPagePrimaryCardHeader"
+            >
+              <h4 class="card-title">{{title}}</h4>
             </div>
-		</div>
-</section>
+            <div class="card-body" style="min-height: 400px">
+              <div class="container" style="padding: 20px">
+                <div class="row">
+                  <div class="col-12 col-md-3">
+                    <div
+                      class="quickOrderInputWrapper"
+                      data-ng-if="!order.customer.id"
+                      ng-class="(myform.txt_customer_name.$dirty && myform.txt_customer_name.$invalid) || myform.txt_customer_name.$error.required ? 'has-error' : 'has-success'"
+                    >
+                      <div data-ng-controller="mastercontroller">
+                        <input
+                          type="text"
+                          placeholder="Search"
+                          class="form-control"
+                          data-ng-model="searchText"
+                          ng-keypress="product_search($event, searchText)"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="col-12 col-md-4"
+                    data-ng-controller="ordercontroller"
+                  >
+                    <span
+                      style="font-size: 15px"
+                      id="simpleCart_quantity"
+                      class="simpleCart_quantity"
+                      ><small>({{itemcount}})</small></span
+                    >
+                    <button
+                      class="btn btn-primary shopByCategoryButton"
+                      data-ng-click="displayQuickOrderForm()"
+                      data-ng-if="displayQuickOrderButton()"
+                    >
+                      Shop by Quick Order
+                    </button>
+                  </div>
+                  <div class="col-12" style="margin-top: 15px">
+                    <div class="row">
+                      <div
+                        class="col-6 col-md-3"
+                        data-ng-repeat="x in categorylist"
+                        style="margin-top: 15px"
+                      >
+                        <div
+                          class="panel"
+                          style="
+                            box-shadow: 0 0 4px 1px #aaa;
+                            border-radius: 3px;
+                            overflow: hidden;
+                          "
+                        >
+                          <div class="pro-img-box">
+                            <a
+                              data-ng-click="showSubItems1(x.id)"
+                              data-ng-if="x.image_url == null || x.image_url == ''"
+                              ><img
+                                loading="lazy"
+                                class="img-responsive"
+                                style="width: 100%; height: 200px"
+                                data-ng-src="app/assets/images/no-image-found.jpg"
+                                alt=" "
+                            /></a>
+                            <a
+                              data-ng-click="showSubItems1(x.id)"
+                              data-ng-if="x.image_url != null && x.image_url != ''"
+                              ><img
+                                loading="lazy"
+                                class="img-responsive"
+                                style="width: 100%; height: 200px"
+                                data-ng-src="{{x.image_url}}"
+                            /></a>
+                            <!--<a href="#" class="adtocart">-->
+                            <!--<i class="fas fa-shopping-cart"></i>-->
+                            <!--</a>-->
+                          </div>
 
+                          <div
+                            class="panel-body text-center"
+                            style="width: 100%"
+                          >
+                            <h4>
+                              <a
+                                data-ng-click="showSubItems1(x.id)"
+                                class="pro-title"
+                              >
+                                {{x.name}}
+                              </a>
+                              <a
+                                style="padding: 6px"
+                                id="btnc{{$index}}"
+                                data-ng-click="showCatalog(x)"
+                                data-ng-if="isCatalogShareModuleOn() && (x.is_leaf && x.children_count > 0)"
+                              >
+                                <i
+                                  class="fas fa-share-alt"
+                                  aria-hidden="true"
+                                ></i>
+                              </a>
+                              <a
+                                style="padding: 6px"
+                                data-ng-if="utilService.isMobileApp()"
+                                id="btncs{{$index}}"
+                                data-ng-click="shareCatalog(x)"
+                                data-ng-if="isCatalogShareModuleOn() && (x.is_leaf && x.children_count > 0)"
+                              >
+                                <i class="fas fa-share"></i>
+                              </a>
+                            </h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <section class="wrapper" data-ng-if="false">
+    <!-- page start-->
+    <div class="row">
+      <div class="col-md-12">
+        <section class="panel">
+          <div class="panel-body">
+            <div class="col-sm-12">
+              <div class="panel-heading" style="font-weight: bold">
+                <div class="col-xs-3 col-sm-3" style="padding: 0px">
+                  {{title}}
+                </div>
+                <div class="col-xs-9 col-sm-9 pull-right">
+                  <div
+                    class="text-right col-xs-6 col-sm-6 col-md-3"
+                    data-ng-controller="ordercontroller"
+                  >
+                    <button
+                      class="btn btn-primary"
+                      data-ng-click="displayQuickOrderForm()"
+                      data-ng-if="displayQuickOrderButton()"
+                    >
+                      Shop by Quick Order
+                    </button>
+                  </div>
+                  <div class="text-right hidden-xs hidden-sm col-xs-3 col-md-3">
+                    <input
+                      type="text"
+                      placeholder="Search"
+                      class="form-control"
+                      data-ng-model="searchText"
+                      ng-keypress="product_search($event,searchText)"
+                    />
+                  </div>
+                  <div
+                    class="col-xs-12 col-sm-12 col-md-6 pull-right"
+                    data-ng-controller="ordercontroller"
+                  >
+                    <a ng-click="checkoutForm()"
+                      ><img
+                        loading="lazy"
+                        src="app/assets/images/bag.png"
+                        alt=""
+                        style="width: 15px; height: 15px"
+                      />
+                      <span id="simpleCart_quantity" class="simpleCart_quantity"
+                        ><small>({{itemcount}})</small></span
+                      ></a
+                    >
+                    <!--<a href="javascript:;" data-ng-click="emptyCart();" class="simpleCart_empty"><small>Empty</small></a>-->
+                  </div>
+                </div>
+                <br /><br />
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="panel hidden-md hidden-lg">
+          <div class="panel-body">
+            <div class="col-sm-12 pull-left">
+              <input
+                type="text"
+                style="width: 100%"
+                placeholder="Search"
+                class="form-control"
+                data-ng-model="searchText"
+                ng-keypress="product_search($event, searchText)"
+              />
+            </div>
+          </div>
+        </section>
+        <div data-ng-repeat="x in categorylist">
+          <div class="col-xs-6 col-md-2">
+            <section class="panel">
+              <div class="pro-img-box">
+                <a
+                  data-ng-click="showSubItems1(x.id)"
+                  data-ng-if="x.image_url == null || x.image_url == ''"
+                  ><img
+                    loading="lazy"
+                    class="img-responsive"
+                    style="width: 100%; height: 200px"
+                    data-ng-src="app/assets/images/no-image-found.jpg"
+                    alt=" "
+                /></a>
+                <a
+                  data-ng-click="showSubItems1(x.id)"
+                  data-ng-if="x.image_url != null && x.image_url != ''"
+                  ><img
+                    loading="lazy"
+                    class="img-responsive"
+                    style="width: 100%; height: 200px"
+                    data-ng-src="{{x.image_url}}"
+                /></a>
+                <!--<a href="#" class="adtocart">-->
+                <!--<i class="fas fa-shopping-cart"></i>-->
+                <!--</a>-->
+              </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	<section class="wrapper" data-ng-if="false">
-		<!-- page start-->
-		<div class="row">
-			<div class="col-md-12">
-				<section class="panel">
-					<div class="panel-body">
-						<div class="col-sm-12">
-							<div class="panel-heading" style="font-weight: bold">
-								<div class="col-xs-3 col-sm-3" style="padding:0px">{{title}}</div>
-								<div class="col-xs-9 col-sm-9 pull-right">
-										<div class="text-right col-xs-6 col-sm-6 col-md-3" data-ng-controller="ordercontroller">
-											<button class="btn btn-primary" data-ng-click="displayQuickOrderForm()" data-ng-if="displayQuickOrderButton()">Shop by Quick Order</button>
-										</div>
-										<div class="text-right hidden-xs hidden-sm col-xs-3 col-md-3">
-											<input type="text" placeholder="Search" class="form-control" data-ng-model="searchText" ng-keypress="product_search($event,searchText)"/>
-										</div>
-										<div class="col-xs-12 col-sm-12 col-md-6 pull-right" data-ng-controller="ordercontroller"><a ng-click="checkoutForm()"><img loading="lazy" src="app/assets/images/bag.png" alt="" style="width:15px;height:15px"/> <span id="simpleCart_quantity" class="simpleCart_quantity"><small>({{itemcount}})</small></span></a> <!--<a href="javascript:;" data-ng-click="emptyCart();" class="simpleCart_empty"><small>Empty</small></a>--></div>
-
-								</div>
-								<br/><br/>
-							</div>
-						</div>
-					</div>
-				</section>
-				<section class="panel hidden-md hidden-lg">
-					<div class="panel-body">
-						<div class="col-sm-12 pull-left">
-							<input type="text" style="width:100%" placeholder="Search" class="form-control" data-ng-model="searchText" ng-keypress="product_search($event, searchText)"/>
-						</div>
-					</div>
-				</section>
-				<div data-ng-repeat="x in categorylist">
-					<div class="col-xs-6 col-md-2">
-						<section class="panel">
-							<div class="pro-img-box">
-								<a data-ng-click="showSubItems1(x.id)" data-ng-if="x.image_url == null || x.image_url == ''"><img loading="lazy" class="img-responsive" style="width:100%; height:200px" data-ng-src="app/assets/images/no-image-found.jpg" alt=" " /></a>
-								<a data-ng-click="showSubItems1(x.id)" data-ng-if="x.image_url != null && x.image_url != ''" ><img loading="lazy" class="img-responsive" style="width:100%; height:200px" data-ng-src="{{x.image_url}}"   /></a>
-								<!--<a href="#" class="adtocart">-->
-									<!--<i class="fas fa-shopping-cart"></i>-->
-								<!--</a>-->
-							</div>
-
-							<div class="panel-body text-center" style="width:100%; height:104px">
-								<h4>
-									<a data-ng-click="showSubItems1(x.id)" class="pro-title" >
-										{{x.name}}
-									</a>
-									<!--<a href="#" class="pro-title">-->
-										<!--Leopard Shirt Dress-->
-									<!--</a>-->
-								</h4>
-								<!--<p class="price">$300.00</p>-->
-							</div>
-						</section>
-					</div>
-
-				</div>
-			</div>
-		</div>
-		<!-- page end-->
-	</section>
+              <div
+                class="panel-body text-center"
+                style="width: 100%; height: 104px"
+              >
+                <h4>
+                  <a data-ng-click="showSubItems1(x.id)" class="pro-title">
+                    {{x.name}}
+                  </a>
+                  <!--<a href="#" class="pro-title">-->
+                  <!--Leopard Shirt Dress-->
+                  <!--</a>-->
+                </h4>
+                <!--<p class="price">$300.00</p>-->
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- page end-->
+  </section>
 </section>
 <!--main content end-->
 
-
 <div ng-include="'modal.html'"></div>
 <div ng-include="'modal_customer.html'"></div>
-
-
-
-
-
-

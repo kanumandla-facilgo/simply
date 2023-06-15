@@ -1,8 +1,10 @@
 <!--<div><span><a href="#/users">Users</a></span> <span><a href="#/customers">Customers</a></span> <span><a href="#/categories">Catalog</a></span></div>-->
-<div data-ng-include="'/app/templates/header_latest.html'"></div>
+<div data-ng-controller="ordercontroller">
+<div data-ng-controller="productcontroller">
+<div data-ng-include="'app/templates/header_latest.html'"></div>
 
-<!--
-<div id='categorylist' style="margin:0px;padding:0px">
+
+<!-- <div id='categorylist' style="margin:0px;padding:0px">
     <div>
         <div style="float:left">
             <h4> {{title}}</h4>
@@ -22,93 +24,488 @@
 
         </div>
     </div>
-</div>
--->
+</div> -->
+
 
 <!--main content start-->
 <section id="main-content">
-	<section class="wrapper">
-		<!-- page start-->
-		<div class="row">
-			<div class="col-md-12">
-				<section class="panel">
-					<div class="panel-body">
-						<div class="col-sm-12">
-							<header class="panel-heading" style="font-weight: bold">
-								<div class="col-xs-3 col-sm-3" style="padding:0px">{{title}}</div>
-								<div class="col-xs-9 col-sm-9 pull-right">
-										<div class="text-right col-xs-6 col-sm-6 col-md-3" data-ng-controller="ordercontroller">
-											<button class="btn btn-primary" data-ng-click="displayQuickOrderForm()" data-ng-if="displayQuickOrderButton()">Shop by Quick Order</button>
-										</div>
-										<div class="text-right hidden-xs hidden-sm col-xs-3 col-md-3">
-											<input type="text" placeholder="Search" class="form-control" data-ng-model="searchText" ng-keypress="product_search($event,searchText)"/>
-										</div>
-										<div class="col-xs-12 col-sm-12 col-md-6 pull-right" data-ng-controller="ordercontroller"><a ng-click="checkoutForm()"><img loading="lazy" src="app/assets/images/bag.png" alt="" style="width:15px;height:15px"/> <span id="simpleCart_quantity" class="simpleCart_quantity"><small>({{itemcount}})</small></span></a> <!--<a href="javascript:;" data-ng-click="emptyCart();" class="simpleCart_empty"><small>Empty</small></a>--></div>
+  <section class="wrapper site-min-height">
+    <div class="container">
+      <div class="mat-form row row-centered">
+        <div class="mat-form col-md-12">
+          <div class="mat-form card">
+            <div class="card-header card-header-primary listPagePrimaryCardHeader">
+              <h4 class="card-title">{{title}}</h4>
+            </div>
+            <div class="card-body" style="min-height: 400px">
+              <div class="container" style="padding: 20px">
+                <!-- Tabs -->
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                  <li class="nav-item m-1" role="presentation" data-ng-repeat="x in categorylist">
+                    <button
+                      class="btn btn-outline-primary active"
+                      id="pills-{{x.code}}-tab"
+                      data-bs-toggle="pill"
+                      data-bs-target="#pills-{{x.code}}"
+                      type="button"
+                      role="tab"
+                      aria-controls="pills-{{x.code}}"
+                      aria-selected="true"
+                      data-ng-if="x.id === categorylist[0].id"
+                      data-ng-click="showSubItems2(x.id)"
+                    >
+                      {{x.code}}
+                    </button>
+                    <button
+                      class="btn btn-outline-primary"
+                      id="pills-{{x.code}}-tab"
+                      data-bs-toggle="pill"
+                      data-bs-target="#pills-{{x.code}}"
+                      type="button"
+                      role="tab"
+                      aria-controls="pills-{{x.code}}"
+                      aria-selected="true"
+                      data-ng-if="x.id!=categorylist[0].id"
+                      data-ng-click="showSubItems2(x.id)"
+                    >
+                      {{x.code}}
+                    </button>
+                  </li>
+                </ul>
+                <!-- Tabs -->
+                <!-- Tab content -->
+                <div class="tab-content" id="pills-tabContent">
+                  <div class="tab-pane fade show active" id="pills-{{x.code}}" role="tabpanel" aria-labelledby="pills-{{x.code}}-tab" data-ng-if="x.id === categorylist[0].id" data-ng-repeat="x in categorylist">
+                    <!-- <div class="col-6 col-md-3" xclass="row product-list" data-ng-repeat="x in categorylist"> -->
 
-								</div>
-								<br/><br/>
-							</header>
-						</div>
-					</div>
-				</section>
-				<section class="panel hidden-md hidden-lg">
-					<div class="panel-body">
-						<div class="col-sm-12 pull-left">
-							<input type="text" style="width:100%" placeholder="Search" class="form-control" data-ng-model="searchText" ng-keypress="product_search($event, searchText)"/>
-						</div>
-					</div>
-				</section>
-				<div data-ng-repeat="x in categorylist">
-					<div class="pro-title" style="border-bottom: solid 1px black">{{x.name}}</div>
-					<slick class="slider" settings="slickConfigCategory" >
-					    <div ng-repeat="y in x.children">
-					    	<div style="border: solid 1px #334455; border-radius: 25px;padding:10px;width:100px;height:30px;vertical-align: center;horizontal-align:center;" data-ng-click="onCarouselCategoryClick(y)">{{ y.name }}</div>
-					    </div>
-					</slick>
-					<slick class="slider" settings="slickConfigProduct" >
-						<span ng-repeat="y in x.productList">
-					    	<span style="border: solid 1px #334455; padding:10px;width:200px;height:30px;" data-ng-click="onCarouselProductClick(y)">{{ y.name }}</span>
-						</span>
-					</slick>
-				</div>
-				<div data-ng-repeat="x in categorylist">
-					<div class="col-xs-6 col-md-2">
-						<section class="panel">
-							<div class="pro-img-box">
-								<a data-ng-click="showSubItems1(x.id)" data-ng-if="x.image_url == null || x.image_url == ''"><img loading="lazy" class="img-responsive" style="width:100%; height:200px" data-ng-src="app/assets/images/no-image-found.jpg" alt=" " /></a>
-								<a data-ng-click="showSubItems1(x.id)" data-ng-if="x.image_url != null && x.image_url != ''" ><img loading="lazy" class="img-responsive" style="width:100%; height:200px" data-ng-src="{{x.image_url}}" /></a>
-								<!--<a href="#" class="adtocart">-->
-									<!--<i class="fa fa-shopping-cart"></i>-->
-								<!--</a>-->
-							</div>
+                    <!-- Sub Category view -->
+                    <div data-ng-repeat="y in x.children" style="display: flex; font-family: sans-serif">
+                      <div style="height: 420px; width: 100vw; border: 4px solid rgb(116, 204, 231); box-shadow: 0 0 4px 1px #aaa; margin: 5px 0px; border-radius: 10px;">
+                        <div style="display: flex; flex-direction: row; align-content: center; justify-content: space-between">
+                          <div style="margin: 2px">
+                            <a data-ng-click="showSubItems2(y.id)" class="pro-title" style="color: #6597d8"
+                              ><h3><strong>{{y.code}}</strong></h3></a
+                            >
+                          </div>
+                          <div style="margin: 7px">
+                            <button type="button" class="btn btn-success" data-ng-click="showSubItems1(y.id)">See More</button>
+                          </div>
+                        </div>
+                        <!-- Products view in sub categories -->
+                        <div style="height: 360px; width: 100%;overflow: auto;">
+                          <div class="card-body" style="padding: 0px 8px;margin-bottom: 5px;">
+                            <div class="row" id="productlist">
+                              <div class="col-6 col-md-3" style="margin-top: 20px;" data-ng-repeat="x in subCatProductsMap[y.id]" class="item1">
+                                <form class="form-inline" style="height:300px;box-shadow: 0 0 4px 1px #aaa; border-radius: 3px; overflow: hidden; padding: 5px" id="myforms{{$index}}" name="myforms{{$index}}">
+                                  <div data-ng-if="x.image_url1 != ''" class="image-item" style="height: 70%;overflow: hidden;">
+                                    <a href=""
+                                      ><img
+                                        loading="lazy"
+                                        data-ng-src="{{x.image_url1}}"
+                                        xdata-ng-src="https://images.weserv.nl?url={{x.image_url1.replace('https://', '').replace('http://', '').replace('/upload/', '/upload/large/')}}"
+                                        style="width: 100%; height: 100%"
+                                        data-ng-click="onPhotoClick(x)"
+                                    /></a>
+                                  </div>
 
-							<div class="panel-body text-center" style="width:100%; height:104px">
-								<h4>
-									<a data-ng-click="showSubItems1(x.id)" class="pro-title" >
-										{{x.name}}
-									</a>
-									<!--<a href="#" class="pro-title">-->
-										<!--Leopard Shirt Dress-->
-									<!--</a>-->
-								</h4>
-								<!--<p class="price">$300.00</p>-->
-							</div>
-						</section>
-					</div>
+                                  <div data-ng-if="x.image_url1 == ''" style="height: 70%;overflow: hidden;">
+                                    <a href=""><img loading="lazy" data-ng-src="app/assets/images/no-image-found.jpg" style="width: 100%; height: 100%; border: dotted 1px black" /></a>
+                                  </div>
 
-				</div>
-			</div>
-		</div>
-		<!-- page end-->
-	</section>
+                                  <div style="width: 100%;height: 30%;overflow:hidden;">
+                                    <span class="text-primary" style="font-weight: 600; font-size: 14px">{{x.name}}</span>
+                                    <span data-ng-if="isNewProduct(x)" style="color: red; font-weight: bolder" title="New Product">NEW</span>
+                                    <a class="pull-right" data-ng-if="x.image_url1 != ''" data-ng-click="downloadProductImage(x.id)" title="Download image"><i class="fas fa-download"></i></a>
+                                    <a
+                                      style="padding: 6px"
+                                      id="btncs{{$index}}"
+                                      data-ng-if="utilService.isMobileApp()"
+                                      data-ng-click="shareCatalog(x)"
+                                      data-ng-if="(utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_CATALOG_SHARE) == '1')"
+                                    >
+                                      <i class="fas fa-share"></i>
+                                    </a>
+                                    <div class="row" style="width: 100%; margin: 10px 0">
+                                      <div class="col-12 col-md-5" style="margin: 0 0 10px 0; padding: 0">
+                                        <span data-ng-if="false" style="float: right">{{x.selectedQuote UOM.unit_price}} / {{x.selectedQuoteUOM.name}}</span>
+                                        <span style="width: 22px; display: inline-block; text-align: right"><i class="fas fa-rupee-sign"></i></span>
+                                        <input type="number" class="input-sm" step="any" size="3" min="1" data-ng-model="x.order_price" style="width: 35px; padding: 0px; text-align: right; border: 1px solid #d1d3d4" required="true" />
+                                        /
+                                        <select
+                                          style="font-size: 12px"
+                                          ng-options="uom as uom.name for uom in x.uomlist track by uom.id"
+                                          ng-model="x.selectedQuoteUOM"
+                                          data-ng-init="selectDefaultQuoteUOM(x)"
+                                          data-ng-change="updateQuotePrice(x)"
+                                          data-ng-hide="x.is_quote_uom_restricted"
+                                        ></select>
+                                        <span ng-show="x.is_quote_uom_restricted" style="font-size: 12px">{{x.selectedQuoteUOM.name}} </span>
+                                      </div>
+                                      <div class="col-12 col-md-7" style="margin: 0 0 10px 0; padding: 0">
+                                        <span style="width: 35px; padding-left: 5px; font-size: 12px">Qty</span>
+                                        <input
+                                          type="number"
+                                          class="input-sm"
+                                          min="1"
+                                          max="10000"
+                                          size="5"
+                                          data-ng-model="x.orderqty"
+                                          data-ng-init="x.orderqty=x.default_sell_qty"
+                                          style="width: 35px; padding: 0px; text-align: right; border: 1px solid #d1d3d4"
+                                          required="true"
+                                        />
+                                        /
+                                        <select style="font-size: 128x; border: 1px solid #d1d3d4" ng-options="uom as uom.name for uom in x.uomlist track by uom.id" ng-model="x.selectedUOM" ng-hide="x.is_qty_uom_restricted"></select>
+                                        <span ng-show="x.is_qty_uom_restricted" style="font-size: 12px">{{x.selectedUOM.name}} </span>
+
+                                        <span class="listPageActionIcons listPageActionGreen" data-ng-click="product_to_order(customerid, x)" data-ng-disabled="myforms{{$index}}.$invalid"><i class="fas fa-plus"></i></span>
+                                        <span class="listPageActionIcons listPageActionIconsRed" data-ng-click="removeProductFromCart(x)" data-ng-if="x.added_flag == 1"><i class="fas fa-trash"></i></span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Products view in sub categories end -->
+                      </div>
+                    </div>
+
+                    <!-- Products View -->
+                    <div class="card-body" style="padding: 0px 8px;" data-ng-init="getProducts1(x.id)">
+                      <div class="row" id="productlist">
+                        <div class="col-6 col-md-3" style="margin: 10px" data-ng-repeat="x in productlist" class="item1">
+                          <form class="form-inline" style="box-shadow: 0 0 4px 1px #aaa;height:300px; border-radius: 3px; overflow: hidden; padding: 5px" id="myforms{{$index}}" name="myforms{{$index}}">
+                            <div data-ng-if="x.image_url1 != ''" class="image-item" style="height:70%">
+                              <a href=""
+                                ><img
+                                  loading="lazy"
+                                  data-ng-src="{{x.image_url1}}"
+                                  xdata-ng-src="https://images.weserv.nl?url={{x.image_url1.replace('https://', '').replace('http://', '').replace('/upload/', '/upload/large/')}}"
+                                  style="width: 100%; height: 100%"
+                                  data-ng-click="onPhotoClick(x)"
+           
+                              /></a>
+                            </div>
+
+                            <div data-ng-if="x.image_url1 == ''" style="height:70%">
+                              <a href=""><img loading="lazy" data-ng-src="app/assets/images/no-image-found.jpg" style="width: 100%; height: 100%; border: dotted 1px black" /></a>
+                            </div>
+
+                            <div style="width: 100%; height:30%">
+                              <span class="text-primary" style="font-weight: 600; font-size: 14px">{{x.name}}</span>
+                              <span data-ng-if="isNewProduct(x)" style="color: red; font-weight: bolder" title="New Product">NEW</span>
+                              <a class="pull-right" data-ng-if="x.image_url1 != ''" data-ng-click="downloadProductImage(x.id)" title="Download image"><i class="fas fa-download"></i></a>
+                              <a style="padding: 6px" id="btncs{{$index}}" data-ng-if="utilService.isMobileApp()" data-ng-click="shareCatalog(x)" data-ng-if="(utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_CATALOG_SHARE) == '1')">
+                                <i class="fas fa-share"></i>
+                              </a>
+                              <div class="row" style="width: 100%; margin: 10px 0">
+                                <div class="col-12 col-md-5" style="margin: 0 0 10px 0; padding: 0">
+                                  <span data-ng-if="false" style="float: right">{{x.selectedQuote UOM.unit_price}} / {{x.selectedQuoteUOM.name}}</span>
+                                  <span style="width: 22px; display: inline-block; text-align: right"><i class="fas fa-rupee-sign"></i></span>
+                                  <input type="number" class="input-sm" step="any" size="3" min="1" data-ng-model="x.order_price" style="width: 35px; padding: 0px; text-align: right; border: 1px solid #d1d3d4" required="true" />
+                                  /
+                                  <select
+                                    style="font-size: 12px"
+                                    ng-options="uom as uom.name for uom in x.uomlist track by uom.id"
+                                    ng-model="x.selectedQuoteUOM"
+                                    data-ng-init="selectDefaultQuoteUOM(x)"
+                                    data-ng-change="updateQuotePrice(x)"
+                                    data-ng-hide="x.is_quote_uom_restricted"
+                                  ></select>
+                                  <span ng-show="x.is_quote_uom_restricted" style="font-size: 12px">{{x.selectedQuoteUOM.name}} </span>
+                                </div>
+                                <div class="col-12 col-md-7" style="margin: 0 0 10px 0; padding: 0">
+                                  <span style="width: 35px; padding-left: 5px; font-size: 12px">Qty</span>
+                                  <input
+                                    type="number"
+                                    class="input-sm"
+                                    min="1"
+                                    max="10000"
+                                    size="5"
+                                    data-ng-model="x.orderqty"
+                                    data-ng-init="x.orderqty=x.default_sell_qty"
+                                    style="width: 35px; padding: 0px; text-align: right; border: 1px solid #d1d3d4"
+                                    required="true"
+                                  />
+                                  /
+                                  <select style="font-size: 128x; border: 1px solid #d1d3d4" ng-options="uom as uom.name for uom in x.uomlist track by uom.id" ng-model="x.selectedUOM" ng-hide="x.is_qty_uom_restricted"></select>
+                                  <span ng-show="x.is_qty_uom_restricted" style="font-size: 12px">{{x.selectedUOM.name}} </span>
+
+                                  <span class="listPageActionIcons listPageActionGreen" data-ng-click="product_to_order(customerid, x)" data-ng-disabled="myforms{{$index}}.$invalid"><i class="fas fa-plus"></i></span>
+                                  <span class="listPageActionIcons listPageActionIconsRed" data-ng-click="removeProductFromCart(x)" data-ng-if="x.added_flag == 1"><i class="fas fa-trash"></i></span>
+                                </div>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Product view end -->
+
+                    <!-- </div> -->
+                  </div>
+                  <div class="tab-pane fade" id="pills-{{x.code}}" role="tabpanel" aria-labelledby="pills-{{x.code}}-tab" data-ng-repeat="x in categorylist" data-ng-if="x.id!=categorylist[0].id">
+                    <!-- Sub Category view -->
+                    <div data-ng-repeat="y in x.children" style="display: flex; font-family: sans-serif">
+                      <!-- Start -->
+                      <div style="height: 420px; width: 100vw; border: 4px solid rgb(116, 204, 231); box-shadow: 0 0 4px 1px rgb(165, 161, 161); margin: 5px 0px; border-radius: 10px; ">
+                        <div style="display: flex; flex-direction: row; align-content: center; justify-content: space-between">
+                          <div style="margin: 2px">
+                            <a data-ng-click="showSubItems2(y.id)" class="pro-title" style="color: #6597d8"
+                              ><h3><strong>{{y.code}}</strong></h3></a
+                            >
+                          </div>
+                          <div style="margin: 7px">
+                            <button type="button" class="btn btn-success" data-ng-click="showSubItems1(y.id)">See More</button>
+                          </div>
+                        </div>
+
+                        <!-- Products view in sub categories -->
+                        <div style="height: 360px; width: 100%;overflow-x: auto;">
+                          <div class="card-body" style="padding: 0px 8px;margin-bottom: 5px;">
+                            <div class="row" id="productlist">
+                              <div class="col-6 col-md-3" style="margin-top: 20px; " data-ng-repeat="x in subCatProductsMap[y.id]" class="item1">
+                                <form
+                                  class="form-inline"
+                                  style="
+                                    box-shadow: 0 0 4px 1px #aaa;
+                                    border-radius: 3px;
+                                    height: 300px;
+                                    padding: 5px;
+                                    overflow:hidden;
+                                  "
+                                  id="myforms{{$index}}"
+                                  name="myforms{{$index}}"
+                                >
+                                  <div data-ng-if="x.image_url1 != ''" class="image-item" style="height:70%;overflow: hidden;">
+                                    <a href=""
+                                      ><img
+                                        loading="lazy"
+                                        data-ng-src="{{x.image_url1}}"
+                                        xdata-ng-src="https://images.weserv.nl?url={{x.image_url1.replace('https://', '').replace('http://', '').replace('/upload/', '/upload/large/')}}"
+                                        style="width: 100%; height: 100%"
+                                        data-ng-click="onPhotoClick(x)"
+                     
+                                    /></a>
+                                  </div>
+
+                                  <div data-ng-if="x.image_url1 == ''" style="height:70%;overflow: hidden;">
+                                    <a href=""><img loading="lazy" data-ng-src="app/assets/images/no-image-found.jpg" style="width: 100%; height: 180px; border: dotted 1px black" /></a>
+                                  </div>
+
+                                  <div style="width: 100%; height:30%;overflow: hidden;">
+                                    <span class="text-primary" style="font-weight: 600; font-size: 14px">{{x.name}}</span>
+                                    <span data-ng-if="isNewProduct(x)" style="color: red; font-weight: bolder" title="New Product">NEW</span>
+                                    <a class="pull-right" data-ng-if="x.image_url1 != ''" data-ng-click="downloadProductImage(x.id)" title="Download image"><i class="fas fa-download"></i></a>
+                                    <a
+                                      style="padding: 6px"
+                                      id="btncs{{$index}}"
+                                      data-ng-if="utilService.isMobileApp()"
+                                      data-ng-click="shareCatalog(x)"
+                                      data-ng-if="(utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_CATALOG_SHARE) == '1')"
+                                    >
+                                      <i class="fas fa-share"></i>
+                                    </a>
+                                    <div class="row" style="width: 100%; margin: 10px 0">
+                                      <div class="col-12 col-md-5" style="margin: 0 0 10px 0; padding: 0">
+                                        <span data-ng-if="false" style="float: right">{{x.selectedQuote UOM.unit_price}} / {{x.selectedQuoteUOM.name}}</span>
+                                        <span style="width: 22px; display: inline-block; text-align: right"><i class="fas fa-rupee-sign"></i></span>
+                                        <input type="number" class="input-sm" step="any" size="3" min="1" data-ng-model="x.order_price" style="width: 35px; padding: 0px; text-align: right; border: 1px solid #d1d3d4" required="true" />
+                                        /
+                                        <select
+                                          style="font-size: 12px"
+                                          ng-options="uom as uom.name for uom in x.uomlist track by uom.id"
+                                          ng-model="x.selectedQuoteUOM"
+                                          data-ng-init="selectDefaultQuoteUOM(x)"
+                                          data-ng-change="updateQuotePrice(x)"
+                                          data-ng-hide="x.is_quote_uom_restricted"
+                                        ></select>
+                                        <span ng-show="x.is_quote_uom_restricted" style="font-size: 12px">{{x.selectedQuoteUOM.name}} </span>
+                                      </div>
+                                      <div class="col-12 col-md-7" style="margin: 0 0 10px 0; padding: 0">
+                                        <span style="width: 35px; padding-left: 5px; font-size: 12px">Qty</span>
+                                        <input
+                                          type="number"
+                                          class="input-sm"
+                                          min="1"
+                                          max="10000"
+                                          size="5"
+                                          data-ng-model="x.orderqty"
+                                          data-ng-init="x.orderqty=x.default_sell_qty"
+                                          style="width: 35px; padding: 0px; text-align: right; border: 1px solid #d1d3d4"
+                                          required="true"
+                                        />
+                                        /
+                                        <select style="font-size: 128x; border: 1px solid #d1d3d4" ng-options="uom as uom.name for uom in x.uomlist track by uom.id" ng-model="x.selectedUOM" ng-hide="x.is_qty_uom_restricted"></select>
+                                        <span ng-show="x.is_qty_uom_restricted" style="font-size: 12px">{{x.selectedUOM.name}} </span>
+
+                                        <span class="listPageActionIcons listPageActionGreen" data-ng-click="product_to_order(customerid, x)" data-ng-disabled="myforms{{$index}}.$invalid"><i class="fas fa-plus"></i></span>
+                                        <span class="listPageActionIcons listPageActionIconsRed" data-ng-click="removeProductFromCart(x)" data-ng-if="x.added_flag == 1"><i class="fas fa-trash"></i></span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Products view in sub categories end -->
+                      </div>
+                      <!-- End -->
+                    </div>
+
+                    <!-- Products View -->
+                    <div class="card-body" style="padding: 0px 8px">
+                      <div class="row" id="productlist">
+                        <div class="col-6 col-md-3" style="margin-top: 30px" data-ng-repeat="x in productlist" class="item1">
+                          <form class="form-inline" style="box-shadow: 0 0 4px 1px #aaa; border-radius: 3px;height:300px; overflow: hidden; padding: 5px" id="myforms{{$index}}" name="myforms{{$index}}">
+                            <div data-ng-if="x.image_url1 != ''" class="image-item" style="height:70%">
+                              <a href=""
+                                ><img
+                                  loading="lazy"
+                                  data-ng-src="{{x.image_url1}}"
+                                  xdata-ng-src="https://images.weserv.nl?url={{x.image_url1.replace('https://', '').replace('http://', '').replace('/upload/', '/upload/large/')}}"
+                                  style="width: 100%; height: 100%"
+                                  data-ng-click="onPhotoClick(x)"
+             
+                              /></a>
+                            </div>
+
+                            <div data-ng-if="x.image_url1 == ''" style="height:70%">
+                              <a href=""><img loading="lazy" data-ng-src="app/assets/images/no-image-found.jpg" style="width: 100%;height: 100%; border: dotted 1px black" /></a>
+                            </div>
+
+                            <div style="width: 100% ;height:30%;">
+                              <span class="text-primary" style="font-weight: 600; font-size: 14px">{{x.name}}</span>
+                              <span data-ng-if="isNewProduct(x)" style="color: red; font-weight: bolder" title="New Product">NEW</span>
+                              <a class="pull-right" data-ng-if="x.image_url1 != ''" data-ng-click="downloadProductImage(x.id)" title="Download image"><i class="fas fa-download"></i></a>
+                              <a style="padding: 6px" id="btncs{{$index}}" data-ng-if="utilService.isMobileApp()" data-ng-click="shareCatalog(x)" data-ng-if="(utilService.isConfigurationOn(utilService.CONST_CONFIG_MODULE_CATALOG_SHARE) == '1')">
+                                <i class="fas fa-share"></i>
+                              </a>
+                              <div class="row" style="width: 100%; margin: 10px 0">
+                                <div class="col-12 col-md-5" style="margin: 0 0 10px 0; padding: 0">
+                                  <span data-ng-if="false" style="float: right">{{x.selectedQuote UOM.unit_price}} / {{x.selectedQuoteUOM.name}}</span>
+                                  <span style="width: 22px; display: inline-block; text-align: right"><i class="fas fa-rupee-sign"></i></span>
+                                  <input type="number" class="input-sm" step="any" size="3" min="1" data-ng-model="x.order_price" style="width: 35px; padding: 0px; text-align: right; border: 1px solid #d1d3d4" required="true" />
+                                  /
+                                  <select
+                                    style="font-size: 12px"
+                                    ng-options="uom as uom.name for uom in x.uomlist track by uom.id"
+                                    ng-model="x.selectedQuoteUOM"
+                                    data-ng-init="selectDefaultQuoteUOM(x)"
+                                    data-ng-change="updateQuotePrice(x)"
+                                    data-ng-hide="x.is_quote_uom_restricted"
+                                  ></select>
+                                  <span ng-show="x.is_quote_uom_restricted" style="font-size: 12px">{{x.selectedQuoteUOM.name}} </span>
+                                </div>
+                                <div class="col-12 col-md-7" style="margin: 0 0 10px 0; padding: 0">
+                                  <span style="width: 35px; padding-left: 5px; font-size: 12px">Qty</span>
+                                  <input
+                                    type="number"
+                                    class="input-sm"
+                                    min="1"
+                                    max="10000"
+                                    size="5"
+                                    data-ng-model="x.orderqty"
+                                    data-ng-init="x.orderqty=x.default_sell_qty"
+                                    style="width: 35px; padding: 0px; text-align: right; border: 1px solid #d1d3d4"
+                                    required="true"
+                                  />
+                                  /
+                                  <select style="font-size: 128x; border: 1px solid #d1d3d4" ng-options="uom as uom.name for uom in x.uomlist track by uom.id" ng-model="x.selectedUOM" ng-hide="x.is_qty_uom_restricted"></select>
+                                  <span ng-show="x.is_qty_uom_restricted" style="font-size: 12px">{{x.selectedUOM.name}} </span>
+
+                                  <span class="listPageActionIcons listPageActionGreen" data-ng-click="product_to_order(customerid, x)" data-ng-disabled="myforms{{$index}}.$invalid"><i class="fas fa-plus"></i></span>
+                                  <span class="listPageActionIcons listPageActionIconsRed" data-ng-click="removeProductFromCart(x)" data-ng-if="x.added_flag == 1"><i class="fas fa-trash"></i></span>
+                                </div>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Product View end -->
+                  </div>
+                </div>
+                <!-- Tab content -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrapper" data-ng-if="false">
+    <!-- page start-->
+    <div class="row">
+      <div class="col-md-12">
+        <section class="panel">
+          <div class="panel-body">
+            <div class="col-sm-12">
+              <div class="panel-heading" style="font-weight: bold">
+                <div class="col-xs-3 col-sm-3" style="padding: 0px">{{title}}</div>
+                <div class="col-xs-9 col-sm-9 pull-right">
+                  <div class="text-right col-xs-6 col-sm-6 col-md-3" data-ng-controller="ordercontroller">
+                    <button class="btn btn-primary" data-ng-click="displayQuickOrderForm()" data-ng-if="displayQuickOrderButton()">Shop by Quick Order</button>
+                  </div>
+                  <div class="text-right hidden-xs hidden-sm col-xs-3 col-md-3">
+                    <input type="text" placeholder="Search" class="form-control" data-ng-model="searchText" ng-keypress="product_search($event,searchText)" />
+                  </div>
+                  <div class="col-xs-12 col-sm-12 col-md-6 pull-right" data-ng-controller="ordercontroller">
+                    <a ng-click="checkoutForm()"
+                      ><img loading="lazy" src="app/assets/images/bag.png" alt="" style="width: 15px; height: 15px" /> <span id="simpleCart_quantity" class="simpleCart_quantity"><small>({{itemcount}})</small></span></a
+                    >
+                    <!--<a href="javascript:;" data-ng-click="emptyCart();" class="simpleCart_empty"><small>Empty</small></a>-->
+                  </div>
+                </div>
+                <br /><br />
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="panel hidden-md hidden-lg">
+          <div class="panel-body">
+            <div class="col-sm-12 pull-left">
+              <input type="text" style="width: 100%" placeholder="Search" class="form-control" data-ng-model="searchText" ng-keypress="product_search($event, searchText)" />
+            </div>
+          </div>
+        </section>
+        <div data-ng-repeat="x in categorylist">
+          <div class="col-xs-6 col-md-2">
+            <section class="panel">
+              <div class="pro-img-box">
+                <a data-ng-click="showSubItems2(x.id)" data-ng-if="x.image_url == null || x.image_url == ''"
+                  ><img loading="lazy" class="img-responsive" style="width: 100%; height: 200px" data-ng-src="app/assets/images/no-image-found.jpg" alt=" "
+                /></a>
+                <a data-ng-click="showSubItems2(x.id)" data-ng-if="x.image_url != null && x.image_url != ''"><img loading="lazy" class="img-responsive" style="width: 100%; height: 200px" data-ng-src="{{x.image_url}}" /></a>
+                <!--<a href="#" class="adtocart">-->
+                <!--<i class="fas fa-shopping-cart"></i>-->
+                <!--</a>-->
+              </div>
+
+              <div class="panel-body text-center" style="width: 100%; height: 104px">
+                <h4>
+                  <a data-ng-click="showSubItems2(x.id)" class="pro-title"> {{x.name}} </a>
+                  <!--<a href="#" class="pro-title">-->
+                  <!--Leopard Shirt Dress-->
+                  <!--</a>-->
+                </h4>
+                <!--<p class="price">$300.00</p>-->
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- page end-->
+  </section>
 </section>
 <!--main content end-->
 
 <div ng-include="'modal.html'"></div>
 <div ng-include="'modal_customer.html'"></div>
-
-
-
-
-
-
+</div>
+</div>
